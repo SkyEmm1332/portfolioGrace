@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Grace Ouphouet | Créatrice de Contenu</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__logo">GO<span class="dot">★</span></div>
+    <ul class="nav__links">
+      <li><a href="#about">À Propos</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#work">Travaux</a></li>
+      <li><a href="#packages">Forfaits</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav__burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav__mobile" id="mobileMenu">
+    <ul>
+      <li><a href="#about" onclick="closeMobile()">À Propos</a></li>
+      <li><a href="#services" onclick="closeMobile()">Services</a></li>
+      <li><a href="#work" onclick="closeMobile()">Travaux</a></li>
+      <li><a href="#packages" onclick="closeMobile()">Forfaits</a></li>
+      <li><a href="#contact" onclick="closeMobile()">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero__bg-text">PORTFOLIO</div>
+    <div class="hero__content">
+      <div class="hero__text">
+        <p class="hero__sub script">créatrice de contenu</p>
+        <h1 class="hero__title">PORT<br/>FOLIO</h1>
+        <div class="hero__meta">
+          <span class="tag">CRÉATRICE UGC</span>
+          <span class="tag">GRACE OUPHOUET</span>
+        </div>
+        <a href="#contact" class="btn btn--red">Travaillons Ensemble ★</a>
+      </div>
+      <div class="hero__image-wrap">
+        <div class="hero__image-frame">
+          <img src="images/hero.jpg" alt="Grace Ouphouet – Créatrice de Contenu" class="hero__img" />
+          <div class="hero__frame-deco"></div>
+        </div>
+        <div class="hero__stats">
+          <div class="stat"><span class="stat__num">62K</span><span class="stat__label">Abonnés</span></div>
+          <div class="stat"><span class="stat__num">4.3K</span><span class="stat__label">Likes Moy.</span></div>
+          <div class="stat"><span class="stat__num">8%</span><span class="stat__label">Taux Eng.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero__scroll">défiler ↓</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about section" id="about">
+    <div class="about__left">
+      <div class="about__img-wrap">
+        <img src="images/about.jpg" alt="Portrait de Grace Ouphouet" />
+        <div class="about__img-label script">faisons en sorte que<br/>votre marque soit vue<br/>— mais surtout mémorisée</div>
+      </div>
+    </div>
+    <div class="about__right">
+      <p class="section__eyebrow script">créatrice de contenu</p>
+      <h2 class="section__title red">À PROPOS<br/>DE MOI.</h2>
+      <p class="about__body">Bonjour ! Je suis Grace Ouphouet, créatrice de contenu qui allie narration et visuels créatifs percutants.</p>
+      <p class="about__body">Je crée du contenu esthétique qui connecte — à travers la vidéo, la photographie et une direction artistique audacieuse.</p>
+      <p class="about__body">J'ai collaboré avec des marques dans les domaines du lifestyle, de la mode, de la tech et du bien-être, en les aidant à transformer leur identité en contenu visuel qui résonne.</p>
+      <div class="about__tags">
+        <span class="pill">Lifestyle</span>
+        <span class="pill">Mode</span>
+        <span class="pill">Tech</span>
+        <span class="pill">Bien-être</span>
+        <span class="pill">Beauté</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services section" id="services">
+    <div class="services__header">
+      <h2 class="section__title">SERVICES <span class="script red">créatrice de contenu</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="services__grid">
+      <div class="service-card">
+        <span class="service-card__icon">★</span>
+        <h3>PHOTOS UGC</h3>
+        <p>Images lifestyle ou produit stylisées en haute résolution pour les réseaux sociaux et les publicités.</p>
+      </div>
+      <div class="service-card service-card--red">
+        <span class="service-card__icon">★</span>
+        <h3>VIDÉOS FORMAT COURT</h3>
+        <p>Voix off, unboxings, tutoriels, tendances — parfaits pour Reels et TikTok.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-card__icon">★</span>
+        <h3>AVIS PRODUITS</h3>
+        <p>Avis authentiques en caméra mettant en valeur les bénéfices de vos produits.</p>
+      </div>
+      <div class="service-card service-card--red">
+        <span class="service-card__icon">★</span>
+        <h3>CAROUSELS & REELS</h3>
+        <p>Publications carousel narratives et Reels esthétiques avec légendes et musique.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-card__icon">★</span>
+        <h3>PARTENARIATS DE MARQUE</h3>
+        <p>Collaborations à long terme pour du contenu sponsorisé et des rôles d'ambassadrice.</p>
+      </div>
+      <div class="service-card service-card--red">
+        <span class="service-card__icon">★</span>
+        <h3>DIRECTION ARTISTIQUE</h3>
+        <p>Moodboards, stylisme et direction de plateau pour les shootings de marque.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="experience section" id="experience">
+    <div class="experience__image">
+      <img src="images/experience.jpg" alt="Création de contenu" />
+    </div>
+    <div class="experience__content">
+      <p class="section__eyebrow script">travaux</p>
+      <h2 class="section__title red">EXPÉRIENCE</h2>
+      <p>Au cours de ces dernières années, j'ai collaboré avec des marques dans les domaines du lifestyle, de la mode, de la tech et du bien-être — en les aidant à transformer leur voix en contenu visuel qui résonne.</p>
+      <p>Des vidéos UGC aux carousels curatés, je me concentre sur ce qui compte le plus : la clarté, l'émotion et la précision esthétique.</p>
+      <div class="content-list">
+        <p class="content-list__title">CONTENU QUE J'AI CRÉÉ :</p>
+        <ul>
+          <li>Publicités vidéo UGC pour Instagram & TikTok</li>
+          <li>Reels narratifs avec voix off</li>
+          <li>Mises en valeur de produits en lumière naturelle</li>
+          <li>Tutoriels format court</li>
+          <li>Contenu photo lifestyle pour des lancements de produits</li>
+          <li>Publications carousel à valeur éducative</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO GRID / WORK -->
+  <section class="work section" id="work">
+    <div class="work__header">
+      <h2 class="section__title">PORTFOLIO <span class="script red">mes travaux</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="work__grid">
+      <div class="work-item work-item--tall">
+        <img src="images/work1.jpg" alt="Travail 1" />
+        <div class="work-item__overlay">
+          <span class="work-item__cat">LIFESTYLE</span>
+          <p class="work-item__title">Campagne de Lancement Produit</p>
+        </div>
+      </div>
+      <div class="work-item">
+        <img src="images/work2.jpg" alt="Travail 2" />
+        <div class="work-item__overlay">
+          <span class="work-item__cat">UGC</span>
+          <p class="work-item__title">Unboxing Soin de la Peau</p>
+        </div>
+      </div>
+      <div class="work-item">
+        <img src="images/work3.jpg" alt="Travail 3" />
+        <div class="work-item__overlay">
+          <span class="work-item__cat">MODE</span>
+          <p class="work-item__title">Série Reels OOTD</p>
+        </div>
+      </div>
+      <div class="work-item work-item--wide">
+        <img src="images/work4.jpg" alt="Travail 4" />
+        <div class="work-item__overlay">
+          <span class="work-item__cat">VIDÉOGRAPHIE</span>
+          <p class="work-item__title">Narration de Marque</p>
+        </div>
+      </div>
+      <div class="work-item">
+        <img src="images/work5.jpg" alt="Travail 5" />
+        <div class="work-item__overlay">
+          <span class="work-item__cat">BIEN-ÊTRE</span>
+          <p class="work-item__title">Routine Matinale</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEOGRAPHY -->
+  <section class="video-section section" id="video">
+    <div class="video-section__header">
+      <h2 class="section__title">VIDÉOGRAPHIE <span class="script red">créatrice de contenu</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="video-section__grid">
+      <div class="video-thumb">
+        <img src="images/vid1.jpg" alt="Vidéo 1" />
+        <div class="video-thumb__play">▶</div>
+        <p>Avis de Marque — Soin de la Peau</p>
+      </div>
+      <div class="video-thumb">
+        <img src="images/vid2.jpg" alt="Vidéo 2" />
+        <div class="video-thumb__play">▶</div>
+        <p>Tutoriel — Look Naturel</p>
+      </div>
+      <div class="video-thumb">
+        <img src="images/vid3.jpg" alt="Vidéo 3" />
+        <div class="video-thumb__play">▶</div>
+        <p>Lifestyle — Routine Matinale</p>
+      </div>
+      <div class="video-thumb">
+        <img src="images/vid4.jpg" alt="Vidéo 4" />
+        <div class="video-thumb__play">▶</div>
+        <p>Unboxing — Haul Mode</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL STATS -->
+  <section class="stats-section" id="stats">
+    <div class="stats-section__left">
+      <h2 class="section__title white">STATS<br/>RÉSEAUX<br/>SOCIAUX</h2>
+      <div class="stats-section__star">★</div>
+    </div>
+    <div class="stats-section__right">
+      <div class="big-stat">
+        <span class="big-stat__num">62 000</span>
+        <span class="big-stat__label">Vues Totales</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat__num">4 320</span>
+        <span class="big-stat__label">Likes en Moyenne</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat__num">8,2%</span>
+        <span class="big-stat__label">Taux d'Engagement</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat__num">12K</span>
+        <span class="big-stat__label">Abonnés Instagram</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat__num">50K</span>
+        <span class="big-stat__label">Abonnés TikTok</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat__num">300+</span>
+        <span class="big-stat__label">Marques Partenaires</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP PERFORMING -->
+  <section class="top-perf section" id="top-performing">
+    <div class="top-perf__header">
+      <h2 class="section__title">MEILLEURES <span class="script red">publications</span></h2>
+    </div>
+    <div class="top-perf__grid">
+      <div class="perf-card">
+        <img src="images/top1.jpg" alt="Top publication 1" />
+        <div class="perf-card__info">
+          <span class="perf-card__platform">REEL INSTAGRAM</span>
+          <div class="perf-card__metrics">
+            <span>👁 62 000 vues</span>
+            <span>❤️ 4 320 likes</span>
+            <span>💬 312 commentaires</span>
+          </div>
+        </div>
+      </div>
+      <div class="perf-card">
+        <img src="images/top2.jpg" alt="Top publication 2" />
+        <div class="perf-card__info">
+          <span class="perf-card__platform">TIKTOK</span>
+          <div class="perf-card__metrics">
+            <span>👁 118K vues</span>
+            <span>❤️ 9 800 likes</span>
+            <span>💬 540 commentaires</span>
+          </div>
+        </div>
+      </div>
+      <div class="perf-card">
+        <img src="images/top3.jpg" alt="Top publication 3" />
+        <div class="perf-card__info">
+          <span class="perf-card__platform">CAROUSEL IG</span>
+          <div class="perf-card__metrics">
+            <span>👁 28 000 vues</span>
+            <span>❤️ 2 100 likes</span>
+            <span>💬 189 commentaires</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section class="packages section" id="packages">
+    <div class="packages__header">
+      <h2 class="section__title">FORFAITS <span class="script red">tarifs</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="packages__grid">
+      <div class="pkg-col">
+        <h3 class="pkg-col__title">POST IG</h3>
+        <div class="pkg-row"><span>1x Post IG</span><span class="price">100$</span></div>
+        <div class="pkg-row"><span>1x Post Carousel IG</span><span class="price">150$</span></div>
+        <div class="pkg-row"><span>3x Posts IG</span><span class="price">250$</span></div>
+      </div>
+      <div class="pkg-col">
+        <h3 class="pkg-col__title">STORIES IG</h3>
+        <div class="pkg-row"><span>1x Story IG</span><span class="price">180$</span></div>
+        <div class="pkg-row"><span>3x Posts Carousel IG</span><span class="price">190$</span></div>
+        <div class="pkg-row"><span>1x Post + 3 Stories</span><span class="price">250$</span></div>
+      </div>
+      <div class="pkg-col">
+        <h3 class="pkg-col__title">REELS</h3>
+        <div class="pkg-row"><span>1x Reel IG</span><span class="price">100$</span></div>
+        <div class="pkg-row"><span>3x Reels</span><span class="price">$150</span></div>
+        <div class="pkg-row"><span>3x Reels IG + 3 Stories</span><span class="price">250$</span></div>
+      </div>
+      <div class="pkg-col">
+        <h3 class="pkg-col__title">UGC</h3>
+        <div class="pkg-row"><span>1x Photo</span><span class="price">120$</span></div>
+        <div class="pkg-row"><span>1x Vidéo 30 sec</span><span class="price">120$</span></div>
+        <div class="pkg-row"><span>3x Vidéos 60 sec</span><span class="price">150$</span></div>
+      </div>
+    </div>
+    <p class="packages__note script">* Forfaits personnalisés disponibles — demandez-moi !</p>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials section" id="testimonials">
+    <div class="testimonials__header">
+      <h2 class="section__title">CE QUE LES MARQUES <span class="script red">disent</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="testimonials__grid">
+      <div class="testi-card">
+        <p class="testi-card__quote">« Le contenu de Grace a dépassé toutes nos attentes. Les visuels étaient époustouflants et notre engagement a triplé. »</p>
+        <div class="testi-card__author">
+          <div class="testi-card__avatar">G</div>
+          <div>
+            <strong>Glow Studio</strong>
+            <span>Marque de Soin de la Peau</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card testi-card--red">
+        <p class="testi-card__quote">« Professionnelle, créative et incroyablement agréable à travailler. Nous collaborerons certainement à nouveau. »</p>
+        <div class="testi-card__author">
+          <div class="testi-card__avatar">N</div>
+          <div>
+            <strong>NOVA Fashion</strong>
+            <span>Marque de Vêtements</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-card__quote">« Ses vidéos UGC étaient authentiques et parfaitement en accord avec notre image. Idéales pour notre campagne de lancement. »</p>
+        <div class="testi-card__author">
+          <div class="testi-card__avatar">V</div>
+          <div>
+            <strong>Vivo Tech</strong>
+            <span>Startup Technologique</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact section" id="contact">
+    <div class="contact__left">
+      <p class="section__eyebrow script">prenons contact</p>
+      <h2 class="section__title red">COLLABO-<br/>RONS.</h2>
+      <p>Prête à créer quelque chose d'inoubliable ? Contactez-moi et construisons ensemble votre prochaine campagne.</p>
+      <div class="contact__links">
+        <a href="mailto:hello@graceouphouet.com" class="contact__link">✉ hello@graceouphouet.com</a>
+        <a href="#" class="contact__link">📸 @graceouphouet</a>
+        <a href="#" class="contact__link">🎵 @graceouphouet.ugc</a>
+      </div>
+    </div>
+    <div class="contact__form">
+      <div class="form-group">
+        <label>Votre Nom</label>
+        <input type="text" placeholder="Marie Dupont" />
+      </div>
+      <div class="form-group">
+        <label>Adresse E-mail</label>
+        <input type="email" placeholder="marie@marque.com" />
+      </div>
+      <div class="form-group">
+        <label>Marque / Entreprise</label>
+        <input type="text" placeholder="Nom de Votre Marque" />
+      </div>
+      <div class="form-group">
+        <label>Type de Contenu</label>
+        <select>
+          <option>Photos UGC</option>
+          <option>Vidéos Format Court</option>
+          <option>Avis Produit</option>
+          <option>Partenariat de Marque</option>
+          <option>Forfait Personnalisé</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Parlez-moi de votre projet..."></textarea>
+      </div>
+      <button class="btn btn--red btn--full">Envoyer le Message ★</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__logo">GRACE OUPHOUET<span class="dot">★</span></div>
+      <p class="script">créatrice de contenu</p>
+    </div>
+    <div class="footer__links">
+      <a href="#about">À Propos</a>
+      <a href="#services">Services</a>
+      <a href="#work">Travaux</a>
+      <a href="#packages">Forfaits</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer__social">
+      <a href="#" aria-label="Instagram">IG</a>
+      <a href="#" aria-label="TikTok">TK</a>
+      <a href="#" aria-label="YouTube">YT</a>
+      <a href="#" aria-label="Pinterest">PT</a>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2025 Grace Ouphouet. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
