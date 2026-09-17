@@ -31,6 +31,14 @@ async function apiUpload(name, base64Data) {
   return res.path;
 }
 
+// Upload routé : Supabase (en ligne) ou serveur local (data.json)
+async function uploadMedia(name, base64Data) {
+  if (window.Supabase && window.Supabase.isConfigured()) {
+    return window.Supabase.upload(name, base64Data);
+  }
+  return apiUpload(name, base64Data);
+}
+
 // ---------- Utilitaires ----------
 const $ = (id) => document.getElementById(id);
 
@@ -105,7 +113,7 @@ function createMediaPicker(container, value, accept = 'image/*') {
     reader.onload = async () => {
       try {
         const base64 = String(reader.result).split(',')[1];
-        const path = await apiUpload(file.name, base64);
+        const path = await uploadMedia(file.name, base64);
         setPath(path);
         status.textContent = '✓ Média envoyé — aperçu mis à jour';
       } catch (e) {
@@ -483,10 +491,18 @@ function collectConfig() {
 async function saveAll() {
   const data = collectConfig();
   try {
-    await apiSaveData(data);
-    toast('✓ Données sauvegardées dans data.json');
+    if (window.Supabase && window.Supabase.isConfigured()) {
+      await window.Supabase.saveConfig(data);
+      toast('✓ Sauvegardé dans Supabase — le portfolio en ligne est à jour');
+    } else {
+      await apiSaveData(data);
+      toast('✓ Données sauvegardées dans data.json');
+    }
   } catch (e) {
-    toast('Erreur : ' + e.message + ' — le serveur est-il lancé ? (node server.js)', true);
+    const extra = (window.Supabase && window.Supabase.isConfigured())
+      ? ' — reconnectez-vous si la session a expiré'
+      : ' — le serveur est-il lancé ? (node server.js)';
+    toast('Erreur : ' + e.message + extra, true);
   }
 }
 
@@ -726,16 +742,102 @@ function bindAddButtons() {
   });
 }
 
-// ---------- Initialisation ----------
-async function init() {
-  $('saveBtn').addEventListener('click', saveAll);
+// ---------- Mode Supabase (édition en ligne) ----------
+async function initSupabaseMode() {
+  const loginScreen = $('loginScreen');
+  const logoutBtn = $('logoutBtn');
 
-  document.querySelectorAll('.admin__nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  async function loadFromSupabase() {
+    try {
+      let data = await window.Supabase.loadConfig();
+      if (!data) {
+        // Première connexion : initialise la table depuis data.json déployé
+        const r = await fetch('data.json', { cache: 'no-store' });
+        data = r.ok ? await r.json() : null;
+        if (data) {
+          await window.Supabase.saveConfig(data);
+          toast('✓ Première connexion : contenu initialisé dans Supabase');
+        }
+      }
+      if (!data) {
+        toast('Aucune donnée trouvée dans Supabase — créez le projet puis poussez le contenu.', true);
+        return false;
+      }
+      config = data;
+      $('statusDot').classList.add('online');
+      fillAll();
+      updatePreview();
+      toast('✓ Contenu chargé depuis Supabase');
+      return true;
+    } catch (e) {
+      $('statusDot').classList.add('offline');
+      toast('Erreur de chargement Supabase : ' + e.message, true);
+      return false;
+    }
+  }
+
+  function showLogin() {
+    loginScreen.hidden = false;
+  }
+
+  $('loginBtn').addEventListener('click', async () => {
+    const email = $('loginEmail').value.trim();
+    const pass = $('loginPassword').value;
+    const msg = $('loginMsg');
+    msg.textContent = '';
+    msg.classList.remove('ok');
+    if (!email || !pass) {
+      msg.textContent = 'Renseignez votre e-mail et votre mot de passe.';
+      return;
+    }
+    try {
+      await window.Supabase.login(email, pass);
+      loginScreen.hidden = true;
+      logoutBtn.hidden = false;
+      await loadFromSupabase();
+    } catch (e) {
+      msg.textContent = 'Connexion impossible : ' + (e.message || '').slice(0, 100);
+    }
   });
 
-  bindAddButtons();
+  $('signupBtn').addEventListener('click', async () => {
+    const email = $('loginEmail').value.trim();
+    const pass = $('loginPassword').value;
+    const msg = $('loginMsg');
+    msg.textContent = '';
+    msg.classList.remove('ok');
+    if (!email || !pass) {
+      msg.textContent = 'Renseignez votre e-mail et votre mot de passe.';
+      return;
+    }
+    try {
+      await window.Supabase.signup(email, pass);
+      msg.textContent = 'Compte créé ! Confirmez votre e-mail puis connectez-vous (ou désactivez la confirmation e-mail dans Supabase).';
+      msg.classList.add('ok');
+    } catch (e) {
+      msg.textContent = 'Échec : ' + (e.message || '').slice(0, 100);
+    }
+  });
 
+  logoutBtn.addEventListener('click', () => {
+    window.Supabase.logout();
+    logoutBtn.hidden = true;
+    showLogin();
+    toast('Déconnecté');
+  });
+
+  const refreshed = await window.Supabase.tryRefresh();
+  if (refreshed) {
+    loginScreen.hidden = true;
+    logoutBtn.hidden = false;
+    await loadFromSupabase();
+  } else {
+    showLogin();
+  }
+}
+
+// ---------- Mode serveur local (data.json) ----------
+async function initServerMode() {
   try {
     config = await apiGetData();
     $('statusDot').classList.add('online');
@@ -752,6 +854,23 @@ async function init() {
     } else {
       toast('Serveur inaccessible. Lancez : node server.js', true);
     }
+  }
+}
+
+// ---------- Initialisation ----------
+async function init() {
+  $('saveBtn').addEventListener('click', saveAll);
+
+  document.querySelectorAll('.admin__nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  bindAddButtons();
+
+  if (window.Supabase && window.Supabase.isConfigured()) {
+    await initSupabaseMode();
+  } else {
+    await initServerMode();
   }
 }
 

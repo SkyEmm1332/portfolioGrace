@@ -524,6 +524,74 @@ select {
 .admin__preview.collapsed .admin__preview-frame { display: none; }
 
 /* ===========================
+   CONNEXION SUPABASE
+   =========================== */
+.admin__login {
+  position: fixed;
+  inset: 0;
+  background: var(--off-white);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.admin__login[hidden] { display: none; }
+
+.admin__login-box {
+  width: 400px;
+  max-width: 100%;
+  background: #fff;
+  border: 1px solid var(--light-gray);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin__login-brand {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  letter-spacing: 4px;
+  line-height: 1;
+}
+.admin__login-brand .admin__brand-star { color: var(--red); }
+
+.admin__login-sub {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: .92rem;
+  color: var(--gray);
+  border-bottom: 2px solid var(--black);
+  padding-bottom: 1rem;
+  margin-bottom: .5rem;
+}
+
+.admin__login-box input[type="email"],
+.admin__login-box input[type="password"] {
+  width: 100%;
+  padding: .6rem 0;
+  border: none;
+  border-bottom: 1.5px solid var(--light-gray);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: .95rem;
+  outline: none;
+  border-radius: 0;
+  transition: border-color .2s;
+}
+.admin__login-box input:focus { border-bottom-color: var(--red); }
+.admin__login-box input::placeholder { color: #b5b2ac; }
+
+.admin__login-msg {
+  font-size: .8rem;
+  color: var(--red);
+  line-height: 1.5;
+  min-height: 1rem;
+}
+.admin__login-msg.ok { color: var(--green); }
+
+/* ===========================
    TOAST — encadré presse
    =========================== */
 .toast {

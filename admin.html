@@ -35,6 +35,7 @@
 
       <div class="admin__sidebar-foot">
         <a href="index.html" class="admin__link">← Voir le portfolio</a>
+        <button class="admin__link" id="logoutBtn" hidden>Se déconnecter</button>
         <button class="admin__btn admin__btn--save" id="saveBtn">💾 Sauvegarder</button>
       </div>
     </aside>
@@ -259,9 +260,24 @@
     </main>
   </div>
 
+  <!-- CONNEXION SUPABASE -->
+  <div class="admin__login" id="loginScreen" hidden>
+    <div class="admin__login-box">
+      <div class="admin__login-brand">GO<span class="admin__brand-star">★</span></div>
+      <p class="admin__login-sub">espace rédaction — connexion</p>
+      <input type="email" id="loginEmail" placeholder="Votre e-mail" autocomplete="username" />
+      <input type="password" id="loginPassword" placeholder="Mot de passe" autocomplete="current-password" />
+      <button class="admin__btn admin__btn--save" id="loginBtn">Se connecter</button>
+      <button type="button" class="admin__btn admin__btn--ghost" id="signupBtn">Créer un compte</button>
+      <p class="admin__login-msg" id="loginMsg"></p>
+    </div>
+  </div>
+
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
+  <script src="supabase-config.js"></script>
+  <script src="supabase.js"></script>
   <script src="admin.js"></script>
 </body>
 </html>

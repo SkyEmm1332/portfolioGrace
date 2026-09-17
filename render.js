@@ -345,10 +345,19 @@ function renderAll(data) {
 }
 
 async function loadContent() {
+  // 1. Supabase si configuré (édition en ligne)
+  if (window.Supabase && window.Supabase.isConfigured()) {
+    try {
+      const data = await window.Supabase.loadConfig();
+      if (data) return data;
+    } catch (e) { /* repli sur data.json */ }
+  }
+  // 2. data.json (serveur local ou hébergement statique)
   try {
     const res = await fetch('data.json', { cache: 'no-store' });
     if (res.ok) return await res.json();
   } catch (e) { /* fichier ouvert directement — on utilise les valeurs par défaut */ }
+  // 3. Valeurs par défaut intégrées
   return DEFAULT_DATA;
 }
 

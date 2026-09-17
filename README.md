@@ -62,6 +62,68 @@ npm run backup
 
 ---
 
+### ☁️ Supabase — édition en ligne (sur Vercel par exemple)
+
+Avec Supabase, l'admin fonctionne **directement sur le site déployé** :
+plus besoin de serveur local ni de `git push` pour mettre à jour le contenu.
+
+**Installation (une seule fois) :**
+
+1. Crée un projet gratuit sur [supabase.com](https://supabase.com)
+2. Dans **SQL Editor**, colle et exécute ce script :
+
+```sql
+-- Table du contenu (une seule ligne : la config complète)
+create table if not exists public.content (
+  id text primary key,
+  data jsonb,
+  updated_at timestamptz default now()
+);
+alter table public.content enable row level security;
+
+create policy "lecture publique" on public.content
+  for select using (true);
+create policy "ecriture authentifiee" on public.content
+  for all to authenticated using (true) with check (true);
+
+-- Bucket de stockage des médias
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('uploads', 'uploads', true, 300000000, null)
+on conflict (id) do nothing;
+
+create policy "lecture publique" on storage.objects
+  for select using (bucket_id = 'uploads');
+create policy "ecriture authentifiee" on storage.objects
+  for insert to authenticated with check (bucket_id = 'uploads');
+create policy "maj authentifiee" on storage.objects
+  for update to authenticated using (bucket_id = 'uploads');
+create policy "suppression authentifiee" on storage.objects
+  for delete to authenticated using (bucket_id = 'uploads');
+```
+
+3. **Authentication → Users → Add user** : crée ton compte (e-mail + mot de passe)
+4. **Authentication → Sign In / Up** : désactive "Allow new users to sign up"
+5. **Settings → API** : copie **Project URL** et **anon public key**
+6. Renseigne-les dans `supabase-config.js` :
+
+```js
+window.SUPABASE_CONFIG = {
+  url: 'https://xxxxx.supabase.co',
+  anonKey: 'eyJhbGciOi...'
+};
+```
+
+7. **Pousse** sur GitHub (`git push`) → le portfolio et l'admin sont en ligne
+8. Ouvre `https://ton-site.vercel.app/admin.html` → connecte-toi → édite → 💾 Sauvegarder
+
+> 💡 La clé anon est publique par design : la sécurité est assurée par les
+> politiques RLS (lecture publique, écriture réservée aux comptes connectés).
+
+**Si Supabase n'est pas configuré** (`supabase-config.js` vide), tout fonctionne
+comme avant : mode local `data.json` + serveur Node + sauvegarde git.
+
+---
+
 ### 🛠️ Utiliser l'administration
 
 Le panneau `admin.html` permet de modifier **tout le contenu** sans toucher au code :
