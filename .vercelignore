@@ -1,0 +1,9 @@
+# Sauvegardes git — inutiles sur le site déployé
+backups/
+
+# Fichiers WhatsApp inutilisés (bloat local)
+images/autres/
+
+# Fichiers système
+Thumbs.db
+.DS_Store
