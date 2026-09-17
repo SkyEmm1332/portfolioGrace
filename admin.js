@@ -5,6 +5,7 @@
 // ---------- API ----------
 async function apiGetData() {
   const r = await fetch('/api/data', { cache: 'no-store' });
+  if (r.status === 404) throw new Error('STATIC');
   if (!r.ok) throw new Error('Serveur inaccessible');
   return r.json();
 }
@@ -743,7 +744,14 @@ async function init() {
     toast('✓ Contenu chargé depuis data.json');
   } catch (e) {
     $('statusDot').classList.add('offline');
-    toast('Serveur inaccessible. Lancez : node server.js', true);
+    if (e.message === 'STATIC') {
+      $('saveBtn').disabled = true;
+      $('saveBtn').style.opacity = '.4';
+      $('saveBtn').style.cursor = 'not-allowed';
+      toast('Déploiement statique : l\'édition en ligne n\'est pas disponible ici. Lancez l\'admin en local (node server.js), sauvegardez, puis poussez avec git.', true);
+    } else {
+      toast('Serveur inaccessible. Lancez : node server.js', true);
+    }
   }
 }
 

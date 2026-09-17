@@ -1,27 +1,27 @@
 {
   "meta": {
-    "title": "Portfolio - Grace Ouphouet | Cr?atrice de Contenu",
-    "description": "Portfolio de Grace Ouphouet - cr?atrice de contenu, mod?le photo, monteuse vid?o et infographe. D?couvrez mes services UGC, Reels, carousels et partenariats de marque."
+    "title": "Portfolio - Grace Ouphouet | Créatrice de Contenu",
+    "description": "Portfolio de Grace Ouphouet - créatrice de contenu, modèle photo, monteuse vidéo et infographe. Découvrez mes services UGC, Reels, carousels et partenariats de marque."
   },
   "hero": {
-    "sub": "cr�atrice de contenu",
+    "sub": "créatrice de contenu",
     "titleLines": [
       "PORT",
       "FOLIO"
     ],
     "tags": [
-      "CR?ATRICE DE CONTENU",
-      "MOD?LE PHOTO",
+      "CRÉATRICE DE CONTENU",
+      "MODÈLE PHOTO",
       "ANIMATRICE",
       "MONTEUSE VIDEO",
       "INFOGRAPHE"
     ],
     "image": "uploads/1789672266241_hero.jpeg",
-    "imageAlt": "Grace Ouphouet - Cr?atrice de Contenu",
+    "imageAlt": "Grace Ouphouet - Créatrice de Contenu",
     "stats": [
       {
         "num": "62K",
-        "label": "Abonn?s"
+        "label": "Abonnés"
       },
       {
         "num": "4.3K",
@@ -34,60 +34,60 @@
     ]
   },
   "about": {
-    "eyebrow": "cr?atrice de contenu",
+    "eyebrow": "créatrice de contenu",
     "titleLines": [
-      "? PROPOS",
+      "À PROPOS",
       "DE MOI."
     ],
     "image": "images/about.jpg",
     "imageAlt": "Portrait de Grace Ouphouet",
-    "imageLabel": "faisons en sorte que\nvotre marque soit vue\n- mais surtout m?moris?e",
+    "imageLabel": "faisons en sorte que\nvotre marque soit vue\n- mais surtout mémorisée",
     "body": [
-      "Bonjour ! Je suis Grace Ouphouet, cr?atrice de contenu qui allie narration et visuels cr?atifs percutants.",
-      "Je cr?e du contenu esth?tique qui connecte - ? travers la vid?o, la photographie et une direction artistique audacieuse.",
-      "J'ai collabor? avec des marques dans les domaines du lifestyle, de la mode, de la tech et du bien-?tre, en les aidant ? transformer leur identit? en contenu visuel qui r?sonne."
+      "Bonjour ! Je suis Grace Ouphouet, créatrice de contenu qui allie narration et visuels créatifs percutants.",
+      "Je crée du contenu esthétique qui connecte - à travers la vidéo, la photographie et une direction artistique audacieuse.",
+      "J'ai collaboré avec des marques dans les domaines du lifestyle, de la mode, de la tech et du bien-être, en les aidant à transformer leur identité en contenu visuel qui résonne."
     ],
     "tags": [
       "Lifestyle",
       "Mode",
       "Tech",
-      "Bien-?tre",
-      "Beaut?"
+      "Bien-être",
+      "Beauté"
     ]
   },
   "services": [
     {
-      "icon": "?",
+      "icon": "★",
       "title": "PHOTOS UGC",
-      "desc": "Images lifestyle ou produit stylis?es en haute r?solution pour les r?seaux sociaux et les publicit?s.",
+      "desc": "Images lifestyle ou produit stylisées en haute résolution pour les réseaux sociaux et les publicités.",
       "red": false
     },
     {
-      "icon": "?",
-      "title": "VID?OS FORMAT COURT",
+      "icon": "★",
+      "title": "VIDÉOS FORMAT COURT",
       "desc": "Voix off, unboxings, tutoriels, tendances - parfaits pour Reels et TikTok.",
       "red": true
     },
     {
-      "icon": "?",
+      "icon": "★",
       "title": "AVIS PRODUITS",
-      "desc": "Avis authentiques en cam?ra mettant en valeur les b?n?fices de vos produits.",
+      "desc": "Avis authentiques en caméra mettant en valeur les bénéfices de vos produits.",
       "red": false
     },
     {
-      "icon": "?",
+      "icon": "★",
       "title": "CAROUSELS & REELS",
-      "desc": "Publications carousel narratives et Reels esth?tiques avec l?gendes et musique.",
+      "desc": "Publications carousel narratives et Reels esthétiques avec légendes et musique.",
       "red": true
     },
     {
-      "icon": "?",
+      "icon": "★",
       "title": "PARTENARIATS DE MARQUE",
-      "desc": "Collaborations ? long terme pour du contenu sponsoris? et des r?les d'ambassadrice.",
+      "desc": "Collaborations à long terme pour du contenu sponsorisé et des rôles d'ambassadrice.",
       "red": false
     },
     {
-      "icon": "?",
+      "icon": "★",
       "title": "DIRECTION ARTISTIQUE",
       "desc": "Moodboards, stylisme et direction de plateau pour les shootings de marque.",
       "red": true
@@ -95,32 +95,32 @@
   ],
   "experience": {
     "eyebrow": "travaux",
-    "title": "EXP?RIENCE",
+    "title": "EXPÉRIENCE",
     "image": "images/experience.jpg",
-    "imageAlt": "Cr?ation de contenu",
+    "imageAlt": "Création de contenu",
     "paragraphs": [
-      "Au cours de ces derni?res ann?es, j'ai collabor? avec des marques dans les domaines du lifestyle, de la mode, de la tech et du bien-?tre - en les aidant ? transformer leur voix en contenu visuel qui r?sonne.",
-      "Des vid?os UGC aux carousels curat?s, je me concentre sur ce qui compte le plus : la clart?, l'?motion et la pr?cision esth?tique."
+      "Au cours de ces dernières années, j'ai collaboré avec des marques dans les domaines du lifestyle, de la mode, de la tech et du bien-être - en les aidant à transformer leur voix en contenu visuel qui résonne.",
+      "Des vidéos UGC aux carousels curatés, je me concentre sur ce qui compte le plus : la clarté, l'émotion et la précision esthétique."
     ],
-    "listTitle": "CONTENU QUE J'AI CR?? :",
+    "listTitle": "CONTENU QUE J'AI CRÉÉ :",
     "list": [
-      "Publicit?s vid?o UGC pour Instagram & TikTok",
+      "Publicités vidéo UGC pour Instagram & TikTok",
       "Reels narratifs avec voix off",
-      "Mises en valeur de produits en lumi?re naturelle",
+      "Mises en valeur de produits en lumière naturelle",
       "Tutoriels format court",
       "Contenu photo lifestyle pour des lancements de produits",
-      "Publications carousel ? valeur ?ducative"
+      "Publications carousel à valeur éducative"
     ]
   },
   "work": [
     {
       "title": "Campagne de Lancement Produit",
       "cat": "LIFESTYLE",
-      "desc": "Cr?ation d'une campagne visuelle compl?te pour le lancement d'une nouvelle gamme de produits lifestyle. Direction artistique, shooting photo et production de contenus pour les r?seaux sociaux.",
+      "desc": "Création d'une campagne visuelle complète pour le lancement d'une nouvelle gamme de produits lifestyle. Direction artistique, shooting photo et production de contenus pour les réseaux sociaux.",
       "tags": [
         "Photo",
         "Direction Artistique",
-        "R?seaux Sociaux"
+        "Réseaux Sociaux"
       ],
       "image": "images/work1.jpg",
       "alt": "Campagne de lancement produit",
@@ -130,9 +130,9 @@
     {
       "title": "Unboxing Soin de la Peau",
       "cat": "UGC",
-      "desc": "Vid?o UGC d'unboxing pour une marque de soin de la peau. Contenu authentique mettant en avant la texture, l'emballage et les b?n?fices du produit.",
+      "desc": "Vidéo UGC d'unboxing pour une marque de soin de la peau. Contenu authentique mettant en avant la texture, l'emballage et les bénéfices du produit.",
       "tags": [
-        "Vid?o",
+        "Vidéo",
         "UGC",
         "Unboxing"
       ],
@@ -142,27 +142,27 @@
       "wide": false
     },
     {
-      "title": "S?rie Reels OOTD",
+      "title": "Série Reels OOTD",
       "cat": "MODE",
-      "desc": "S?rie de Reels Instagram mettant en valeur des tenues du jour. Montage dynamique avec transitions tendances et musique trendy.",
+      "desc": "Série de Reels Instagram mettant en valeur des tenues du jour. Montage dynamique avec transitions tendances et musique trendy.",
       "tags": [
-        "Vid?o",
+        "Vidéo",
         "Mode",
         "Reels"
       ],
       "image": "images/work3.jpg",
-      "alt": "S?rie Reels OOTD",
+      "alt": "Série Reels OOTD",
       "tall": false,
       "wide": false
     },
     {
       "title": "Narration de Marque",
-      "cat": "VID?OGRAPHIE",
-      "desc": "Court-m?trage de narration de marque alliant images cin?matographiques et voix off immersive. Cr?ation d'un univers visuel fort pour renforcer l'identit? de la marque.",
+      "cat": "VIDÉOGRAPHIE",
+      "desc": "Court-métrage de narration de marque alliant images cinématographiques et voix off immersive. Création d'un univers visuel fort pour renforcer l'identité de la marque.",
       "tags": [
-        "Vid?ographie",
+        "Vidéographie",
         "Narration",
-        "Cin?matographie"
+        "Cinématographie"
       ],
       "image": "images/work4.jpg",
       "alt": "Narration de marque",
@@ -171,12 +171,12 @@
     },
     {
       "title": "Routine Matinale",
-      "cat": "BIEN-?TRE",
-      "desc": "S?rie de contenus lifestyle mettant en sc?ne une routine matinale apaisante. Photos et vid?os en lumi?re naturelle pour inspirer calme et bien-?tre.",
+      "cat": "BIEN-ÊTRE",
+      "desc": "Série de contenus lifestyle mettant en scène une routine matinale apaisante. Photos et vidéos en lumière naturelle pour inspirer calme et bien-être.",
       "tags": [
         "Photo",
         "Lifestyle",
-        "Bien-?tre"
+        "Bien-être"
       ],
       "image": "images/work5.jpg",
       "alt": "Routine matinale lifestyle",
@@ -209,7 +209,7 @@
   "stats": {
     "titleLines": [
       "STATS",
-      "R?SEAUX",
+      "RÉSEAUX",
       "SOCIAUX"
     ],
     "items": [
@@ -227,11 +227,11 @@
       },
       {
         "num": "12K",
-        "label": "Abonn?s Instagram"
+        "label": "Abonnés Instagram"
       },
       {
         "num": "50K",
-        "label": "Abonn?s TikTok"
+        "label": "Abonnés TikTok"
       },
       {
         "num": "300+",
@@ -322,11 +322,11 @@
           "120$"
         ],
         [
-          "1x Vid?o 30 sec",
+          "1x Vidéo 30 sec",
           "120$"
         ],
         [
-          "3x Vid?os 60 sec",
+          "3x Vidéos 60 sec",
           "150$"
         ]
       ]
@@ -334,19 +334,19 @@
   ],
   "testimonials": [
     {
-      "quote": "? Le contenu de Grace a d?pass? toutes nos attentes. Les visuels ?taient ?poustouflants et notre engagement a tripl?. ?",
+      "quote": "« Le contenu de Grace a dépassé toutes nos attentes. Les visuels étaient époustouflants et notre engagement a triplé. »",
       "author": "Glow Studio",
       "brand": "Marque de Soin de la Peau",
       "red": false
     },
     {
-      "quote": "? Professionnelle, cr?ative et incroyablement agr?able ? travailler. Nous collaborerons certainement ? nouveau. ?",
+      "quote": "« Professionnelle, créative et incroyablement agréable à travailler. Nous collaborerons certainement à nouveau. »",
       "author": "NOVA Fashion",
-      "brand": "Marque de V?tements",
+      "brand": "Marque de Vêtements",
       "red": true
     },
     {
-      "quote": "? Ses vid?os UGC ?taient authentiques et parfaitement en accord avec notre image. Id?ales pour notre campagne de lancement. ?",
+      "quote": "« Ses vidéos UGC étaient authentiques et parfaitement en accord avec notre image. Idéales pour notre campagne de lancement. »",
       "author": "Vivo Tech",
       "brand": "Startup Technologique",
       "red": false
