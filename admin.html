@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin — Portfolio Grace Ouphouet</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="admin">
+
+    <!-- SIDEBAR -->
+    <aside class="admin__sidebar">
+      <div class="admin__brand">GO<span class="admin__brand-star">★</span></div>
+      <p class="admin__brand-sub">espace rédaction</p>
+
+      <nav class="admin__nav" id="adminNav">
+        <button class="admin__nav-btn active" data-tab="general">Général</button>
+        <button class="admin__nav-btn" data-tab="hero">Hero</button>
+        <button class="admin__nav-btn" data-tab="about">À propos</button>
+        <button class="admin__nav-btn" data-tab="services">Services</button>
+        <button class="admin__nav-btn" data-tab="experience">Expérience</button>
+        <button class="admin__nav-btn" data-tab="work">Travaux</button>
+        <button class="admin__nav-btn" data-tab="videos">Vidéos</button>
+        <button class="admin__nav-btn" data-tab="stats">Stats</button>
+        <button class="admin__nav-btn" data-tab="top">Top posts</button>
+        <button class="admin__nav-btn" data-tab="packages">Forfaits</button>
+        <button class="admin__nav-btn" data-tab="testimonials">Témoignages</button>
+      </nav>
+
+      <div class="admin__sidebar-foot">
+        <a href="index.html" class="admin__link">← Voir le portfolio</a>
+        <button class="admin__btn admin__btn--save" id="saveBtn">💾 Sauvegarder</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin__main">
+
+      <header class="admin__topbar">
+        <div>
+          <p class="admin__kicker" id="tabKicker">ÉDITION 01</p>
+          <h1 id="tabTitle">Général</h1>
+        </div>
+        <div class="admin__status" id="statusDot" title="État de la connexion"></div>
+      </header>
+
+      <div class="admin__columns">
+        <form id="adminForm" class="admin__form">
+
+        <!-- ============ GÉNÉRAL ============ -->
+        <section class="admin__tab active" data-panel="general">
+          <h2>Site & Réseaux</h2>
+          <div class="admin__card">
+            <h3>Titre de la page (SEO)</h3>
+            <input type="text" id="metaTitle" />
+          </div>
+          <div class="admin__card">
+            <h3>Meta description (SEO)</h3>
+            <textarea id="metaDesc" rows="3"></textarea>
+          </div>
+          <div class="admin__card">
+            <h3>E-mail de contact</h3>
+            <input type="email" id="contactEmail" />
+          </div>
+          <div class="admin__card">
+            <h3>Instagram</h3>
+            <label class="admin__label">URL</label>
+            <input type="url" id="contactInstaUrl" />
+            <label class="admin__label">Libellé affiché</label>
+            <input type="text" id="contactInstaLabel" />
+          </div>
+          <div class="admin__card">
+            <h3>TikTok</h3>
+            <label class="admin__label">URL</label>
+            <input type="url" id="contactTiktokUrl" />
+            <label class="admin__label">Libellé affiché</label>
+            <input type="text" id="contactTiktokLabel" />
+          </div>
+          <div class="admin__card">
+            <h3>Réseaux sociaux du footer</h3>
+            <p class="admin__hint">Un bouton par réseau : libellé court (ex: IG), nom complet pour l'accessibilité, URL.</p>
+            <div id="socialsList"></div>
+            <button type="button" class="admin__btn admin__btn--ghost" id="addSocial">+ Ajouter un réseau</button>
+          </div>
+        </section>
+
+        <!-- ============ HERO ============ -->
+        <section class="admin__tab" data-panel="hero">
+          <h2>Section Hero</h2>
+          <div class="admin__card">
+            <h3>Sous-titre (script)</h3>
+            <input type="text" id="heroSub" />
+          </div>
+          <div class="admin__card">
+            <h3>Lignes du titre</h3>
+            <p class="admin__hint">Une ligne par champ. Ex : "PORT" puis "FOLIO".</p>
+            <div id="heroTitleLines"></div>
+            <button type="button" class="admin__btn admin__btn--ghost" id="addHeroLine">+ Ajouter une ligne</button>
+          </div>
+          <div class="admin__card">
+            <h3>Tags (séparés par des virgules)</h3>
+            <input type="text" id="heroTags" />
+          </div>
+          <div class="admin__card">
+            <h3>Photo principale</h3>
+            <div class="media-picker" id="heroImagePicker"></div>
+            <label class="admin__label">Texte alternatif (alt)</label>
+            <input type="text" id="heroImageAlt" />
+          </div>
+          <div class="admin__card">
+            <h3>Statistiques rapides</h3>
+            <div id="heroStatsList"></div>
+            <button type="button" class="admin__btn admin__btn--ghost" id="addHeroStat">+ Ajouter une stat</button>
+          </div>
+        </section>
+
+        <!-- ============ À PROPOS ============ -->
+        <section class="admin__tab" data-panel="about">
+          <h2>Section À propos</h2>
+          <div class="admin__card">
+            <h3>Sur-titre (script)</h3>
+            <input type="text" id="aboutEyebrow" />
+          </div>
+          <div class="admin__card">
+            <h3>Lignes du titre</h3>
+            <div id="aboutTitleLines"></div>
+            <button type="button" class="admin__btn admin__btn--ghost" id="addAboutLine">+ Ajouter une ligne</button>
+          </div>
+          <div class="admin__card">
+            <h3>Photo</h3>
+            <div class="media-picker" id="aboutImagePicker"></div>
+            <label class="admin__label">Texte alternatif</label>
+            <input type="text" id="aboutImageAlt" />
+            <label class="admin__label">Étiquette superposée (retour à la ligne = entrée)</label>
+            <textarea id="aboutLabel" rows="3"></textarea>
+          </div>
+          <div class="admin__card">
+            <h3>Paragraphes (séparés par une ligne vide)</h3>
+            <textarea id="aboutBody" rows="6"></textarea>
+          </div>
+          <div class="admin__card">
+            <h3>Tags (séparés par des virgules)</h3>
+            <input type="text" id="aboutTags" />
+          </div>
+        </section>
+
+        <!-- ============ SERVICES ============ -->
+        <section class="admin__tab" data-panel="services">
+          <h2>Services</h2>
+          <p class="admin__hint">Les cartes rouges alternent pour le style. Cochez "Fond rouge" pour une carte rouge.</p>
+          <div id="servicesList"></div>
+          <button type="button" class="admin__btn admin__btn--ghost" id="addService">+ Ajouter un service</button>
+        </section>
+
+        <!-- ============ EXPÉRIENCE ============ -->
+        <section class="admin__tab" data-panel="experience">
+          <h2>Section Expérience</h2>
+          <div class="admin__card">
+            <h3>Sur-titre (script)</h3>
+            <input type="text" id="expEyebrow" />
+          </div>
+          <div class="admin__card">
+            <h3>Titre</h3>
+            <input type="text" id="expTitle" />
+          </div>
+          <div class="admin__card">
+            <h3>Photo</h3>
+            <div class="media-picker" id="expImagePicker"></div>
+            <label class="admin__label">Texte alternatif</label>
+            <input type="text" id="expImageAlt" />
+          </div>
+          <div class="admin__card">
+            <h3>Paragraphes (séparés par une ligne vide)</h3>
+            <textarea id="expParagraphs" rows="5"></textarea>
+          </div>
+          <div class="admin__card">
+            <h3>Titre de la liste</h3>
+            <input type="text" id="expListTitle" />
+          </div>
+          <div class="admin__card">
+            <h3>Liste (une ligne par élément)</h3>
+            <textarea id="expList" rows="8"></textarea>
+          </div>
+        </section>
+
+        <!-- ============ TRAVAUX ============ -->
+        <section class="admin__tab" data-panel="work">
+          <h2>Portfolio / Travaux</h2>
+          <p class="admin__hint">Cochez "Grande carte" (s'étend sur 2 rangées) pour le premier travail et "Carte large" (2 colonnes) pour un travail en pleine largeur.</p>
+          <div id="workList"></div>
+          <button type="button" class="admin__btn admin__btn--ghost" id="addWork">+ Ajouter un travail</button>
+        </section>
+
+        <!-- ============ VIDÉOS ============ -->
+        <section class="admin__tab" data-panel="videos">
+          <h2>Vidéographie</h2>
+          <p class="admin__hint">Chaque vignette a une image de couverture et une vidéo facultative. Si une vidéo est définie, elle s'ouvre dans une fenêtre au clic.</p>
+          <div id="videosList"></div>
+          <button type="button" class="admin__btn admin__btn--ghost" id="addVideo">+ Ajouter une vidéo</button>
+        </section>
+
+        <!-- ============ STATS ============ -->
+        <section class="admin__tab" data-panel="stats">
+          <h2>Stats réseaux sociaux</h2>
+          <div class="admin__card">
+            <h3>Lignes du titre (fond rouge)</h3>
+            <div id="statsTitleLines"></div>
+            <button type="button" class="admin__btn admin__btn--ghost" id="addStatsLine">+ Ajouter une ligne</button>
+          </div>
+          <div class="admin__card">
+            <h3>Statistiques (fond noir)</h3>
+            <p class="admin__hint">Ex : "62 000", "8,2%", "300+", "12K"</p>
+            <div id="statsItemsList"></div>
+            <button type="button" class="admin__btn admin__btn--ghost" id="addStatsItem">+ Ajouter une stat</button>
+          </div>
+        </section>
+
+        <!-- ============ TOP POSTS ============ -->
+        <section class="admin__tab" data-panel="top">
+          <h2>Meilleures publications</h2>
+          <div id="topList"></div>
+          <button type="button" class="admin__btn admin__btn--ghost" id="addTop">+ Ajouter une publication</button>
+        </section>
+
+        <!-- ============ FORFAITS ============ -->
+        <section class="admin__tab" data-panel="packages">
+          <h2>Forfaits / Tarifs</h2>
+          <p class="admin__hint">Format des lignes : <code>libellé | prix</code> (une ligne par tarif). Ex : <code>1x Post IG | 100$</code></p>
+          <div id="packagesList"></div>
+          <button type="button" class="admin__btn admin__btn--ghost" id="addPackage">+ Ajouter un forfait</button>
+        </section>
+
+        <!-- ============ TÉMOIGNAGES ============ -->
+        <section class="admin__tab" data-panel="testimonials">
+          <h2>Témoignages</h2>
+          <div id="testiList"></div>
+          <button type="button" class="admin__btn admin__btn--ghost" id="addTesti">+ Ajouter un témoignage</button>
+        </section>
+
+      </form>
+
+      <!-- APERÇU EN DIRECT -->
+      <div class="admin__preview" id="previewPane">
+        <div class="admin__preview-head">
+          <span class="admin__preview-label">APERÇU EN DIRECT</span>
+          <button type="button" class="admin__preview-toggle" id="previewToggle">Masquer</button>
+        </div>
+        <div class="admin__preview-frame" id="previewFrameWrap">
+          <iframe id="previewFrame" src="preview.html" title="Aperçu du portfolio"></iframe>
+        </div>
+      </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Aperçu — Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    body { margin: 0; padding: 0; background: var(--off-white); }
+    #pvDesktop { width: 1280px; }
+    .pv-section { display: none; }
+    .pv-section.active { display: block; }
+    .pv-section .hero { min-height: 0; padding-top: clamp(2.5rem, 6vw, 5rem); }
+    .pv-section .hero__scroll { display: none; }
+    .pv-section .stats-section { min-height: 0; }
+    .pv-general {
+      background: #fff;
+      padding: clamp(1.5rem, 4vw, 3rem);
+      border: 1px solid var(--light-gray);
+    }
+    .pv-meta-title {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      letter-spacing: 2px;
+      margin-bottom: .3rem;
+    }
+    .pv-meta-desc {
+      color: var(--gray);
+      font-size: .9rem;
+      border-bottom: 1px solid var(--light-gray);
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .pv-contact-label {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: 2px;
+      color: var(--red);
+      margin-bottom: .8rem;
+    }
+    .pv-footer {
+      background: var(--black);
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    .pv-footer-label {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: 2px;
+      color: var(--red);
+      margin-bottom: .8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="pvDesktop">
+
+  <!-- GÉNÉRAL : titre SEO, contact, réseaux -->
+  <div class="pv-section pv-general" data-pv="general">
+    <p class="pv-meta-title" id="pvMetaTitle"></p>
+    <p class="pv-meta-desc" id="pvMetaDesc"></p>
+    <p class="pv-contact-label">CONTACT</p>
+    <div class="contact__links" id="contactLinks"></div>
+    <div class="pv-footer">
+      <p class="pv-footer-label">RÉSEAUX SOCIAUX</p>
+      <div class="footer__social" id="footerSocial"></div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="pv-section" data-pv="hero">
+    <section class="hero">
+      <div class="hero__bg-text">PORTFOLIO</div>
+      <div class="hero__content">
+        <div class="hero__text" id="heroText">
+          <p class="hero__sub script"></p>
+          <h1 class="hero__title"></h1>
+          <div class="hero__meta"></div>
+          <div class="hero__buttons">
+            <a href="#" class="btn btn--red">Travaillons Ensemble ★</a>
+            <a href="#" class="btn btn--outline">Télécharger CV</a>
+          </div>
+        </div>
+        <div class="hero__image-wrap">
+          <div class="hero__image-frame">
+            <img src="" alt="" class="hero__img" id="heroImg" />
+            <div class="hero__frame-deco"></div>
+          </div>
+          <div class="hero__stats" id="heroStats"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- À PROPOS -->
+  <div class="pv-section" data-pv="about">
+    <section class="about">
+      <div class="about__inner">
+        <div class="about__left">
+          <div class="about__img-wrap">
+            <img src="" alt="" id="aboutImg" />
+            <div class="about__img-label script" id="aboutLabel"></div>
+          </div>
+        </div>
+        <div class="about__right">
+          <p class="section__eyebrow script" id="aboutEyebrow"></p>
+          <h2 class="section__title red" id="aboutTitle"></h2>
+          <div id="aboutBody"></div>
+          <div class="about__tags" id="aboutTags"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="pv-section" data-pv="services">
+    <section class="services section">
+      <div class="services__header">
+        <h2 class="section__title">SERVICES <span class="script red">créatrice de contenu</span></h2>
+        <div class="divider"></div>
+      </div>
+      <div class="services__grid" id="servicesGrid"></div>
+    </section>
+  </div>
+
+  <!-- EXPÉRIENCE -->
+  <div class="pv-section" data-pv="experience">
+    <section class="experience">
+      <div class="experience__inner">
+        <div class="experience__image">
+          <img src="" alt="" id="expImg" />
+        </div>
+        <div class="experience__content">
+          <p class="section__eyebrow script" id="expEyebrow"></p>
+          <h2 class="section__title red" id="expTitle"></h2>
+          <div id="expParagraphs"></div>
+          <div class="content-list">
+            <p class="content-list__title" id="expListTitle"></p>
+            <ul id="expList"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- TRAVAUX -->
+  <div class="pv-section" data-pv="work">
+    <section class="work section">
+      <div class="work__header">
+        <h2 class="section__title">PORTFOLIO <span class="script red">mes travaux</span></h2>
+        <div class="divider"></div>
+      </div>
+      <div class="work__grid" id="workGrid"></div>
+    </section>
+  </div>
+
+  <!-- VIDÉOS -->
+  <div class="pv-section" data-pv="videos">
+    <section class="video-section section">
+      <div class="video-section__header">
+        <h2 class="section__title">VIDÉOGRAPHIE <span class="script red">créatrice de contenu</span></h2>
+        <div class="divider"></div>
+      </div>
+      <div class="video-section__grid" id="videoGrid"></div>
+    </section>
+  </div>
+
+  <!-- STATS -->
+  <div class="pv-section" data-pv="stats">
+    <section class="stats-section">
+      <div class="stats-section__left">
+        <h2 class="section__title white" id="statsTitle"></h2>
+        <div class="stats-section__star">★</div>
+      </div>
+      <div class="stats-section__right" id="statsGrid"></div>
+    </section>
+  </div>
+
+  <!-- TOP POSTS -->
+  <div class="pv-section" data-pv="top">
+    <section class="top-perf section">
+      <div class="top-perf__header">
+        <h2 class="section__title">MEILLEURES <span class="script red">publications</span></h2>
+      </div>
+      <div class="top-perf__grid" id="topPerfGrid"></div>
+    </section>
+  </div>
+
+  <!-- FORFAITS -->
+  <div class="pv-section" data-pv="packages">
+    <section class="packages section">
+      <div class="packages__header">
+        <h2 class="section__title">FORFAITS <span class="script red">tarifs</span></h2>
+        <div class="divider"></div>
+      </div>
+      <div class="packages__grid" id="packagesGrid"></div>
+      <p class="packages__note script">* Forfaits personnalisés disponibles — demandez-moi !</p>
+    </section>
+  </div>
+
+  <!-- TÉMOIGNAGES -->
+  <div class="pv-section" data-pv="testimonials">
+    <section class="testimonials section">
+      <div class="testimonials__header">
+        <h2 class="section__title">CE QUE LES MARQUES <span class="script red">disent</span></h2>
+        <div class="divider"></div>
+      </div>
+      <div class="testimonials__grid" id="testiGrid"></div>
+    </section>
+  </div>
+
+  </div>
+
+  <script src="render.js"></script>
+  <script>
+    // ---------- Aperçu : bascule de section + re-rendu ----------
+    function reportHeight() {
+      const el = document.getElementById('pvDesktop');
+      const h = el ? el.scrollHeight : document.documentElement.scrollHeight;
+      parent.postMessage({ type: 'preview-resize', height: h }, '*');
+    }
+
+    window.addEventListener('message', (e) => {
+      const m = e.data;
+      if (!m || m.type !== 'preview' || !window.Renderers) return;
+      document.querySelectorAll('.pv-section').forEach(s => {
+        s.classList.toggle('active', s.dataset.pv === m.section);
+      });
+      const renderer = window.Renderers[m.section];
+      if (renderer) renderer.call(window.Renderers, m.config);
+      setTimeout(reportHeight, 60);
+    });
+
+    window.addEventListener('load', reportHeight);
+    window.addEventListener('resize', reportHeight);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(reportHeight).catch(() => {});
+    }
+  </script>
+</body>
+</html>

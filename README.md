@@ -1,4 +1,5 @@
-# Portfolio — Arden Vale · Content Creator
+# Portfolio — Grace Ouphouet · Créatrice de Contenu
+
 ## Guide d'installation & personnalisation
 
 ---
@@ -7,56 +8,114 @@
 
 ```
 portfolio/
-├── index.html        → Page principale du portfolio
+├── index.html        → Page principale du portfolio (contenu rendu depuis data.json)
 ├── style.css         → Tous les styles (responsive)
 ├── script.js         → Interactions & animations
-├── images/           → Dossier des images (à remplacer)
-│   ├── hero.jpg      → Photo principale (format portrait, ~3:4)
-│   ├── about.jpg     → Section "About Me" (format portrait)
-│   ├── experience.jpg → Section Experience (format portrait)
-│   ├── work1.jpg     → Grille portfolio — image tall (portrait)
-│   ├── work2.jpg     → Grille portfolio (carré)
-│   ├── work3.jpg     → Grille portfolio (carré)
-│   ├── work4.jpg     → Grille portfolio — wide (paysage)
-│   ├── work5.jpg     → Grille portfolio (carré)
-│   ├── vid1.jpg      → Vignette vidéo (format 9:16)
-│   ├── vid2.jpg      → Vignette vidéo (format 9:16)
-│   ├── vid3.jpg      → Vignette vidéo (format 9:16)
-│   ├── vid4.jpg      → Vignette vidéo (format 9:16)
-│   ├── top1.jpg      → Top post 1 (carré)
-│   ├── top2.jpg      → Top post 2 (carré)
-│   └── top3.jpg      → Top post 3 (carré)
+├── render.js         → Charge data.json et construit le contenu des sections
+├── data.json         → TOUT le contenu du site (texte, images, vidéos, tarifs…)
+├── admin.html        → Page d'administration (changer/ajouter le contenu)
+├── admin.css         → Styles du panneau d'administration
+├── admin.js          → Logique du panneau (formulaires, uploads, sauvegarde)
+├── server.js         → Mini serveur Node (zéro dépendance) : site + API data + uploads
+├── uploads/          → Fichiers envoyés depuis l'admin (images, vidéos)
+├── images/           → Dossier des images d'origine
 └── README.md         → Ce fichier
 ```
 
 ---
 
-### 🖼️ Remplacement des images
+### 🚀 Lancer le site + l'administration
 
-Remplace chaque fichier `images/XXXXX.jpg` par ta propre photo **en conservant le même nom de fichier**.
+Le projet inclut un mini serveur Node **sans aucune dépendance** :
 
-**Sources d'images gratuites recommandées :**
-- [Unsplash](https://unsplash.com) — Photos HD libres de droits
-- [Pexels](https://pexels.com) — Photos & vidéos gratuites
-- [Pixabay](https://pixabay.com) — Images libres
+```bash
+node server.js
+```
 
-**Formats recommandés :**
-| Image | Ratio recommandé | Usage |
-|-------|-----------------|-------|
-| hero.jpg | 3:4 (portrait) | Grand visuel hero |
-| about.jpg | 4:5 (portrait) | Photo About Me |
-| experience.jpg | 3:4 (portrait) | Section Experience |
-| work1.jpg | 2:3 (portrait) | Portfolio grille tall |
-| work2-3, work5 | 1:1 (carré) | Portfolio grille |
-| work4.jpg | 2:1 (paysage) | Portfolio grille wide |
-| vid1–4.jpg | 9:16 (vertical) | Vignettes vidéo |
-| top1–3.jpg | 1:1 (carré) | Top posts |
+Puis ouvre :
+- **Portfolio** : http://localhost:3000
+- **Admin** : http://localhost:3000/admin.html
+
+> 💡 Ouvert en double-clic (sans serveur), le site fonctionne quand même : il
+> utilise les données par défaut intégrées dans `render.js`. Seules les
+> modifications de l'admin nécessitent le serveur.
 
 ---
 
-### 🎨 Personnalisation rapide
+### 💾 Sauvegarde automatique (git)
 
-Dans `style.css`, en haut du fichier, modifie les variables CSS :
+À chaque clic sur **💾 Sauvegarder** dans l'admin, une sauvegarde git est déclenchée
+automatiquement :
+
+1. `data.json` + tout le dossier `uploads/` sont copiés dans `backups/<horodatage>/`
+2. Le tout est **commité** dans le repo git (`backups/`, `data.json`, `uploads/`)
+3. Seules les **5 dernières** sauvegardes sont conservées (`BACKUP_KEEP` pour changer)
+
+Sauvegarde manuelle à tout moment :
+```bash
+npm run backup
+```
+
+> 💡 Chaque sauvegarde est donc **versionnée dans git** : tu peux restaurer
+> n'importe quel état du contenu (et des médias) à tout moment, même après un
+> crash de serveur ou un redéploiement.
+
+---
+
+### 🛠️ Utiliser l'administration
+
+Le panneau `admin.html` permet de modifier **tout le contenu** sans toucher au code :
+
+- **Général** — titre SEO, meta description, e-mail, liens Instagram/TikTok, réseaux du footer
+- **Hero** — sous-titre, lignes du titre, tags, photo, stats rapides
+- **À propos** — texte, photo, étiquette, tags
+- **Services** — ajouter/supprimer/modifier les cartes (fond rouge ou non)
+- **Expérience** — texte, liste, photo
+- **Travaux** — ajouter/supprimer des projets (photo, catégorie, description, tags, mise en page)
+- **Vidéos** — vignettes + **upload de fichiers vidéo (mp4)** : la vidéo s'ouvre dans une fenêtre au clic
+- **Stats** — nombres et libellés (animation au scroll)
+- **Top posts** — images et métriques
+- **Forfaits** — tarifs (une ligne par élément : `libellé | prix`)
+- **Témoignages** — citations, auteurs, fond rouge
+
+**Images & vidéos** : chaque média se choisit par upload local (copié dans `uploads/`)
+ou en collant une URL.
+
+**Sauvegarde permanente** : le bouton **💾 Sauvegarder** écrit les données dans
+`data.json` sur le disque. Le portfolio relit `data.json` à chaque chargement.
+
+---
+
+### 🌍 Hébergement & sauvegarde des données
+
+| Hébergeur | L'admin fonctionne en ligne ? | Comment faire |
+|-----------|-------------------------------|---------------|
+| **VPS / Railway / Render / Fly.io** (Node) | ✅ Oui — sauvegarde permanente | Déploie le dossier tel quel, `npm start` ou `node server.js` |
+| **Vercel / Netlify** (fonctions) | ⚠️ Partiel — nécessite une petite adaptation (fonction serverless pour écrire data.json) | Le site lit `data.json` normalement |
+| **GitHub Pages / hébergement statique** | ❌ Non — pas d'écriture sur le disque | Lance l'admin **en local** (`node server.js`), sauvegarde, puis **commit/push** le `data.json` modifié |
+
+> 💡 En toutes circonstances : le site est un site statique qui lit `data.json`.
+> Sur un hébergement statique, tant que `data.json` est versionné dans le repo,
+> le contenu affiché est le dernier sauvegardé.
+
+---
+
+### 🖼️ Formats d'images recommandés
+
+| Image | Ratio recommandé | Usage |
+|-------|-----------------|-------|
+| Hero | 3:4 (portrait) | Grand visuel hero |
+| À propos | 4:5 (portrait) | Photo About |
+| Expérience | 3:4 (portrait) | Section Experience |
+| Travaux | 1:1 (carré), 2:3 (tall), 2:1 (wide) | Grille portfolio |
+| Vignettes vidéo | 9:16 (vertical) | Vidéographie |
+| Top posts | 1:1 (carré) | Meilleures publications |
+
+---
+
+### 🎨 Personnalisation du style
+
+Dans `style.css`, en haut du fichier :
 
 ```css
 :root {
@@ -66,38 +125,10 @@ Dans `style.css`, en haut du fichier, modifie les variables CSS :
 }
 ```
 
-**Changer la couleur d'accent** (ex. passer en bleu marine) :
-```css
---red: #1a3a5c;
-```
-
----
-
-### ✏️ Modifier le contenu
-
-Ouvre `index.html` et cherche/remplace :
-- `Arden Vale` → ton nom
-- `@ardenvale` → ton handle Instagram/TikTok
-- `hello@ardenvale.com` → ton email
-- Les prix dans la section **Packages**
-- Les stats dans la section **Social Media Stats**
-
----
-
-### 🚀 Mise en ligne
-
-Le portfolio est un site statique — aucun serveur requis.
-
-Options d'hébergement gratuit :
-- **Netlify** — Glisse le dossier sur [netlify.com/drop](https://netlify.com/drop)
-- **GitHub Pages** — Push sur GitHub, active Pages dans Settings
-- **Vercel** — `vercel deploy` via CLI
-
 ---
 
 ### 📱 Responsive
 
-Le portfolio est entièrement responsive :
 - ✅ Desktop (1400px+)
 - ✅ Laptop (900–1400px)
 - ✅ Tablet (600–900px)
@@ -105,4 +136,4 @@ Le portfolio est entièrement responsive :
 
 ---
 
-*Portfolio template by Claude · Palette : rouge #C8102E + noir + blanc cassé*
+*Portfolio Grace Ouphouet · Palette : rouge #C8102E + noir + blanc cassé*

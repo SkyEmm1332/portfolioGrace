@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-grace",
+  "version": "1.0.0",
+  "description": "Portfolio de Grace Ouphouet — créatrice de contenu. Site statique + mini serveur Node pour l'administration du contenu.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "backup": "node backup.js"
+  },
+  "author": "Grace Ouphouet",
+  "license": "MIT",
+  "private": true
+}

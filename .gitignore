@@ -1,0 +1,9 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Aucune dépendance npm, mais au cas où
+node_modules/
+
+# Journaux
+*.log
