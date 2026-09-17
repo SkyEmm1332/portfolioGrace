@@ -1,0 +1,384 @@
+{
+  "meta": {
+    "title": "Portfolio — Grace Ouphouet | Créatrice de Contenu",
+    "description": "Portfolio de Grace Ouphouet — créatrice de contenu, modèle photo, monteuse vidéo et infographe. Découvrez mes services UGC, Reels, carousels et partenariats de marque."
+  },
+  "hero": {
+    "sub": "créatrice de contenu",
+    "titleLines": [
+      "PORT",
+      "FOLIO"
+    ],
+    "tags": [
+      "CRÉATRICE DE CONTENU",
+      "MODÈLE PHOTO",
+      "ANIMATRICE",
+      "MONTEUSE VIDEO",
+      "INFOGRAPHE"
+    ],
+    "image": "uploads/1789672266241_hero.jpeg",
+    "imageAlt": "Grace Ouphouet – Créatrice de Contenu",
+    "stats": [
+      {
+        "num": "62K",
+        "label": "Abonnés"
+      },
+      {
+        "num": "4.3K",
+        "label": "Likes Moy."
+      },
+      {
+        "num": "8%",
+        "label": "Taux Eng."
+      }
+    ]
+  },
+  "about": {
+    "eyebrow": "créatrice de contenu",
+    "titleLines": [
+      "À PROPOS",
+      "DE MOI."
+    ],
+    "image": "images/about.jpg",
+    "imageAlt": "Portrait de Grace Ouphouet",
+    "imageLabel": "faisons en sorte que\nvotre marque soit vue\n— mais surtout mémorisée",
+    "body": [
+      "Bonjour ! Je suis Grace Ouphouet, créatrice de contenu qui allie narration et visuels créatifs percutants.",
+      "Je crée du contenu esthétique qui connecte — à travers la vidéo, la photographie et une direction artistique audacieuse.",
+      "J'ai collaboré avec des marques dans les domaines du lifestyle, de la mode, de la tech et du bien-être, en les aidant à transformer leur identité en contenu visuel qui résonne."
+    ],
+    "tags": [
+      "Lifestyle",
+      "Mode",
+      "Tech",
+      "Bien-être",
+      "Beauté"
+    ]
+  },
+  "services": [
+    {
+      "icon": "★",
+      "title": "PHOTOS UGC",
+      "desc": "Images lifestyle ou produit stylisées en haute résolution pour les réseaux sociaux et les publicités.",
+      "red": false
+    },
+    {
+      "icon": "★",
+      "title": "VIDÉOS FORMAT COURT",
+      "desc": "Voix off, unboxings, tutoriels, tendances — parfaits pour Reels et TikTok.",
+      "red": true
+    },
+    {
+      "icon": "★",
+      "title": "AVIS PRODUITS",
+      "desc": "Avis authentiques en caméra mettant en valeur les bénéfices de vos produits.",
+      "red": false
+    },
+    {
+      "icon": "★",
+      "title": "CAROUSELS & REELS",
+      "desc": "Publications carousel narratives et Reels esthétiques avec légendes et musique.",
+      "red": true
+    },
+    {
+      "icon": "★",
+      "title": "PARTENARIATS DE MARQUE",
+      "desc": "Collaborations à long terme pour du contenu sponsorisé et des rôles d'ambassadrice.",
+      "red": false
+    },
+    {
+      "icon": "★",
+      "title": "DIRECTION ARTISTIQUE",
+      "desc": "Moodboards, stylisme et direction de plateau pour les shootings de marque.",
+      "red": true
+    }
+  ],
+  "experience": {
+    "eyebrow": "travaux",
+    "title": "EXPÉRIENCE",
+    "image": "images/experience.jpg",
+    "imageAlt": "Création de contenu",
+    "paragraphs": [
+      "Au cours de ces dernières années, j'ai collaboré avec des marques dans les domaines du lifestyle, de la mode, de la tech et du bien-être — en les aidant à transformer leur voix en contenu visuel qui résonne.",
+      "Des vidéos UGC aux carousels curatés, je me concentre sur ce qui compte le plus : la clarté, l'émotion et la précision esthétique."
+    ],
+    "listTitle": "CONTENU QUE J'AI CRÉÉ :",
+    "list": [
+      "Publicités vidéo UGC pour Instagram & TikTok",
+      "Reels narratifs avec voix off",
+      "Mises en valeur de produits en lumière naturelle",
+      "Tutoriels format court",
+      "Contenu photo lifestyle pour des lancements de produits",
+      "Publications carousel à valeur éducative"
+    ]
+  },
+  "work": [
+    {
+      "title": "Campagne de Lancement Produit",
+      "cat": "LIFESTYLE",
+      "desc": "Création d'une campagne visuelle complète pour le lancement d'une nouvelle gamme de produits lifestyle. Direction artistique, shooting photo et production de contenus pour les réseaux sociaux.",
+      "tags": [
+        "Photo",
+        "Direction Artistique",
+        "Réseaux Sociaux"
+      ],
+      "image": "images/work1.jpg",
+      "alt": "Campagne de lancement produit",
+      "tall": true,
+      "wide": false
+    },
+    {
+      "title": "Unboxing Soin de la Peau",
+      "cat": "UGC",
+      "desc": "Vidéo UGC d'unboxing pour une marque de soin de la peau. Contenu authentique mettant en avant la texture, l'emballage et les bénéfices du produit.",
+      "tags": [
+        "Vidéo",
+        "UGC",
+        "Unboxing"
+      ],
+      "image": "images/work2.jpg",
+      "alt": "Unboxing soin de la peau",
+      "tall": false,
+      "wide": false
+    },
+    {
+      "title": "Série Reels OOTD",
+      "cat": "MODE",
+      "desc": "Série de Reels Instagram mettant en valeur des tenues du jour. Montage dynamique avec transitions tendances et musique trendy.",
+      "tags": [
+        "Vidéo",
+        "Mode",
+        "Reels"
+      ],
+      "image": "images/work3.jpg",
+      "alt": "Série Reels OOTD",
+      "tall": false,
+      "wide": false
+    },
+    {
+      "title": "Narration de Marque",
+      "cat": "VIDÉOGRAPHIE",
+      "desc": "Court-métrage de narration de marque alliant images cinématographiques et voix off immersive. Création d'un univers visuel fort pour renforcer l'identité de la marque.",
+      "tags": [
+        "Vidéographie",
+        "Narration",
+        "Cinématographie"
+      ],
+      "image": "images/work4.jpg",
+      "alt": "Narration de marque",
+      "tall": false,
+      "wide": true
+    },
+    {
+      "title": "Routine Matinale",
+      "cat": "BIEN-ÊTRE",
+      "desc": "Série de contenus lifestyle mettant en scène une routine matinale apaisante. Photos et vidéos en lumière naturelle pour inspirer calme et bien-être.",
+      "tags": [
+        "Photo",
+        "Lifestyle",
+        "Bien-être"
+      ],
+      "image": "images/work5.jpg",
+      "alt": "Routine matinale lifestyle",
+      "tall": false,
+      "wide": false
+    }
+  ],
+  "videos": [
+    {
+      "title": "Avis de Marque — Soin de la Peau",
+      "thumb": "images/vid1.jpg",
+      "video": ""
+    },
+    {
+      "title": "Tutoriel — Look Naturel",
+      "thumb": "images/vid2.jpg",
+      "video": ""
+    },
+    {
+      "title": "Lifestyle — Routine Matinale",
+      "thumb": "images/vid3.jpg",
+      "video": ""
+    },
+    {
+      "title": "Unboxing — Haul Mode",
+      "thumb": "images/vid4.jpg",
+      "video": ""
+    }
+  ],
+  "stats": {
+    "titleLines": [
+      "STATS",
+      "RÉSEAUX",
+      "SOCIAUX"
+    ],
+    "items": [
+      {
+        "num": "62 000",
+        "label": "Vues Totales"
+      },
+      {
+        "num": "4 320",
+        "label": "Likes en Moyenne"
+      },
+      {
+        "num": "8,2%",
+        "label": "Taux d'Engagement"
+      },
+      {
+        "num": "12K",
+        "label": "Abonnés Instagram"
+      },
+      {
+        "num": "50K",
+        "label": "Abonnés TikTok"
+      },
+      {
+        "num": "300+",
+        "label": "Marques Partenaires"
+      }
+    ]
+  },
+  "topPosts": [
+    {
+      "platform": "REEL INSTAGRAM",
+      "image": "images/top1.jpg",
+      "views": "62 000",
+      "likes": "4 320",
+      "comments": "312"
+    },
+    {
+      "platform": "TIKTOK",
+      "image": "images/top2.jpg",
+      "views": "118K",
+      "likes": "9 800",
+      "comments": "540"
+    },
+    {
+      "platform": "CAROUSEL IG",
+      "image": "images/top3.jpg",
+      "views": "28 000",
+      "likes": "2 100",
+      "comments": "189"
+    }
+  ],
+  "packages": [
+    {
+      "title": "POST IG",
+      "rows": [
+        [
+          "1x Post IG",
+          "100$"
+        ],
+        [
+          "1x Post Carousel IG",
+          "150$"
+        ],
+        [
+          "3x Posts IG",
+          "250$"
+        ]
+      ]
+    },
+    {
+      "title": "STORIES IG",
+      "rows": [
+        [
+          "1x Story IG",
+          "180$"
+        ],
+        [
+          "3x Posts Carousel IG",
+          "190$"
+        ],
+        [
+          "1x Post + 3 Stories",
+          "250$"
+        ]
+      ]
+    },
+    {
+      "title": "REELS",
+      "rows": [
+        [
+          "1x Reel IG",
+          "100$"
+        ],
+        [
+          "3x Reels",
+          "150$"
+        ],
+        [
+          "3x Reels IG + 3 Stories",
+          "250$"
+        ]
+      ]
+    },
+    {
+      "title": "UGC",
+      "rows": [
+        [
+          "1x Photo",
+          "120$"
+        ],
+        [
+          "1x Vidéo 30 sec",
+          "120$"
+        ],
+        [
+          "3x Vidéos 60 sec",
+          "150$"
+        ]
+      ]
+    }
+  ],
+  "testimonials": [
+    {
+      "quote": "« Le contenu de Grace a dépassé toutes nos attentes. Les visuels étaient époustouflants et notre engagement a triplé. »",
+      "author": "Glow Studio",
+      "brand": "Marque de Soin de la Peau",
+      "red": false
+    },
+    {
+      "quote": "« Professionnelle, créative et incroyablement agréable à travailler. Nous collaborerons certainement à nouveau. »",
+      "author": "NOVA Fashion",
+      "brand": "Marque de Vêtements",
+      "red": true
+    },
+    {
+      "quote": "« Ses vidéos UGC étaient authentiques et parfaitement en accord avec notre image. Idéales pour notre campagne de lancement. »",
+      "author": "Vivo Tech",
+      "brand": "Startup Technologique",
+      "red": false
+    }
+  ],
+  "contact": {
+    "email": "hello@graceouphouet.com",
+    "instagram": "https://instagram.com/graceouphouet",
+    "instagramLabel": "@graceouphouet",
+    "tiktok": "https://tiktok.com/@graceouphouet",
+    "tiktokLabel": "@graceouphouet"
+  },
+  "socials": [
+    {
+      "label": "IG",
+      "aria": "Instagram",
+      "url": "https://instagram.com/graceouphouet"
+    },
+    {
+      "label": "TK",
+      "aria": "TikTok",
+      "url": "https://tiktok.com/@graceouphouet"
+    },
+    {
+      "label": "YT",
+      "aria": "YouTube",
+      "url": "https://youtube.com/@graceouphouet"
+    },
+    {
+      "label": "PT",
+      "aria": "Pinterest",
+      "url": "https://pinterest.com/graceouphouet"
+    }
+  ]
+}
