@@ -79,7 +79,7 @@ module.exports = async function handler(req, res) {
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'attachment; filename="portfolio.graceouphouet.2026.pdf"');
     res.setHeader('Cache-Control', 'no-store');
-    res.status(200).send(pdf);
+    res.status(200).send(Buffer.from(pdf));
   } catch (e) {
     console.error('Erreur génération PDF :', e);
     res.status(500).json({ error: 'Génération du PDF impossible', detail: String(e.message || e).slice(0, 300) });
