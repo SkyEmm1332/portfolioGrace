@@ -10,12 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    body { margin: 0; padding: 0; background: var(--off-white); }
+    body { margin: 0; padding: 0; background: #d9d7d2; }
     .no-print { display: block; }
-    .pv-section { display: none; }
-    .pv-section.active { display: block; }
 
-    /* Barre d'outils à l'écran (masquée à l'impression) */
+    /* Barre d'outils à l'écran */
     .print-toolbar {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -32,6 +30,8 @@
     .print-toolbar__title { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 2px; }
     .print-toolbar__title span { color: var(--red); }
     .print-toolbar__hint { font-size: .75rem; color: rgba(255,255,255,.55); }
+    .print-toolbar__status { font-size: .75rem; color: rgba(255,255,255,.65); }
+    .print-toolbar__actions { display: flex; gap: .6rem; align-items: center; }
     .print-toolbar__btn {
       background: var(--red);
       color: #fff;
@@ -46,61 +46,56 @@
       white-space: nowrap;
     }
     .print-toolbar__btn:hover { background: var(--red-dark); }
+    .print-toolbar__btn--ghost {
+      background: none;
+      border: 1.5px solid rgba(255,255,255,.4);
+      color: #fff;
+    }
+    .print-toolbar__btn--ghost:hover { border-color: var(--red); color: var(--red); background: none; }
 
-    .pv-content { margin-top: 64px; }
+    /* Diapositives : vue exacte desktop, 1280 x 720 px (= 13,33 x 7,5 po) */
+    .pv-content {
+      width: 1280px;
+      margin: 80px auto 0;
+      background: var(--off-white);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    }
+    .pv-section { width: 1280px; height: 720px; overflow: hidden; position: relative; }
 
-    /* Impression — une diapositive par section, layout desktop exact */
+    /* Layouts desktop forcés (indépendants des media queries) */
+    .pv-content .hero { min-height: 0; padding-top: clamp(1.5rem, 3vw, 3rem); }
+    .pv-content .hero__content { grid-template-columns: 1fr 1fr; }
+    .pv-content .hero__scroll,
+    .pv-content .hero__bg-text { display: none; }
+    .pv-content .about__inner { grid-template-columns: 1fr 1.2fr; }
+    .pv-content .about__img-label { position: static; max-width: none; margin-top: 1rem; }
+    .pv-content .services__grid { grid-template-columns: repeat(3, 1fr); }
+    .pv-content .experience__inner { grid-template-columns: 1fr 1fr; }
+    .pv-content .video-section__grid { grid-template-columns: repeat(4, 1fr); }
+    .pv-content .video-thumb__play { display: none; }
+    .pv-content .stats-section { grid-template-columns: 1fr 2fr; min-height: 0; }
+    .pv-content .stats-section__right { grid-template-columns: repeat(3, 1fr); }
+    .pv-content .top-perf__grid { grid-template-columns: repeat(3, 1fr); }
+    .pv-content .packages__grid { grid-template-columns: repeat(4, 1fr); }
+    .pv-content .pkg-col:nth-child(2) { border-right: 1.5px solid var(--light-gray); }
+    .pv-content .pkg-col:nth-child(3) { border-top: none; border-right: 1.5px solid var(--light-gray); }
+    .pv-content .testimonials__grid { grid-template-columns: repeat(3, 1fr); }
+    .pv-content .contact { grid-template-columns: 1fr 1.2fr; }
+
+    /* Travaux : groupes de 4, format portrait */
+    .pv-content .work__grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: none; gap: 12px; }
+    .pv-content .work-item { aspect-ratio: 3/4; grid-row: auto; grid-column: auto; }
+    .pv-content .work-item__overlay { transform: translateY(0); opacity: 1; }
+
+    /* Impression de secours (option Imprimer) */
     @media print {
       .no-print { display: none !important; }
-      .pv-content { margin-top: 0; }
+      .pv-content { margin: 0; box-shadow: none; }
       body { background: #fff !important; }
-      :root { --section-pad: 36px; }
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       @page { size: 13.333in 7.5in; margin: 0; }
-      .pv-section {
-        display: block !important;
-        height: 7.5in;
-        overflow: hidden;
-        break-inside: avoid;
-        break-before: page;
-      }
+      .pv-section { break-inside: avoid; break-before: page; }
       .pv-content > .pv-section:first-child { break-before: auto; }
-
-      /* Layouts desktop forcés (les media queries ne peuvent pas casser la mise en page) */
-      .pv-section .hero__content { grid-template-columns: 1fr 1fr !important; }
-      .pv-section .hero { min-height: 0 !important; padding-top: clamp(1.5rem, 3vw, 3rem) !important; }
-      .pv-section .hero__scroll,
-      .pv-section .hero__bg-text { display: none !important; }
-      .pv-section .about__inner { grid-template-columns: 1fr 1.2fr !important; }
-      .pv-section .about__img-label { position: static; max-width: none; margin-top: 1rem; }
-      .pv-section .services__grid { grid-template-columns: repeat(3, 1fr) !important; }
-      .pv-section .experience__inner { grid-template-columns: 1fr 1fr !important; }
-      .pv-section .video-section__grid { grid-template-columns: repeat(4, 1fr) !important; }
-      .pv-section .video-thumb__play { display: none !important; }
-      .pv-section .stats-section { grid-template-columns: 1fr 2fr !important; min-height: 0 !important; }
-      .pv-section .stats-section__right { grid-template-columns: repeat(3, 1fr) !important; }
-      .pv-section .top-perf__grid { grid-template-columns: repeat(3, 1fr) !important; }
-      .pv-section .packages__grid { grid-template-columns: repeat(4, 1fr) !important; }
-      .pv-section .pkg-col:nth-child(2) { border-right: 1.5px solid var(--light-gray) !important; }
-      .pv-section .pkg-col:nth-child(3) { border-top: none !important; border-right: 1.5px solid var(--light-gray) !important; }
-      .pv-section .testimonials__grid { grid-template-columns: repeat(3, 1fr) !important; }
-      .pv-section .contact { grid-template-columns: 1fr 1.2fr !important; }
-
-      /* Travaux : groupes de 4, format portrait */
-      .pv-section .work__grid {
-        grid-template-columns: repeat(4, 1fr) !important;
-        grid-template-rows: none;
-        gap: 12px;
-      }
-      .pv-section .work-item {
-        aspect-ratio: 3/4 !important;
-        grid-row: auto !important;
-        grid-column: auto !important;
-      }
-      .pv-section .work-item__overlay { transform: translateY(0); opacity: 1; }
-
-      .service-card, .work-item, .perf-card, .pkg-col, .testi-card,
-      .video-thumb, .big-stat, .content-list { break-inside: avoid; }
     }
   </style>
 </head>
@@ -110,15 +105,18 @@
   <div class="print-toolbar no-print">
     <div>
       <p class="print-toolbar__title">PORTFOLIO <span>PDF</span></p>
-      <p class="print-toolbar__hint">Format diaporama 16:9 exact — 13,33 × 7,5 po (dimensions PowerPoint), sans marges. Choisissez « Enregistrer au format PDF » comme destination.</p>
+      <p class="print-toolbar__hint" id="toolbarHint">Génération du PDF…</p>
     </div>
-    <button type="button" class="print-toolbar__btn" id="printBtn">Imprimer / Télécharger</button>
+    <div class="print-toolbar__actions">
+      <button type="button" class="print-toolbar__btn print-toolbar__btn--ghost" id="printBtn">🖨 Imprimer</button>
+      <button type="button" class="print-toolbar__btn" id="downloadBtn">⬇ Télécharger le PDF</button>
+    </div>
   </div>
 
-  <div class="pv-content">
+  <div class="pv-content" id="pvContent">
 
     <!-- 1. HERO -->
-    <div class="pv-section active" data-pv="hero">
+    <div class="pv-section" data-pv="hero">
       <section class="hero">
         <div class="hero__bg-text">PORTFOLIO</div>
         <div class="hero__content">
@@ -297,9 +295,9 @@
   <script src="supabase-config.js"></script>
   <script src="supabase.js"></script>
   <script src="render.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    document.querySelectorAll('.pv-section').forEach(s => s.classList.add('active'));
-
     // Diapositives travaux : groupes de 4, format portrait
     function buildWorkSlides() {
       const wrap = document.getElementById('workSlides');
@@ -308,8 +306,8 @@
       if (!work.length) { wrap.style.display = 'none'; return; }
       const groups = [];
       for (let i = 0; i < work.length; i += 4) groups.push(work.slice(i, i + 4));
-      wrap.innerHTML = groups.map((group, g) => `
-        <div class="pv-section pv-work-group active" data-work-group="${g}">
+      wrap.innerHTML = groups.map(group => `
+        <div class="pv-section pv-work-group">
           <section class="work section">
             <div class="work__header">
               <h2 class="section__title">PORTFOLIO <span class="script red">mes travaux</span></h2>
@@ -329,40 +327,75 @@
         </div>`).join('');
     }
 
-    // ---------- Impression uniquement quand tout est prêt ----------
+    // ---------- Génération du PDF (téléchargement direct) ----------
     let contentReady = false;
-    let printed = false;
-
-    document.addEventListener('content-ready', () => {
-      contentReady = true;
-      buildWorkSlides();
-      maybePrint();
-    });
+    let generating = false;
 
     function imagesReady() {
       const imgs = Array.from(document.images);
       return imgs.length === 0 || imgs.every(i => i.complete);
     }
 
-    function maybePrint() {
-      if (printed || !contentReady || !imagesReady()) return;
-      const doPrint = () => { if (printed) return; printed = true; setTimeout(() => window.print(), 400); };
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(doPrint).catch(doPrint);
-      } else {
-        doPrint();
-      }
+    function setStatus(msg) {
+      document.getElementById('toolbarHint').textContent = msg;
     }
 
-    // Attente jusqu'à 10 s (contenu + images + polices)
-    const t0 = Date.now();
-    const iv = setInterval(() => {
-      if (printed) { clearInterval(iv); return; }
-      if (contentReady && imagesReady()) { clearInterval(iv); maybePrint(); }
-      else if (Date.now() - t0 > 10000) { clearInterval(iv); if (!printed) { printed = true; window.print(); } }
-    }, 300);
+    async function generatePdf() {
+      if (generating) return;
+      generating = true;
+      setStatus('Génération du PDF…');
+      try {
+        const slides = Array.from(document.querySelectorAll('#pvContent .pv-section'));
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ orientation: 'landscape', unit: 'in', format: [13.333, 7.5] });
+        for (let i = 0; i < slides.length; i++) {
+          const canvas = await html2canvas(slides[i], {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: null,
+            logging: false
+          });
+          const img = canvas.toDataURL('image/jpeg', 0.92);
+          if (i > 0) pdf.addPage([13.333, 7.5], 'landscape');
+          pdf.addImage(img, 'JPEG', 0, 0, 13.333, 7.5);
+        }
+        pdf.save('portfolio.graceouphouet.2026.pdf');
+        setStatus('✓ PDF téléchargé : portfolio.graceouphouet.2026.pdf');
+      } catch (e) {
+        console.error(e);
+        setStatus('Génération impossible : ' + e.message);
+      }
+      generating = false;
+    }
 
+    document.getElementById('downloadBtn').addEventListener('click', generatePdf);
     document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+    document.addEventListener('content-ready', () => {
+      contentReady = true;
+      buildWorkSlides();
+      waitAndGenerate();
+    });
+
+    // Attente jusqu'à 10 s (contenu + images), puis téléchargement automatique
+    function waitAndGenerate() {
+      const t0 = Date.now();
+      const iv = setInterval(() => {
+        if (imagesReady()) {
+          clearInterval(iv);
+          setTimeout(() => generatePdf(), 500);
+        } else if (Date.now() - t0 > 10000) {
+          clearInterval(iv);
+          generatePdf();
+        }
+      }, 300);
+    }
+
+    if (window.CONTENT) {
+      contentReady = true;
+      buildWorkSlides();
+      waitAndGenerate();
+    }
   </script>
 </body>
 </html>
