@@ -292,18 +292,19 @@
       slides.forEach(sl => {
         const inner = sl.querySelector(':scope > section, :scope > .work');
         if (!inner) return;
-        const H = inner.getBoundingClientRect().height;
+        // offsetHeight = hauteur de mise en page (transformations ignorées)
+        const H = inner.offsetHeight;
         if (!H) return;
         if (debug) { sl.dataset.h = Math.round(H); return; }
         // Remplit la hauteur sans jamais déborder : agrandissement borné à 105%,
-        // origine centrée (aucune coupure en haut, contenu équilibré)
+        // origine centrée + translation pour rester dans la page
         const s = Math.min(720 / H, 1.05);
         if (Math.abs(s - 1) < 0.005) {
           inner.style.transform = 'none';
           return;
         }
         inner.style.transformOrigin = '50% 50%';
-        inner.style.transform = 'scale(' + s + ')';
+        inner.style.transform = 'translateY(' + (H * (s - 1) / 2) + 'px) scale(' + s + ')';
       });
     }
 
