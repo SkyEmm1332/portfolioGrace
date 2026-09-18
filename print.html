@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=Noto+Sans+Symbols&display=swap" rel="stylesheet" />
   <style>
     body { margin: 0; padding: 0; background: #d9d7d2; }
 
@@ -77,6 +77,12 @@
     .pv-content .pkg-col { padding: 2.5rem 2rem; }
     .pv-content .pkg-row { padding: .9rem 0; }
     .pv-content .testimonials__grid { gap: 2rem; }
+
+    /* Étoiles ★ : police de symboles en repli pour qu'elles s'affichent dans le PDF */
+    .pv-content .btn { font-family: var(--font-display), 'Noto Sans Symbols', sans-serif; }
+    .pv-content .service-card__icon { font-family: 'Noto Sans Symbols', sans-serif; }
+    .pv-content .stats-section__star { font-family: 'Noto Sans Symbols', sans-serif; }
+    .pv-content .content-list ul li { font-family: var(--font-body), 'Noto Sans Symbols', sans-serif; }
 
     /* Impression : une section par page, rendu exact du navigateur */
     @media print {
