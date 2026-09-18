@@ -49,7 +49,7 @@
 
     .pv-content { margin-top: 64px; }
 
-    /* Impression — une section par diapositive, exactement comme sur desktop */
+    /* Impression — une diapositive par section, layout desktop exact */
     @media print {
       .no-print { display: none !important; }
       .pv-content { margin-top: 0; }
@@ -63,27 +63,44 @@
         overflow: hidden;
         break-inside: avoid;
         break-before: page;
-        zoom: .95;
       }
       .pv-content > .pv-section:first-child { break-before: auto; }
-      .pv-section .hero { min-height: 0 !important; padding-top: clamp(2rem, 4vw, 4rem) !important; }
-      .pv-section .hero__scroll { display: none !important; }
-      .pv-section .stats-section { min-height: 0 !important; }
+
+      /* Layouts desktop forcés (les media queries ne peuvent pas casser la mise en page) */
+      .pv-section .hero__content { grid-template-columns: 1fr 1fr !important; }
+      .pv-section .hero { min-height: 0 !important; padding-top: clamp(1.5rem, 3vw, 3rem) !important; }
+      .pv-section .hero__scroll,
+      .pv-section .hero__bg-text { display: none !important; }
+      .pv-section .about__inner { grid-template-columns: 1fr 1.2fr !important; }
+      .pv-section .about__img-label { position: static; max-width: none; margin-top: 1rem; }
+      .pv-section .services__grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .pv-section .experience__inner { grid-template-columns: 1fr 1fr !important; }
+      .pv-section .video-section__grid { grid-template-columns: repeat(4, 1fr) !important; }
       .pv-section .video-thumb__play { display: none !important; }
-      .pv-section .work-item__overlay { transform: translateY(0); opacity: 1; }
+      .pv-section .stats-section { grid-template-columns: 1fr 2fr !important; min-height: 0 !important; }
+      .pv-section .stats-section__right { grid-template-columns: repeat(3, 1fr) !important; }
+      .pv-section .top-perf__grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .pv-section .packages__grid { grid-template-columns: repeat(4, 1fr) !important; }
+      .pv-section .pkg-col:nth-child(2) { border-right: 1.5px solid var(--light-gray) !important; }
+      .pv-section .pkg-col:nth-child(3) { border-top: none !important; border-right: 1.5px solid var(--light-gray) !important; }
+      .pv-section .testimonials__grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .pv-section .contact { grid-template-columns: 1fr 1.2fr !important; }
+
+      /* Travaux : groupes de 4, format portrait */
       .pv-section .work__grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, 1fr) !important;
         grid-template-rows: none;
         gap: 12px;
       }
       .pv-section .work-item {
-        aspect-ratio: 3/4;
+        aspect-ratio: 3/4 !important;
         grid-row: auto !important;
         grid-column: auto !important;
       }
+      .pv-section .work-item__overlay { transform: translateY(0); opacity: 1; }
+
       .service-card, .work-item, .perf-card, .pkg-col, .testi-card,
       .video-thumb, .big-stat, .content-list { break-inside: avoid; }
-      .pv-section .about__img-label { position: static; max-width: none; margin-top: 1rem; }
     }
   </style>
 </head>
@@ -100,7 +117,7 @@
 
   <div class="pv-content">
 
-    <!-- HERO -->
+    <!-- 1. HERO -->
     <div class="pv-section active" data-pv="hero">
       <section class="hero">
         <div class="hero__bg-text">PORTFOLIO</div>
@@ -125,7 +142,7 @@
       </section>
     </div>
 
-    <!-- À PROPOS -->
+    <!-- 2. À PROPOS -->
     <div class="pv-section" data-pv="about">
       <section class="about">
         <div class="about__inner">
@@ -145,7 +162,18 @@
       </section>
     </div>
 
-    <!-- EXPÉRIENCE -->
+    <!-- 3. SERVICES -->
+    <div class="pv-section" data-pv="services">
+      <section class="services section">
+        <div class="services__header">
+          <h2 class="section__title">SERVICES <span class="script red">créatrice de contenu</span></h2>
+          <div class="divider"></div>
+        </div>
+        <div class="services__grid" id="servicesGrid"></div>
+      </section>
+    </div>
+
+    <!-- 4. EXPÉRIENCE -->
     <div class="pv-section" data-pv="experience">
       <section class="experience">
         <div class="experience__inner">
@@ -165,21 +193,10 @@
       </section>
     </div>
 
-    <!-- PORTFOLIO / TRAVAUX — groupes de 4, format portrait -->
+    <!-- 5. PORTFOLIO / TRAVAUX — groupes de 4, format portrait -->
     <div id="workSlides"></div>
 
-    <!-- SERVICES -->
-    <div class="pv-section" data-pv="services">
-      <section class="services section">
-        <div class="services__header">
-          <h2 class="section__title">SERVICES <span class="script red">créatrice de contenu</span></h2>
-          <div class="divider"></div>
-        </div>
-        <div class="services__grid" id="servicesGrid"></div>
-      </section>
-    </div>
-
-    <!-- VIDÉOGRAPHIE -->
+    <!-- 6. VIDÉOGRAPHIE -->
     <div class="pv-section" data-pv="videos">
       <section class="video-section section">
         <div class="video-section__header">
@@ -190,7 +207,7 @@
       </section>
     </div>
 
-    <!-- STATS -->
+    <!-- 7. STATS -->
     <div class="pv-section" data-pv="stats">
       <section class="stats-section">
         <div class="stats-section__left">
@@ -201,7 +218,7 @@
       </section>
     </div>
 
-    <!-- TOP PERFORMING -->
+    <!-- 8. TOP PERFORMING -->
     <div class="pv-section" data-pv="top">
       <section class="top-perf section">
         <div class="top-perf__header">
@@ -211,7 +228,7 @@
       </section>
     </div>
 
-    <!-- PACKAGES -->
+    <!-- 9. PACKAGES -->
     <div class="pv-section" data-pv="packages">
       <section class="packages section">
         <div class="packages__header">
@@ -223,7 +240,7 @@
       </section>
     </div>
 
-    <!-- TÉMOIGNAGES -->
+    <!-- 10. TÉMOIGNAGES -->
     <div class="pv-section" data-pv="testimonials">
       <section class="testimonials section">
         <div class="testimonials__header">
@@ -234,7 +251,7 @@
       </section>
     </div>
 
-    <!-- CONTACT -->
+    <!-- 11. CONTACT -->
     <div class="pv-section" data-pv="contact">
       <section class="contact section" id="contact">
         <div class="contact__left">
@@ -242,6 +259,35 @@
           <h2 class="section__title red">COLLABO-<br/>RONS.</h2>
           <p>Prête à créer quelque chose d'inoubliable ? Contactez-moi et construisons ensemble votre prochaine campagne.</p>
           <div class="contact__links" id="contactLinks"></div>
+        </div>
+        <div class="contact__form">
+          <div class="form-group">
+            <label>Votre Nom</label>
+            <input type="text" placeholder="Votre nom" />
+          </div>
+          <div class="form-group">
+            <label>Adresse E-mail</label>
+            <input type="email" placeholder="email@mail.com" />
+          </div>
+          <div class="form-group">
+            <label>Marque / Entreprise</label>
+            <input type="text" placeholder="Nom de Votre Marque" />
+          </div>
+          <div class="form-group">
+            <label>Type de Contenu</label>
+            <select>
+              <option>Photos UGC</option>
+              <option>Vidéos Format Court</option>
+              <option>Avis Produit</option>
+              <option>Partenariat de Marque</option>
+              <option>Forfait Personnalisé</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="Parlez-moi de votre projet..."></textarea>
+          </div>
+          <div class="btn btn--red btn--full">Envoyer le Message ★</div>
         </div>
       </section>
     </div>
@@ -254,7 +300,7 @@
   <script>
     document.querySelectorAll('.pv-section').forEach(s => s.classList.add('active'));
 
-    // Diapositives travaux : groupes de 4, format portrait (comme sur desktop)
+    // Diapositives travaux : groupes de 4, format portrait
     function buildWorkSlides() {
       const wrap = document.getElementById('workSlides');
       if (!wrap) return;
@@ -263,7 +309,7 @@
       const groups = [];
       for (let i = 0; i < work.length; i += 4) groups.push(work.slice(i, i + 4));
       wrap.innerHTML = groups.map((group, g) => `
-        <div class="pv-section pv-work-group" data-work-group="${g}">
+        <div class="pv-section pv-work-group active" data-work-group="${g}">
           <section class="work section">
             <div class="work__header">
               <h2 class="section__title">PORTFOLIO <span class="script red">mes travaux</span></h2>
@@ -283,23 +329,40 @@
         </div>`).join('');
     }
 
-    if (window.CONTENT) buildWorkSlides();
-    document.addEventListener('content-ready', buildWorkSlides);
+    // ---------- Impression uniquement quand tout est prêt ----------
+    let contentReady = false;
+    let printed = false;
+
+    document.addEventListener('content-ready', () => {
+      contentReady = true;
+      buildWorkSlides();
+      maybePrint();
+    });
+
+    function imagesReady() {
+      const imgs = Array.from(document.images);
+      return imgs.length === 0 || imgs.every(i => i.complete);
+    }
+
+    function maybePrint() {
+      if (printed || !contentReady || !imagesReady()) return;
+      const doPrint = () => { if (printed) return; printed = true; setTimeout(() => window.print(), 400); };
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(doPrint).catch(doPrint);
+      } else {
+        doPrint();
+      }
+    }
+
+    // Attente jusqu'à 10 s (contenu + images + polices)
+    const t0 = Date.now();
+    const iv = setInterval(() => {
+      if (printed) { clearInterval(iv); return; }
+      if (contentReady && imagesReady()) { clearInterval(iv); maybePrint(); }
+      else if (Date.now() - t0 > 10000) { clearInterval(iv); if (!printed) { printed = true; window.print(); } }
+    }, 300);
 
     document.getElementById('printBtn').addEventListener('click', () => window.print());
-
-    // Impression automatique quand tout est prêt (fonts + images)
-    let printed = false;
-    function autoPrint() {
-      if (printed) return;
-      printed = true;
-      setTimeout(() => window.print(), 900);
-    }
-    window.addEventListener('load', autoPrint);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(autoPrint).catch(() => {});
-    }
-    setTimeout(autoPrint, 3500);
   </script>
 </body>
 </html>
