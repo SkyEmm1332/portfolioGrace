@@ -23,7 +23,7 @@
     .pv-section { width: 1280px; height: 720px; overflow: hidden; position: relative; }
 
     /* Layouts desktop forcés (indépendants des media queries) */
-    .pv-content .hero { min-height: 100%; padding-top: clamp(1.5rem, 3vw, 3rem); }
+    .pv-content .hero { min-height: 0; padding-top: clamp(1.5rem, 3vw, 3rem); }
     .pv-content .hero__content { grid-template-columns: 1fr 1fr; }
     .pv-content .hero__scroll,
     .pv-content .hero__bg-text { display: none; }
@@ -46,26 +46,6 @@
     .pv-content .work__grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: none; gap: 12px; }
     .pv-content .work-item { aspect-ratio: 3/4; grid-row: auto; grid-column: auto; }
     .pv-content .work-item__overlay { transform: translateY(0); opacity: 1; }
-
-    /* Alignement vertical : chaque section remplit la diapositive et son
-       contenu est centré verticalement */
-    .pv-content .pv-section > section { min-height: 100%; box-sizing: border-box; }
-    .pv-content .about,
-    .pv-content .experience,
-    .pv-content .services,
-    .pv-content .work,
-    .pv-content .video-section,
-    .pv-content .top-perf,
-    .pv-content .packages,
-    .pv-content .testimonials {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .pv-content .about__inner,
-    .pv-content .experience__inner { width: 100%; }
-    .pv-content .experience__content { justify-content: center; }
-    .pv-content .contact { align-items: center; }
 
     /* Impression : une section par page, rendu exact du navigateur */
     @media print {
