@@ -929,8 +929,31 @@ async function initSupabaseMode() {
       config = data;
       $('statusDot').classList.add('online');
       fillAll();
+      // Sections vides dans Supabase → remplies automatiquement depuis data.json déployé
+      let restoredSections = [];
+      try {
+        const r = await fetch('data.json', { cache: 'no-store' });
+        if (r.ok) {
+          const ref = await r.json();
+          Object.keys(ref).forEach(k => {
+            const cur = data[k];
+            const empty = cur === undefined || cur === null || (Array.isArray(cur) && cur.length === 0);
+            if (empty && TAB_FILLERS[k]) {
+              const saved = config;
+              config = ref;
+              TAB_FILLERS[k]();
+              config = saved;
+              restoredSections.push(SECTION_LABELS[k] || k);
+            }
+          });
+        }
+      } catch (e2) { /* silencieux */ }
       updatePreview();
-      toast('✓ Contenu chargé depuis Supabase');
+      if (restoredSections.length) {
+        toast('↺ Sections restaurées depuis data.json : ' + restoredSections.join(', ') + ' — cliquez 💾 Sauvegarder puis Confirmer');
+      } else {
+        toast('✓ Contenu chargé depuis Supabase');
+      }
       return true;
     } catch (e) {
       $('statusDot').classList.add('offline');
