@@ -4,8 +4,18 @@
 // Rendu EXACT : navigateur headless (Chromium) en mode impression
 // Sortie : portfolio.graceouphouet.2026.pdf (16:9, une section par page)
 // ===========================
-const chromium = require('@sparticuz/chromium');
-const puppeteer = require('puppeteer-core');
+let chromium = null;
+let puppeteer = null;
+try {
+  chromium = require('@sparticuz/chromium');
+  puppeteer = require('puppeteer-core');
+} catch (e) {
+  console.error('Échec import modules :', e);
+  module.exports = async function importError(req, res) {
+    res.status(500).json({ error: 'Échec import des modules', detail: String(e.message || e).slice(0, 500) });
+  };
+  return;
+}
 
 module.exports = async function handler(req, res) {
   if (req.method === 'HEAD') {
