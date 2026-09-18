@@ -56,10 +56,10 @@
       body { background: #fff !important; }
       :root { --section-pad: 36px; }
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      @page { size: 13.33in 7.5in; margin: 0.25in; }
+      @page { size: 13.333in 7.5in; margin: 0; }
       .pv-section {
         display: block !important;
-        height: 7in;
+        height: 7.5in;
         overflow: hidden;
         break-inside: avoid;
         break-before: page;
@@ -110,7 +110,7 @@
   <div class="print-toolbar no-print">
     <div>
       <p class="print-toolbar__title">PORTFOLIO <span>PDF</span></p>
-      <p class="print-toolbar__hint">Format diaporama 16:9 (13,33 × 7,5 po) — une section par diapositive. Choisissez « Enregistrer au format PDF » comme destination.</p>
+      <p class="print-toolbar__hint">Format diaporama 16:9 exact — 13,33 × 7,5 po (dimensions PowerPoint), sans marges. Choisissez « Enregistrer au format PDF » comme destination.</p>
     </div>
     <button type="button" class="print-toolbar__btn" id="printBtn">Imprimer / Télécharger</button>
   </div>
