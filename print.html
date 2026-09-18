@@ -43,9 +43,22 @@
     .pv-content .contact { grid-template-columns: 1fr 1.2fr; }
 
     /* Travaux : groupes de 4, format portrait */
-    .pv-content .work__grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: none; gap: 12px; }
-    .pv-content .work-item { aspect-ratio: 3/4; grid-row: auto; grid-column: auto; }
+    .pv-content .work__grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: none; gap: 14px; }
+    .pv-content .work-item { aspect-ratio: 3/5; grid-row: auto; grid-column: auto; }
     .pv-content .work-item__overlay { transform: translateY(0); opacity: 1; }
+
+    /* Sections courtes : étoffées pour approcher la hauteur de page */
+    .pv-content .hero { padding-bottom: 2rem; }
+    .pv-content .hero__text { gap: 2rem; }
+    .pv-content .hero__image-frame { max-height: 640px; }
+    .pv-content .hero__stats { margin-top: 2.5rem; }
+    .pv-content .stats-section__left,
+    .pv-content .stats-section__right { padding: 3rem 2.5rem; }
+    .pv-content .stats-section__right { gap: 2.5rem; }
+    .pv-content .big-stat__num { font-size: clamp(2.8rem, 5.5vw, 4.5rem); }
+    .pv-content .stats-section__left .section__title { font-size: clamp(3rem, 6vw, 5rem); }
+    .pv-content .testi-card { padding: 3rem 2.2rem; }
+    .pv-content .testi-card__quote { font-size: 1.1rem; }
 
     /* Impression : une section par page, rendu exact du navigateur */
     @media print {
@@ -274,14 +287,18 @@
 
     // ---------- Ajustement des diapositives : chaque section remplit exactement sa page ----------
     function fitSlides() {
+      const debug = location.search.indexOf('debug') !== -1;
       const slides = document.querySelectorAll('#pvContent .pv-section');
       slides.forEach(sl => {
         const inner = sl.querySelector(':scope > section, :scope > .work');
         if (!inner) return;
         const H = inner.getBoundingClientRect().height;
         if (!H) return;
-        const s = Math.min(1.2, Math.max(0.8, 720 / H));
-        if (Math.abs(s - 1) < 0.001) {
+        if (debug) { sl.dataset.h = Math.round(H); return; }
+        // Remplit la hauteur sans jamais déborder : agrandissement borné à 105%,
+        // origine centrée (aucune coupure en haut, contenu équilibré)
+        const s = Math.min(720 / H, 1.05);
+        if (Math.abs(s - 1) < 0.005) {
           inner.style.transform = 'none';
           return;
         }
