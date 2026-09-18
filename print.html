@@ -47,6 +47,26 @@
     .pv-content .work-item { aspect-ratio: 3/4; grid-row: auto; grid-column: auto; }
     .pv-content .work-item__overlay { transform: translateY(0); opacity: 1; }
 
+    /* Alignement : contenu centré verticalement et horizontalement */
+    .pv-content .pv-section > section { width: 100%; height: 100%; }
+    .pv-content .hero,
+    .pv-content .about,
+    .pv-content .services,
+    .pv-content .video-section,
+    .pv-content .work,
+    .pv-content .top-perf,
+    .pv-content .packages,
+    .pv-content .testimonials,
+    .pv-content .experience {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+    }
+    .pv-content .hero__content { margin: 0 auto; }
+    .pv-content .stats-section { height: 100%; }
+    .pv-content .contact { height: 100%; align-items: center; }
+
     /* Impression : une section par page, rendu exact du navigateur */
     @media print {
       .pv-content { margin: 0; box-shadow: none; }
