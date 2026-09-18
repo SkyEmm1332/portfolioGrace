@@ -139,8 +139,28 @@ function createMediaPicker(container, value, accept = 'image/*') {
 let config = null;
 let mediaPickers = {};
 
+const SECTIONS_VISIBILITY = [
+  ['hero', 'Hero'], ['about', 'À propos'], ['services', 'Services'],
+  ['experience', 'Expérience'], ['work', 'Travaux'], ['videos', 'Vidéos'],
+  ['stats', 'Stats'], ['top', 'Meilleures publications'],
+  ['packages', 'Forfaits'], ['testimonials', 'Témoignages'], ['contact', 'Contact']
+];
+
+function fillVisibility() {
+  const list = $('visibilityList');
+  list.innerHTML = '';
+  SECTIONS_VISIBILITY.forEach(([key, label]) => {
+    const show = config.visibility ? config.visibility[key] !== false : true;
+    const item = document.createElement('label');
+    item.className = 'vis-check';
+    item.innerHTML = `<input type="checkbox" class="f-vis" data-key="${key}" ${show ? 'checked' : ''} /> ${label}`;
+    list.appendChild(item);
+  });
+}
+
 // ---------- Remplissage des formulaires ----------
 function fillGeneral() {
+  fillVisibility();
   $('metaTitle').value = config.meta.title || '';
   $('metaDesc').value = config.meta.description || '';
   $('contactEmail').value = config.contact.email || '';
@@ -530,6 +550,12 @@ function collectConfig() {
     aria: item.querySelector('.f-aria').value.trim(),
     url: item.querySelector('.f-url').value.trim()
   })).filter(s => s.url);
+
+  const vis = {};
+  document.querySelectorAll('#visibilityList .f-vis').forEach(cb => {
+    vis[cb.dataset.key] = cb.checked;
+  });
+  c.visibility = vis;
 
   c.hero.sub = $('heroSub').value.trim();
   c.hero.titleLines = collectLines($('heroTitleLines'));

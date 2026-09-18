@@ -466,6 +466,26 @@ select {
 .media-picker__file-link[hidden] { display: none; }
 
 /* ===========================
+   VISIBILITÉ DES SECTIONS
+   =========================== */
+.admin__visibility {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .55rem 1.5rem;
+}
+.vis-check {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .9rem;
+  cursor: pointer;
+}
+.vis-check input {
+  width: auto;
+  accent-color: var(--red);
+}
+
+/* ===========================
    ÉLÉMENTS DE LISTE — bloc-notes
    =========================== */
 .list-item {

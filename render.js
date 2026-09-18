@@ -116,7 +116,20 @@ const DEFAULT_DATA = {
     { "label": "TK", "aria": "TikTok", "url": "https://tiktok.com/@graceouphouet" },
     { "label": "YT", "aria": "YouTube", "url": "https://youtube.com/@graceouphouet" },
     { "label": "PT", "aria": "Pinterest", "url": "https://pinterest.com/graceouphouet" }
-  ]
+  ],
+  "visibility": {
+    "hero": true,
+    "about": true,
+    "services": true,
+    "experience": true,
+    "work": true,
+    "videos": true,
+    "stats": true,
+    "top": true,
+    "packages": true,
+    "testimonials": true,
+    "contact": true
+  }
 };
 
 function esc(s) {
@@ -323,6 +336,27 @@ window.Renderers = {
     this.footer(d);
   },
 
+  // Masque les sections (et leurs liens) dont la visibilité est désactivée
+  visibility(d) {
+    const v = d.visibility || {};
+    const map = {
+      hero: 'hero', about: 'about', services: 'services', experience: 'experience',
+      work: 'work', videos: 'video', stats: 'stats', top: 'top-performing',
+      packages: 'packages', testimonials: 'testimonials', contact: 'contact'
+    };
+    Object.entries(map).forEach(([key, id]) => {
+      const show = v[key] !== false;
+      const el = document.getElementById(id);
+      if (el) el.style.display = show ? '' : 'none';
+      const href = '#' + id;
+      document.querySelectorAll('a[href="' + href + '"]').forEach(a => {
+        const li = a.closest('li');
+        if (li) li.style.display = show ? '' : 'none';
+        else a.style.display = show ? '' : 'none';
+      });
+    });
+  },
+
   fichiers(d) {
     const f = d.fichiers;
     if (!f) return;
@@ -361,6 +395,7 @@ function renderAll(data) {
   R.contact(data);
   R.footer(data);
   R.fichiers(data);
+  R.visibility(data);
 }
 
 async function loadContent() {

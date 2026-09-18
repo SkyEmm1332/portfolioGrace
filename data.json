@@ -380,5 +380,18 @@
       "aria": "Pinterest",
       "url": "https://pinterest.com/graceouphouet"
     }
-  ]
+  ],
+  "visibility": {
+    "hero": true,
+    "about": true,
+    "services": true,
+    "experience": true,
+    "work": true,
+    "videos": true,
+    "stats": true,
+    "top": true,
+    "packages": true,
+    "testimonials": true,
+    "contact": true
+  }
 }

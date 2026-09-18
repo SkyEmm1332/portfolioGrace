@@ -306,6 +306,26 @@
       });
     }
 
+    // Masque les sections désactivées dans l'administration
+    function applyVisibility() {
+      const v = (window.CONTENT && window.CONTENT.visibility) || {};
+      const map = {
+        hero: 'hero', about: 'about', services: 'services', experience: 'experience',
+        videos: 'videos', stats: 'stats', top: 'top',
+        packages: 'packages', testimonials: 'testimonials', contact: 'contact'
+      };
+      Object.entries(map).forEach(([key, pv]) => {
+        if (v[key] === false) {
+          document.querySelectorAll('.pv-section[data-pv="' + pv + '"]').forEach(el => {
+            el.style.display = 'none';
+          });
+        }
+      });
+      if (v.work === false) {
+        document.querySelectorAll('.pv-work-group').forEach(el => el.style.display = 'none');
+      }
+    }
+
     function buildWorkSlides() {
       const wrap = document.getElementById('workSlides');
       if (!wrap) return;
@@ -337,10 +357,12 @@
     document.addEventListener('content-ready', () => {
       buildWorkSlides();
       replaceStars();
+      applyVisibility();
     });
     if (window.CONTENT) {
       buildWorkSlides();
       replaceStars();
+      applyVisibility();
     }
   </script>
 </body>
