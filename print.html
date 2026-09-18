@@ -53,28 +53,31 @@
 
     .pv-content { margin-top: 64px; }
 
-    /* Impression */
+    /* Impression — format diaporama 16:9 (dimensions PowerPoint) */
     @media print {
       .no-print { display: none !important; }
       .pv-content { margin-top: 0; }
       body { background: #fff !important; }
+      :root { --section-pad: 40px; }
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      @page { size: A4; margin: 12mm; }
-      .pv-section { display: block !important; }
-      .pv-section .hero { min-height: 0 !important; padding-top: 0 !important; }
+      @page { size: 13.33in 7.5in; margin: 0.25in; }
+      .pv-section {
+        display: block !important;
+        height: 7in;
+        overflow: hidden;
+        break-inside: avoid;
+        break-before: page;
+      }
+      .pv-content > .pv-section:first-child { break-before: auto; }
+      .pv-section .hero { min-height: 0 !important; padding-top: .5rem !important; }
       .pv-section .hero__scroll { display: none !important; }
       .pv-section .stats-section { min-height: 0 !important; }
       .pv-section .hero__bg-text { display: none !important; }
       .pv-section .video-thumb__play { display: none !important; }
-      .pv-section .experience,
-      .pv-section .stats-section,
-      .pv-section .work,
-      .pv-section .top-perf,
-      .pv-section .packages,
-      .pv-section .testimonials,
-      .pv-section .contact,
-      .pv-section .video-section,
-      .pv-section .services { break-before: page; }
+      .work__grid { gap: 8px; }
+      .work__grid .work-item { aspect-ratio: 4/3; }
+      .work__grid .work-item--tall,
+      .work__grid .work-item--wide { grid-row: auto; grid-column: auto; }
       .service-card, .work-item, .perf-card, .pkg-col, .testi-card,
       .video-thumb, .big-stat, .content-list { break-inside: avoid; }
       .pv-section .about__img-label { position: static; max-width: none; margin-top: 1rem; }
@@ -87,7 +90,7 @@
   <div class="print-toolbar no-print">
     <div>
       <p class="print-toolbar__title">PORTFOLIO <span>PDF</span></p>
-      <p class="print-toolbar__hint">Choisissez « Enregistrer au format PDF » comme destination.</p>
+      <p class="print-toolbar__hint">Format diaporama 16:9 (13,33 × 7,5 po) — une section par diapositive. Choisissez « Enregistrer au format PDF » comme destination.</p>
     </div>
     <button type="button" class="print-toolbar__btn" id="printBtn">Imprimer / Télécharger</button>
   </div>
