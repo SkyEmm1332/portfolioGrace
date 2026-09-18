@@ -309,6 +309,34 @@ document.addEventListener('content-ready', function init() {
   }
 
   // ===========================
+  // PDF — téléchargement direct via /api/pdf
+  // (repli : ouverture de print.html dans un nouvel onglet)
+  // ===========================
+  document.querySelectorAll('.pdf-download').forEach(link => {
+    link.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        const r = await fetch('/api/pdf');
+        if (r.ok) {
+          const blob = await r.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'portfolio.graceouphouet.2026.pdf';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        } else {
+          window.open('print.html', '_blank');
+        }
+      } catch (err) {
+        window.open('print.html', '_blank');
+      }
+    });
+  });
+
+  // ===========================
   // BACK TO TOP
   // ===========================
   const backToTop = document.getElementById('backToTop');
