@@ -272,8 +272,40 @@
         </div>`).join('');
     }
 
-    document.addEventListener('content-ready', buildWorkSlides);
-    if (window.CONTENT) buildWorkSlides();
+    // ---------- Ajustement des diapositives : chaque section remplit exactement sa page ----------
+    function fitSlides() {
+      const slides = document.querySelectorAll('#pvContent .pv-section');
+      slides.forEach(sl => {
+        const inner = sl.querySelector(':scope > section, :scope > .work');
+        if (!inner) return;
+        const H = inner.getBoundingClientRect().height;
+        if (!H) return;
+        const s = Math.min(1.2, Math.max(0.8, 720 / H));
+        if (Math.abs(s - 1) < 0.001) {
+          inner.style.transform = 'none';
+          return;
+        }
+        inner.style.transformOrigin = '50% 50%';
+        inner.style.transform = 'scale(' + s + ')';
+      });
+    }
+
+    // Re-calcule au chargement du contenu, des images et des polices
+    document.addEventListener('content-ready', () => {
+      buildWorkSlides();
+      fitSlides();
+    });
+    window.addEventListener('load', fitSlides);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitSlides).catch(() => {});
+    }
+    const fitIv = setInterval(() => {
+      fitSlides();
+      if (document.images.length && Array.from(document.images).every(i => i.complete)) {
+        clearInterval(fitIv);
+      }
+    }, 500);
+    setTimeout(() => clearInterval(fitIv), 12000);
   </script>
 </body>
 </html>
