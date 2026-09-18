@@ -33,15 +33,18 @@
     .pv-content .experience__inner { grid-template-columns: 1fr 1fr; }
     .pv-content .video-section__grid { grid-template-columns: repeat(4, 1fr); }
     .pv-content .video-thumb__play { display: none; }
-    .pv-content .video-section .section__title { white-space: nowrap; }
+    .pv-content .video-section .section__title {
+      white-space: nowrap;
+      font-size: clamp(2rem, 4vw, 3.6rem);
+    }
     .pv-content .stats-section { grid-template-columns: 1fr 2fr; min-height: 0; }
     .pv-content .stats-section__right { grid-template-columns: repeat(3, 1fr); }
-    .pv-content .top-perf__grid { grid-template-columns: repeat(3, 1fr); }
-    .pv-content .packages__grid { grid-template-columns: repeat(4, 1fr); }
-    .pv-content .pkg-col:nth-child(2) { border-right: 1.5px solid var(--light-gray); }
-    .pv-content .pkg-col:nth-child(3) { border-top: none; border-right: 1.5px solid var(--light-gray); }
-    .pv-content .testimonials__grid { grid-template-columns: repeat(3, 1fr); }
-    .pv-content .contact { grid-template-columns: 1fr 1.2fr; }
+    .pv-content .top-perf__grid { grid-template-columns: repeat(3, 1fr) !important; max-width: 1400px !important; margin: 0 auto; }
+    .pv-content .packages__grid { grid-template-columns: repeat(4, 1fr) !important; }
+    .pv-content .pkg-col:nth-child(2) { border-right: 1.5px solid var(--light-gray) !important; }
+    .pv-content .pkg-col:nth-child(3) { border-top: none !important; border-right: 1.5px solid var(--light-gray) !important; }
+    .pv-content .testimonials__grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .pv-content .contact { grid-template-columns: 1fr 1.2fr !important; }
 
     /* Travaux : groupes de 4, format portrait */
     .pv-content .work__grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: none; gap: 14px; }
