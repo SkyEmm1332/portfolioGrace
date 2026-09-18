@@ -59,8 +59,12 @@ module.exports = async function handler(req, res) {
       }
       window.scrollTo(0, 0);
     });
-    // Attend la fin du chargement des images (délai borné : 5 s par image)
+    // Attend que toutes les polices soient chargées (dont Noto Sans Symbols,
+    // nécessaire pour les étoiles ★) puis la fin du chargement des images
     await page.evaluate(async () => {
+      if (document.fonts && document.fonts.ready) {
+        try { await document.fonts.ready; } catch (e) {}
+      }
       const imgs = Array.from(document.images);
       await Promise.all(imgs.map(img => new Promise(r => {
         if (img.complete) return r();
