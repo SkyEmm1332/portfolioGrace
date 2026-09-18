@@ -321,6 +321,24 @@ window.Renderers = {
     this.meta(d);
     this.contact(d);
     this.footer(d);
+  },
+
+  fichiers(d) {
+    const f = d.fichiers;
+    if (!f) return;
+    // CV : branche les boutons « CV » du site sur le fichier en ligne s'il existe
+    if (f.cv) {
+      document.querySelectorAll('.cv-download').forEach(a => {
+        a.href = f.cv;
+      });
+    }
+    // Autres fichiers : affichés dans le pied de page
+    const el = document.getElementById('footerFiles');
+    if (el) {
+      el.innerHTML = (f.others || []).map(x =>
+        `<a href="${esc(x.url)}" target="_blank" rel="noopener" class="footer__admin">${esc(x.label)}</a>`
+      ).join(' · ');
+    }
   }
 };
 
@@ -342,6 +360,7 @@ function renderAll(data) {
   R.testimonials(data);
   R.contact(data);
   R.footer(data);
+  R.fichiers(data);
 }
 
 async function loadContent() {

@@ -31,6 +31,7 @@
         <button class="admin__nav-btn" data-tab="top">Top posts</button>
         <button class="admin__nav-btn" data-tab="packages">Forfaits</button>
         <button class="admin__nav-btn" data-tab="testimonials">Témoignages</button>
+        <button class="admin__nav-btn" data-tab="files">Fichiers</button>
       </nav>
 
       <div class="admin__sidebar-foot">
@@ -249,6 +250,22 @@
           <h2>Témoignages</h2>
           <div id="testiList"></div>
           <button type="button" class="admin__btn admin__btn--ghost" id="addTesti">+ Ajouter un témoignage</button>
+        </section>
+
+      <!-- ============ FICHIERS ============ -->
+        <section class="admin__tab" data-panel="files">
+          <h2>Fichiers générés</h2>
+          <div class="admin__card">
+            <h3>Curriculum Vitae (CV)</h3>
+            <p class="admin__hint">Remplace le CV utilisé par les boutons « CV » du site (navigation, hero, mobile). Sans CV en ligne, le fichier local cv.graceouphouet.2026.pdf est utilisé.</p>
+            <div class="file-picker-wrap" id="cvFilePicker"></div>
+          </div>
+          <div class="admin__card">
+            <h3>Autres fichiers téléchargeables</h3>
+            <p class="admin__hint">Ex : dossier de presse, grille tarifaire… Ils apparaissent dans le pied de page du portfolio.</p>
+            <div id="filesList"></div>
+            <button type="button" class="admin__btn admin__btn--ghost" id="addFile">+ Ajouter un fichier</button>
+          </div>
         </section>
 
       </form>

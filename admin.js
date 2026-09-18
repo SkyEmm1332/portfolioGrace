@@ -373,6 +373,107 @@ function collectLines(container) {
   return Array.from(container.querySelectorAll('.f-line')).map(i => i.value.trim()).filter(Boolean);
 }
 
+// ---------- Fichier picker (PDF et autres) ----------
+function createFilePicker(container, value) {
+  container.innerHTML = `
+    <div class="media-picker__row">
+      <a class="media-picker__file-link" href="" target="_blank" rel="noopener" hidden>Voir le fichier ↗</a>
+      <label class="media-picker__upload">Choisir un fichier<input type="file" accept=".pdf,.doc,.docx,.pptx,.zip,.png,.jpg,.jpeg,.mp4" /></label>
+      <button type="button" class="media-picker__url-toggle">ou coller une URL</button>
+    </div>
+    <input type="text" class="media-picker__path" placeholder="Collez l'URL du fichier ici" hidden />
+    <span class="media-picker__status"></span>
+  `;
+  const pathInput = container.querySelector('.media-picker__path');
+  const fileInput = container.querySelector('input[type="file"]');
+  const status = container.querySelector('.media-picker__status');
+  const urlToggle = container.querySelector('.media-picker__url-toggle');
+  const fileLink = container.querySelector('.media-picker__file-link');
+
+  function setPath(p) {
+    pathInput.value = p || '';
+    if (p) {
+      fileLink.href = p;
+      fileLink.hidden = false;
+    } else {
+      fileLink.hidden = true;
+    }
+  }
+
+  setPath(value);
+
+  urlToggle.addEventListener('click', () => {
+    pathInput.hidden = false;
+    pathInput.focus();
+    urlToggle.style.display = 'none';
+  });
+
+  pathInput.addEventListener('input', () => setPath(pathInput.value.trim()));
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    if (file.size > 290 * 1024 * 1024) {
+      status.textContent = 'Fichier trop volumineux (max 290 Mo)';
+      status.classList.add('error');
+      return;
+    }
+    status.textContent = 'Envoi en cours…';
+    status.classList.remove('error');
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const base64 = String(reader.result).split(',')[1];
+        const url = await uploadMedia(file.name, base64);
+        setPath(url);
+        status.textContent = '✓ Fichier envoyé';
+      } catch (e) {
+        status.textContent = 'Échec de l\'envoi : ' + e.message;
+        status.classList.add('error');
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+
+  return { getValue: () => pathInput.value.trim() };
+}
+
+// ---------- Fichiers ----------
+function fillFiles() {
+  if (!config.fichiers) config.fichiers = { cv: '', others: [] };
+  mediaPickers.cvFile = createFilePicker($('cvFilePicker'), config.fichiers.cv);
+
+  const list = $('filesList');
+  list.innerHTML = '';
+  (config.fichiers.others || []).forEach(f => {
+    const item = document.createElement('div');
+    item.className = 'list-item';
+    item.innerHTML = `
+      <div class="list-item__head"><strong>Fichier</strong><button type="button" class="list-item__remove">✕</button></div>
+      <div class="list-item__grid">
+        <div><label>Libellé (ex: Dossier de presse)</label><input type="text" class="f-label" value="${esc(f.label || '')}" /></div>
+        <div><label>Fichier</label><div class="file-picker-wrap"></div></div>
+      </div>`;
+    item._picker = createFilePicker(item.querySelector('.file-picker-wrap'), f.url);
+    item.querySelector('.list-item__remove').addEventListener('click', () => item.remove());
+    list.appendChild(item);
+  });
+}
+
+function addFileItem() {
+  const item = document.createElement('div');
+  item.className = 'list-item';
+  item.innerHTML = `
+    <div class="list-item__head"><strong>Fichier</strong><button type="button" class="list-item__remove">✕</button></div>
+    <div class="list-item__grid">
+      <div><label>Libellé (ex: Dossier de presse)</label><input type="text" class="f-label" /></div>
+      <div><label>Fichier</label><div class="file-picker-wrap"></div></div>
+    </div>`;
+  item._picker = createFilePicker(item.querySelector('.file-picker-wrap'));
+  item.querySelector('.list-item__remove').addEventListener('click', () => item.remove());
+  $('filesList').appendChild(item);
+}
+
 // ---------- Remplissage global ----------
 function fillAll() {
   fillGeneral();
@@ -386,6 +487,7 @@ function fillAll() {
   fillTop();
   fillPackages();
   fillTestimonials();
+  fillFiles();
 }
 
 // ---------- Collecte + sauvegarde ----------
@@ -485,6 +587,14 @@ function collectConfig() {
     red: item.querySelector('.f-red').checked
   }));
 
+  c.fichiers = {
+    cv: mediaPickers.cvFile ? mediaPickers.cvFile.getValue() : '',
+    others: Array.from($('filesList').querySelectorAll('.list-item')).map(item => ({
+      label: item.querySelector('.f-label').value.trim(),
+      url: item._picker.getValue()
+    })).filter(f => f.label && f.url)
+  };
+
   return c;
 }
 
@@ -500,7 +610,8 @@ const TAB_FILLERS = {
   stats: fillStats,
   top: fillTop,
   packages: fillPackages,
-  testimonials: fillTestimonials
+  testimonials: fillTestimonials,
+  files: fillFiles
 };
 
 function restoreAll() {
@@ -743,12 +854,12 @@ function switchTab(name) {
   const titles = {
     general: 'Général', hero: 'Hero', about: 'À propos', services: 'Services',
     experience: 'Expérience', work: 'Travaux', videos: 'Vidéos', stats: 'Stats',
-    top: 'Top posts', packages: 'Forfaits', testimonials: 'Témoignages'
+    top: 'Top posts', packages: 'Forfaits', testimonials: 'Témoignages', files: 'Fichiers'
   };
   const kickers = {
     general: 'ÉDITION 01', hero: 'ÉDITION 02', about: 'ÉDITION 03', services: 'ÉDITION 04',
     experience: 'ÉDITION 05', work: 'ÉDITION 06', videos: 'ÉDITION 07', stats: 'ÉDITION 08',
-    top: 'ÉDITION 09', packages: 'ÉDITION 10', testimonials: 'ÉDITION 11'
+    top: 'ÉDITION 09', packages: 'ÉDITION 10', testimonials: 'ÉDITION 11', files: 'ÉDITION 12'
   };
   $('tabTitle').textContent = titles[name] || name;
   const k = $('tabKicker');
@@ -898,6 +1009,8 @@ function bindAddButtons() {
     item.querySelector('.list-item__remove').addEventListener('click', () => item.remove());
     $('testiList').appendChild(item);
   });
+
+  $('addFile').addEventListener('click', addFileItem);
 }
 
 // ---------- Mode Supabase (édition en ligne) ----------

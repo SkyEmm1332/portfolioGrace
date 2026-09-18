@@ -450,6 +450,21 @@ select {
 }
 .media-picker__status.error { color: var(--red); }
 
+.media-picker__file-link {
+  font-family: var(--font-body);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  text-decoration: none;
+  border-bottom: 1px solid var(--red);
+  padding: .2rem 0;
+  transition: opacity .2s;
+}
+.media-picker__file-link:hover { opacity: .7; }
+.media-picker__file-link[hidden] { display: none; }
+
 /* ===========================
    ÉLÉMENTS DE LISTE — bloc-notes
    =========================== */

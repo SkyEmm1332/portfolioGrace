@@ -108,9 +108,9 @@ window.Supabase = (() => {
   }
 
   // ---------- STORAGE (bucket public uploads) ----------
-  async function upload(name, base64Data) {
+  async function upload(name, base64Data, prefix = '') {
     const clean = String(name || '').replace(/[^a-zA-Z0-9._-]/g, '_');
-    const key = Date.now() + '_' + clean;
+    const key = prefix + Date.now() + '_' + clean;
     const bin = atob(base64Data);
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
@@ -131,6 +131,17 @@ window.Supabase = (() => {
     return URL + '/storage/v1/object/public/uploads/' + key;
   }
 
+  async function deleteFile(publicUrl) {
+    const prefix = URL + '/storage/v1/object/public/uploads/';
+    if (typeof publicUrl !== 'string' || !publicUrl.startsWith(prefix)) return false;
+    const key = publicUrl.slice(prefix.length);
+    await api('/storage/v1/object/uploads/' + key, {
+      method: 'DELETE',
+      headers: authHeaders()
+    });
+    return true;
+  }
+
   return {
     isConfigured,
     login,
@@ -140,6 +151,7 @@ window.Supabase = (() => {
     hasSession,
     loadConfig,
     saveConfig,
-    upload
+    upload,
+    deleteFile
   };
 })();
