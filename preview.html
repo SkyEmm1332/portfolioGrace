@@ -218,6 +218,10 @@
 
   <script src="render.js"></script>
   <script>
+    // Par défaut : toutes les sections sont visibles (contenu rendu depuis data.json)
+    // Dès qu'un message "preview" arrive, seule la section demandée reste active.
+    document.querySelectorAll('.pv-section').forEach(s => s.classList.add('active'));
+
     // ---------- Aperçu : bascule de section + re-rendu ----------
     function reportHeight() {
       const el = document.getElementById('pvDesktop');
