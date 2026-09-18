@@ -11,44 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     body { margin: 0; padding: 0; background: #d9d7d2; }
-    .no-print { display: block; }
-
-    /* Barre d'outils à l'écran (masquée à l'impression) */
-    .print-toolbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 500;
-      background: var(--black);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: .8rem 1.5rem;
-      font-family: var(--font-body);
-    }
-    .print-toolbar__title { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 2px; }
-    .print-toolbar__title span { color: var(--red); }
-    .print-toolbar__hint { font-size: .75rem; color: rgba(255,255,255,.6); line-height: 1.5; }
-    .print-toolbar__btn {
-      background: var(--red);
-      color: #fff;
-      border: none;
-      padding: .7rem 1.4rem;
-      font-family: var(--font-display);
-      font-size: .9rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background .2s;
-      white-space: nowrap;
-    }
-    .print-toolbar__btn:hover { background: var(--red-dark); }
 
     /* Diapositives : vue exacte desktop, 1280 x 720 px (= 13,333 x 7,5 po) */
     .pv-content {
       width: 1280px;
-      margin: 80px auto 0;
+      margin: 40px auto 0;
       background: var(--off-white);
       box-shadow: 0 20px 60px rgba(0,0,0,.25);
       --section-pad: 24px;
@@ -82,7 +49,6 @@
 
     /* Impression : une section par page, rendu exact du navigateur */
     @media print {
-      .no-print { display: none !important; }
       .pv-content { margin: 0; box-shadow: none; }
       body { background: #fff !important; }
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -93,15 +59,6 @@
   </style>
 </head>
 <body>
-
-  <!-- Barre d'outils (écran uniquement) -->
-  <div class="print-toolbar no-print">
-    <div>
-      <p class="print-toolbar__title">PORTFOLIO <span>PDF</span></p>
-      <p class="print-toolbar__hint">Aperçu du portfolio en diapositives (13,333 × 7,5 po chacune). Pour enregistrer en PDF : bouton ci-contre ou Ctrl+P → destination « Enregistrer au format PDF ».</p>
-    </div>
-    <button type="button" class="print-toolbar__btn" id="downloadBtn">Enregistrer en PDF</button>
-  </div>
 
   <div class="pv-content" id="pvContent">
 
@@ -317,12 +274,6 @@
 
     document.addEventListener('content-ready', buildWorkSlides);
     if (window.CONTENT) buildWorkSlides();
-
-    // Téléchargement : le dialogue d'impression du navigateur génère le PDF
-    // (nom pré-rempli : portfolio.graceouphouet.2026.pdf)
-    document.getElementById('downloadBtn').addEventListener('click', () => {
-      setTimeout(() => window.print(), 200);
-    });
   </script>
 </body>
 </html>
