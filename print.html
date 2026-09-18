@@ -8,9 +8,24 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Gasoek+One&family=Great+Vibes&family=Medula+One&family=Ruda:wght@400;500;700&family=Shrikhand&family=Maharlika&family=Alice&display=swap" rel="stylesheet" />
   <style>
-    body { margin: 0; padding: 0; background: var(--off-white); }
+    :root {
+      --f-ext: 'Anton', sans-serif;
+      --f-gas: 'Gasoek One', sans-serif;
+      --f-sig: 'Great Vibes', cursive;
+      --f-maha: 'Maharlika', serif;
+      --f-alice: 'Alice', serif;
+      --f-ruda: 'Ruda', sans-serif;
+      --f-med: 'Medula One', cursive;
+      --f-shri: 'Shrikhand', cursive;
+      --wine: #6d1216;
+      --accent: #cc2d30;
+      --paper: #f7f5f2;
+    }
+
+    body { margin: 0; padding: 0; background: var(--paper); }
+
     .no-print { display: block; }
     .pv-section { display: none; }
     .pv-section.active { display: block; }
@@ -29,19 +44,15 @@
       padding: .8rem 1.5rem;
       font-family: var(--font-body);
     }
-    .print-toolbar__title {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      letter-spacing: 2px;
-    }
-    .print-toolbar__title span { color: var(--red); }
+    .print-toolbar__title { font-family: var(--f-ext); font-size: 1.1rem; letter-spacing: 2px; }
+    .print-toolbar__title span { color: var(--accent); }
     .print-toolbar__hint { font-size: .75rem; color: rgba(255,255,255,.55); }
     .print-toolbar__btn {
-      background: var(--red);
+      background: var(--accent);
       color: #fff;
       border: none;
       padding: .6rem 1.2rem;
-      font-family: var(--font-display);
+      font-family: var(--f-ext);
       font-size: .9rem;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -49,11 +60,148 @@
       transition: background .2s;
       white-space: nowrap;
     }
-    .print-toolbar__btn:hover { background: var(--red-dark); }
+    .print-toolbar__btn:hover { background: var(--wine); }
 
     .pv-content { margin-top: 64px; }
 
-    /* Impression — format diaporama 16:9 (dimensions PowerPoint) */
+    /* ---- Chaque diapositive : chrome GO★ + libellé script ---- */
+    .pv-section { position: relative; }
+    .pv-section::before {
+      content: 'GO★';
+      position: absolute;
+      top: .45in;
+      right: .45in;
+      z-index: 5;
+      font-family: var(--f-ext);
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: var(--accent);
+    }
+    .pv-section::after {
+      content: attr(data-label);
+      position: absolute;
+      top: .5in;
+      left: .45in;
+      z-index: 5;
+      font-family: var(--f-sig);
+      font-size: 30px;
+      color: var(--accent);
+    }
+    .pv-section.pv-cover::after { content: none; }
+
+    /* ---- Diapositives sombres ---- */
+    .pv-section.pv-dark::before,
+    .pv-section.pv-dark::after { color: #fff; }
+
+    /* ---- Cover ---- */
+    .pv-cover .hero__sub { font-family: var(--f-sig); font-size: 34px; color: var(--wine); }
+    .pv-cover .hero__title { font-family: var(--f-gas); color: var(--wine); font-size: clamp(5rem, 13vw, 9rem); line-height: .9; }
+    .pv-cover .hero__meta .tag {
+      font-family: var(--f-ruda);
+      font-weight: 500;
+      font-size: 20px;
+      letter-spacing: 1px;
+      border: 2px solid var(--wine);
+      color: var(--wine);
+      padding: 8px 18px;
+    }
+    .pv-cover-name {
+      font-family: var(--f-gas);
+      font-size: 44px;
+      color: #000;
+      margin-top: -.6rem;
+      letter-spacing: 1px;
+    }
+
+    /* ---- À propos ---- */
+    .pv-about-quote { font-family: var(--f-med); font-size: 26px; color: #666; }
+    .pv-about-slide .section__title { font-family: var(--f-gas); color: var(--wine); font-size: 68px; }
+    .pv-about-slide .about__body { font-family: var(--f-ruda); font-size: 19px; line-height: 1.5; color: #222; }
+    .pv-about-slide .about__img-label { font-family: var(--f-med); font-size: 18px; color: #666; }
+
+    /* ---- Expérience (sombre) ---- */
+    .pv-experience-slide { background: #0a0a0a; color: #fff; }
+    .pv-experience-slide .section__title { font-family: var(--f-gas); color: var(--accent); font-size: 64px; }
+    .pv-experience-slide .experience__content p { font-family: var(--f-ruda); font-size: 18px; color: rgba(255,255,255,.85); }
+    .pv-experience-slide .content-list__title { font-family: var(--f-gas); font-size: 16px; color: #d1d1d1; letter-spacing: 2px; }
+    .pv-experience-slide .content-list ul li { font-family: var(--f-ruda); font-size: 16px; color: #fff; }
+    .pv-experience-slide .section__eyebrow { font-family: var(--f-sig); font-size: 26px; color: #797979; }
+
+    /* ---- Diapositives travaux (une par projet) ---- */
+    .pv-work-slide { background: #fff; }
+    .pv-work-slide .pv-work__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .8in;
+      align-items: center;
+      height: 100%;
+      padding: 1.1in .6in .6in;
+    }
+    .pv-work-slide .pv-work__img {
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      background: #eee;
+      box-shadow: 0 10px 40px rgba(0,0,0,.18);
+    }
+    .pv-work-slide .pv-work__img img { width: 100%; height: 100%; object-fit: cover; }
+    .pv-work-slide .pv-work__cat {
+      font-family: var(--f-alice);
+      font-size: 20px;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+    .pv-work-slide .pv-work__title {
+      font-family: var(--f-maha);
+      font-size: 44px;
+      color: var(--wine);
+      line-height: 1.05;
+      margin: .3rem 0 .6rem;
+    }
+    .pv-work-slide .pv-work__desc {
+      font-family: var(--f-ruda);
+      font-size: 19px;
+      line-height: 1.5;
+      color: #333;
+    }
+
+    /* ---- Services : rangées alternées ---- */
+    .pv-services-slide .services__grid { grid-template-columns: 1fr; gap: 0; border: none; background: none; }
+    .pv-services-slide .service-card {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      align-items: center;
+      gap: .5in;
+      padding: .42rem .8rem;
+      background: #fff;
+    }
+    .pv-services-slide .service-card--red { background: var(--accent); color: #fff; }
+    .pv-services-slide .service-card__icon { font-size: 26px; margin: 0; }
+    .pv-services-slide .service-card h3 { font-family: var(--f-med); font-size: 30px; letter-spacing: 1px; margin: 0; }
+    .pv-services-slide .service-card p { font-family: var(--f-ruda); font-size: 15px; line-height: 1.35; opacity: .9; }
+
+    /* ---- Stats : chiffres géants ---- */
+    .pv-stats-slide { background: var(--wine); }
+    .pv-stats-slide .section__title { font-family: var(--f-ext); font-size: 90px; color: #fff; letter-spacing: 2px; line-height: .95; }
+    .pv-stats-slide .big-stat__num { font-family: var(--f-shri); font-size: clamp(2.4rem, 4.5vw, 3.6rem); color: #fff; }
+    .pv-stats-slide .big-stat__label { font-family: var(--f-ruda); font-size: 15px; letter-spacing: 2px; color: rgba(255,255,255,.7); }
+
+    /* ---- Autres sections ---- */
+    .pv-section .section__title { font-family: var(--f-gas); color: var(--wine); }
+    .pv-section .section__eyebrow { font-family: var(--f-sig); font-size: 28px; color: var(--wine); }
+    .pv-section .script.red { font-family: var(--f-sig); color: var(--wine); font-size: 1.2em; }
+    .pv-section .perf-card__platform { font-family: var(--f-ext); letter-spacing: 2px; }
+    .pv-section .pkg-col__title { font-family: var(--f-med); font-size: 24px; letter-spacing: 2px; color: var(--accent); }
+    .pv-section .price { font-family: var(--f-ruda); font-weight: 700; color: var(--accent); }
+    .pv-section .testi-card__quote { font-family: var(--f-maha); }
+    .pv-section .testi-card__author strong { font-family: var(--f-alice); }
+    .pv-section .contact__link { font-family: var(--f-ruda); }
+    .pv-section .btn { font-family: var(--f-ext); letter-spacing: 2px; }
+
+    /* ---- Contact ---- */
+    .pv-contact-slide .section__title { font-family: var(--f-ext); font-size: 110px; color: var(--wine); letter-spacing: 2px; line-height: .9; }
+    .pv-contact-slide .contact__link { font-family: var(--f-ruda); font-size: 18px; }
+
+    /* Impression — diapositives 16:9 (dimensions PowerPoint) */
     @media print {
       .no-print { display: none !important; }
       .pv-content { margin-top: 0; }
@@ -67,20 +215,17 @@
         overflow: hidden;
         break-inside: avoid;
         break-before: page;
+        box-sizing: border-box;
       }
       .pv-content > .pv-section:first-child { break-before: auto; }
-      .pv-section .hero { min-height: 0 !important; padding-top: .5rem !important; }
+      .pv-section .hero { min-height: 0 !important; padding-top: .6in !important; }
       .pv-section .hero__scroll { display: none !important; }
-      .pv-section .stats-section { min-height: 0 !important; }
       .pv-section .hero__bg-text { display: none !important; }
+      .pv-section .stats-section { min-height: 0 !important; }
       .pv-section .video-thumb__play { display: none !important; }
-      .work__grid { gap: 8px; }
-      .work__grid .work-item { aspect-ratio: 4/3; }
-      .work__grid .work-item--tall,
-      .work__grid .work-item--wide { grid-row: auto; grid-column: auto; }
+      .pv-section .about__img-label { position: static; max-width: none; margin-top: 1rem; }
       .service-card, .work-item, .perf-card, .pkg-col, .testi-card,
       .video-thumb, .big-stat, .content-list { break-inside: avoid; }
-      .pv-section .about__img-label { position: static; max-width: none; margin-top: 1rem; }
     }
   </style>
 </head>
@@ -97,13 +242,14 @@
 
   <div class="pv-content">
 
-    <!-- HERO -->
-    <div class="pv-section active" data-pv="hero">
+    <!-- 1. COVER -->
+    <div class="pv-section pv-cover pv-cover-slide active" data-pv="hero" data-label="">
       <section class="hero">
         <div class="hero__content">
           <div class="hero__text" id="heroText">
             <p class="hero__sub script"></p>
             <h1 class="hero__title"></h1>
+            <p class="pv-cover-name">GRACE OUPHOUET</p>
             <div class="hero__meta"></div>
             <div class="hero__buttons">
               <a href="#" class="btn btn--red">Travaillons Ensemble ★</a>
@@ -121,8 +267,8 @@
       </section>
     </div>
 
-    <!-- À PROPOS -->
-    <div class="pv-section" data-pv="about">
+    <!-- 2. À PROPOS -->
+    <div class="pv-section pv-about-slide" data-pv="about" data-label="à propos de moi">
       <section class="about">
         <div class="about__inner">
           <div class="about__left">
@@ -134,6 +280,7 @@
           <div class="about__right">
             <p class="section__eyebrow script" id="aboutEyebrow"></p>
             <h2 class="section__title red" id="aboutTitle"></h2>
+            <p class="pv-about-quote">« faisons en sorte que votre marque soit vue — mais surtout mémorisée »</p>
             <div id="aboutBody"></div>
             <div class="about__tags" id="aboutTags"></div>
           </div>
@@ -141,19 +288,8 @@
       </section>
     </div>
 
-    <!-- SERVICES -->
-    <div class="pv-section" data-pv="services">
-      <section class="services section">
-        <div class="services__header">
-          <h2 class="section__title">SERVICES <span class="script red">créatrice de contenu</span></h2>
-          <div class="divider"></div>
-        </div>
-        <div class="services__grid" id="servicesGrid"></div>
-      </section>
-    </div>
-
-    <!-- EXPÉRIENCE -->
-    <div class="pv-section" data-pv="experience">
+    <!-- 3. EXPÉRIENCE (sombre) -->
+    <div class="pv-section pv-dark pv-experience-slide" data-pv="experience" data-label="travaux">
       <section class="experience">
         <div class="experience__inner">
           <div class="experience__image">
@@ -172,19 +308,22 @@
       </section>
     </div>
 
-    <!-- TRAVAUX -->
-    <div class="pv-section" data-pv="work">
-      <section class="work section">
-        <div class="work__header">
-          <h2 class="section__title">PORTFOLIO <span class="script red">mes travaux</span></h2>
+    <!-- 4. TRAVAUX — une diapositive par projet -->
+    <div id="workSlides"></div>
+
+    <!-- 5. SERVICES -->
+    <div class="pv-section pv-services-slide" data-pv="services" data-label="créatrice de contenu">
+      <section class="services section">
+        <div class="services__header">
+          <h2 class="section__title">SERVICES <span class="script red">créatrice de contenu</span></h2>
           <div class="divider"></div>
         </div>
-        <div class="work__grid" id="workGrid"></div>
+        <div class="services__grid" id="servicesGrid"></div>
       </section>
     </div>
 
-    <!-- VIDÉOS -->
-    <div class="pv-section" data-pv="videos">
+    <!-- 6. VIDÉOGRAPHIE -->
+    <div class="pv-section" data-pv="videos" data-label="vidéographie">
       <section class="video-section section">
         <div class="video-section__header">
           <h2 class="section__title">VIDÉOGRAPHIE <span class="script red">créatrice de contenu</span></h2>
@@ -194,8 +333,8 @@
       </section>
     </div>
 
-    <!-- STATS -->
-    <div class="pv-section" data-pv="stats">
+    <!-- 7. STATS (sombre) -->
+    <div class="pv-section pv-dark pv-stats-slide" data-pv="stats" data-label="stats">
       <section class="stats-section">
         <div class="stats-section__left">
           <h2 class="section__title white" id="statsTitle"></h2>
@@ -205,8 +344,8 @@
       </section>
     </div>
 
-    <!-- TOP POSTS -->
-    <div class="pv-section" data-pv="top">
+    <!-- 8. MEILLEURES PUBLICATIONS -->
+    <div class="pv-section" data-pv="top" data-label="meilleures publications">
       <section class="top-perf section">
         <div class="top-perf__header">
           <h2 class="section__title">MEILLEURES <span class="script red">publications</span></h2>
@@ -215,8 +354,8 @@
       </section>
     </div>
 
-    <!-- FORFAITS -->
-    <div class="pv-section" data-pv="packages">
+    <!-- 9. FORFAITS -->
+    <div class="pv-section" data-pv="packages" data-label="tarifs">
       <section class="packages section">
         <div class="packages__header">
           <h2 class="section__title">FORFAITS <span class="script red">tarifs</span></h2>
@@ -227,8 +366,8 @@
       </section>
     </div>
 
-    <!-- TÉMOIGNAGES -->
-    <div class="pv-section" data-pv="testimonials">
+    <!-- 10. TÉMOIGNAGES -->
+    <div class="pv-section" data-pv="testimonials" data-label="témoignages">
       <section class="testimonials section">
         <div class="testimonials__header">
           <h2 class="section__title">CE QUE LES MARQUES <span class="script red">disent</span></h2>
@@ -238,14 +377,17 @@
       </section>
     </div>
 
-    <!-- CONTACT -->
-    <div class="pv-section" data-pv="contact">
+    <!-- 11. CONTACT -->
+    <div class="pv-section pv-contact-slide" data-pv="contact" data-label="contact">
       <section class="contact section" id="contact">
         <div class="contact__left">
           <p class="section__eyebrow script">prenons contact</p>
           <h2 class="section__title red">COLLABO-<br/>RONS.</h2>
           <p>Prête à créer quelque chose d'inoubliable ? Contactez-moi et construisons ensemble votre prochaine campagne.</p>
           <div class="contact__links" id="contactLinks"></div>
+          <div class="hero__buttons">
+            <a href="#" class="btn btn--red">Envoyer un Message ★</a>
+          </div>
         </div>
       </section>
     </div>
@@ -256,11 +398,31 @@
   <script src="supabase.js"></script>
   <script src="render.js"></script>
   <script>
-    // Toutes les sections sont affichées (contenu live : Supabase → data.json → défauts)
     document.querySelectorAll('.pv-section').forEach(s => s.classList.add('active'));
 
-    // Rendu du contact (les autres sections sont rendues par render.js)
-    // (le rendu contactLinks est déjà fait par Renderers.contact)
+    // Diapositives travaux : une par projet (comme le modèle Canva)
+    function buildWorkSlides() {
+      const wrap = document.getElementById('workSlides');
+      if (!wrap) return;
+      const work = (window.CONTENT && window.CONTENT.work) || [];
+      if (!work.length) { wrap.style.display = 'none'; return; }
+      wrap.innerHTML = work.map((w, i) => `
+        <div class="pv-section pv-work-slide" data-label="mes travaux" data-work="${i}">
+          <div class="pv-work__grid">
+            <div class="pv-work__img">
+              <img src="${esc(w.image)}" alt="${esc(w.alt || w.title)}" />
+            </div>
+            <div class="pv-work__info">
+              <p class="pv-work__cat">${esc(w.cat)} · ${esc((w.tags || []).join(' · '))}</p>
+              <h3 class="pv-work__title">${esc(w.title)}</h3>
+              <p class="pv-work__desc">${esc(w.desc)}</p>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    if (window.CONTENT) buildWorkSlides();
+    document.addEventListener('content-ready', buildWorkSlides);
 
     document.getElementById('printBtn').addEventListener('click', () => window.print());
 
@@ -269,13 +431,13 @@
     function autoPrint() {
       if (printed) return;
       printed = true;
-      setTimeout(() => window.print(), 800);
+      setTimeout(() => window.print(), 900);
     }
     window.addEventListener('load', autoPrint);
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(autoPrint).catch(() => {});
     }
-    setTimeout(autoPrint, 3000);
+    setTimeout(autoPrint, 3500);
   </script>
 </body>
 </html>
