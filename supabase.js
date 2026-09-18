@@ -27,7 +27,13 @@ window.Supabase = (() => {
         err.status = r.status;
         throw err;
       }
-      return r.status === 204 ? null : r.json();
+      const t = await r.text();
+      if (!t) return null;
+      try {
+        return JSON.parse(t);
+      } catch (e) {
+        return null;
+      }
     });
   }
 

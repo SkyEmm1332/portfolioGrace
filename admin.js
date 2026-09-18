@@ -753,10 +753,15 @@ async function initSupabaseMode() {
       if (!data) {
         // Première connexion : initialise la table depuis data.json déployé
         const r = await fetch('data.json', { cache: 'no-store' });
-        data = r.ok ? await r.json() : null;
-        if (data) {
-          await window.Supabase.saveConfig(data);
-          toast('✓ Première connexion : contenu initialisé dans Supabase');
+        const seed = r.ok ? await r.json() : null;
+        if (seed) {
+          try {
+            await window.Supabase.saveConfig(seed);
+            toast('✓ Première connexion : contenu initialisé dans Supabase');
+          } catch (e2) {
+            toast('Initialisation : ' + e2.message, true);
+          }
+          data = seed;
         }
       }
       if (!data) {
