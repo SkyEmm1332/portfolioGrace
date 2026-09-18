@@ -422,6 +422,7 @@ ul { list-style: none; }
   margin-bottom: 1rem;
   color: #333;
   font-size: .95rem;
+  white-space: pre-line;
 }
 
 .about__tags { margin-top: 2rem; }
@@ -508,7 +509,7 @@ ul { list-style: none; }
 
 .experience__content .section__title { color: var(--red); }
 .experience__content .section__eyebrow { color: rgba(255,255,255,.5); }
-.experience__content p { color: rgba(255,255,255,.75); margin-bottom: 1rem; }
+.experience__content p { color: rgba(255,255,255,.75); margin-bottom: 1rem; white-space: pre-line; }
 
 .content-list { margin-top: 2rem; }
 .content-list__title {
@@ -701,6 +702,7 @@ ul { list-style: none; }
   font-size: .95rem;
   line-height: 1.7;
   color: #555;
+  white-space: pre-line;
 }
 
 .work-expanded__tags {
@@ -1041,6 +1043,7 @@ ul { list-style: none; }
   font-size: 1rem;
   line-height: 1.7;
   flex: 1;
+  white-space: pre-line;
 }
 
 .testi-card__author {
