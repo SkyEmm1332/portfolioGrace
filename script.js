@@ -309,9 +309,21 @@ document.addEventListener('content-ready', function init() {
   }
 
   // ===========================
-  // PDF — téléchargement direct via /api/pdf (rendu serveur exact)
-  // Repli : ouverture de print.html dans un nouvel onglet
+  // PDF — téléchargement direct uniquement (aucune page externe)
   // ===========================
+  function showNotice(msg) {
+    let t = document.getElementById('pdfNotice');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'pdfNotice';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.cssText = 'position:fixed;bottom:2rem;right:2rem;background:#0a0a0a;color:#fff;padding:12px 18px;border-left:4px solid var(--red,#C8102E);z-index:2000;font-family:var(--font-body,sans-serif);font-size:.85rem;border-radius:2px;box-shadow:0 6px 24px rgba(0,0,0,.25);max-width:320px;';
+    clearTimeout(showNotice._t);
+    showNotice._t = setTimeout(() => t.remove(), 4500);
+  }
+
   document.querySelectorAll('.pdf-download').forEach(link => {
     link.addEventListener('click', async (e) => {
       e.preventDefault();
@@ -332,7 +344,7 @@ document.addEventListener('content-ready', function init() {
         a.remove();
         setTimeout(() => URL.revokeObjectURL(url), 4000);
       } catch (err) {
-        window.open('print.html', '_blank');
+        showNotice('Téléchargement impossible pour le moment — réessayez dans un instant.');
       } finally {
         link.textContent = label;
         delete link.dataset.busy;
