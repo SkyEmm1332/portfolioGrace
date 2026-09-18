@@ -348,12 +348,24 @@
         const slides = Array.from(document.querySelectorAll('#pvContent .pv-section'));
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({ orientation: 'landscape', unit: 'in', format: [13.333, 7.5] });
+        window.scrollTo(0, 0);
         for (let i = 0; i < slides.length; i++) {
           const canvas = await html2canvas(slides[i], {
             scale: 2,
             useCORS: true,
-            backgroundColor: null,
-            logging: false
+            backgroundColor: '#f5f4f0',
+            logging: false,
+            scrollX: 0,
+            scrollY: -window.scrollY,
+            windowWidth: 1280,
+            windowHeight: 720,
+            imageTimeout: 15000,
+            ignoreElements: (el) => el.classList && el.classList.contains('print-toolbar'),
+            onclone: (doc) => {
+              const tb = doc.querySelector('.print-toolbar');
+              if (tb) tb.remove();
+              doc.querySelectorAll('.hero__frame-deco').forEach(el => { el.style.zIndex = 'auto'; });
+            }
           });
           const img = canvas.toDataURL('image/jpeg', 0.92);
           if (i > 0) pdf.addPage([13.333, 7.5], 'landscape');
