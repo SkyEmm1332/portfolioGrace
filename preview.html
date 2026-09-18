@@ -54,6 +54,39 @@
       color: var(--red);
       margin-bottom: .8rem;
     }
+
+    /* Mode aperçu de fichier (PDF / image) */
+    .pv-file {
+      position: fixed;
+      inset: 0;
+      background: var(--off-white);
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .pv-file[hidden] { display: none; }
+    .pv-file iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+    }
+    .pv-file img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      box-shadow: 0 6px 40px rgba(0,0,0,.18);
+      background: #fff;
+    }
+    .pv-file-empty {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--gray);
+      text-align: center;
+      line-height: 1.8;
+    }
   </style>
 </head>
 <body>
@@ -216,6 +249,13 @@
 
   </div>
 
+  <!-- APERÇU DE FICHIER (PDF / image) -->
+  <div class="pv-file" id="pvFile" hidden>
+    <p class="pv-file-empty" id="pvFileEmpty">Aucun fichier à prévisualiser.<br />Choisissez un fichier ou cliquez sur « Voir le fichier ».</p>
+    <iframe id="pvFileFrame" title="Aperçu du fichier"></iframe>
+    <img id="pvFileImg" alt="Aperçu du fichier" />
+  </div>
+
   <script src="render.js"></script>
   <script>
     // Par défaut : toutes les sections sont visibles (contenu rendu depuis data.json)
@@ -231,13 +271,49 @@
 
     window.addEventListener('message', (e) => {
       const m = e.data;
-      if (!m || m.type !== 'preview' || !window.Renderers) return;
-      document.querySelectorAll('.pv-section').forEach(s => {
-        s.classList.toggle('active', s.dataset.pv === m.section);
-      });
-      const renderer = window.Renderers[m.section];
-      if (renderer) renderer.call(window.Renderers, m.config);
-      setTimeout(reportHeight, 60);
+      if (!m || !window.Renderers) return;
+
+      const pvFile = document.getElementById('pvFile');
+      const pvFileFrame = document.getElementById('pvFileFrame');
+      const pvFileImg = document.getElementById('pvFileImg');
+      const pvFileEmpty = document.getElementById('pvFileEmpty');
+
+      // Mode fichier (PDF ou image)
+      if (m.type === 'file') {
+        document.querySelectorAll('.pv-section').forEach(s => s.classList.remove('active'));
+        pvFile.hidden = false;
+        pvFileFrame.src = '';
+        pvFileImg.src = '';
+        if (!m.url) {
+          pvFileFrame.style.display = 'none';
+          pvFileImg.style.display = 'none';
+          pvFileEmpty.hidden = false;
+        } else if (/\.(jpe?g|png|webp|gif|svg)$/i.test(m.url)) {
+          pvFileFrame.style.display = 'none';
+          pvFileImg.style.display = 'block';
+          pvFileEmpty.hidden = true;
+          pvFileImg.src = m.url;
+        } else {
+          pvFileFrame.style.display = 'block';
+          pvFileImg.style.display = 'none';
+          pvFileEmpty.hidden = true;
+          pvFileFrame.src = m.url;
+        }
+        return;
+      }
+
+      // Mode section
+      if (m.type === 'preview') {
+        pvFile.hidden = true;
+        pvFileFrame.src = '';
+        pvFileImg.src = '';
+        document.querySelectorAll('.pv-section').forEach(s => {
+          s.classList.toggle('active', s.dataset.pv === m.section);
+        });
+        const renderer = window.Renderers[m.section];
+        if (renderer) renderer.call(window.Renderers, m.config);
+        setTimeout(reportHeight, 60);
+      }
     });
 
     window.addEventListener('load', reportHeight);

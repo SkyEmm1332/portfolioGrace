@@ -408,6 +408,11 @@ function createFilePicker(container, value) {
     urlToggle.style.display = 'none';
   });
 
+  fileLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showFilePreview(pathInput.value.trim());
+  });
+
   pathInput.addEventListener('input', () => setPath(pathInput.value.trim()));
 
   fileInput.addEventListener('change', () => {
@@ -798,9 +803,24 @@ function applyPreviewScale() {
   previewFrameWrap.style.height = Math.round(previewNaturalH * scale) + 'px';
 }
 
+function showFilePreview(url) {
+  if (!previewReady) return;
+  // Mode fichier : pas de mise à l'échelle desktop, hauteur adaptée au document
+  previewFrame.style.transform = 'none';
+  previewFrame.style.width = '100%';
+  previewFrameWrap.style.height = '740px';
+  previewFrame.contentWindow.postMessage({ type: 'file', url: url || '' }, '*');
+}
+
 function updatePreview() {
   if (!previewReady) { previewPending = true; return; }
   try {
+    if (currentTab === 'files') {
+      const cv = mediaPickers.cvFile ? mediaPickers.cvFile.getValue() : '';
+      showFilePreview(cv);
+      return;
+    }
+    applyPreviewScale();
     const config = collectConfig();
     previewFrame.contentWindow.postMessage({ type: 'preview', section: currentTab, config }, '*');
   } catch (e) { /* silencieux */ }
