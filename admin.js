@@ -39,6 +39,14 @@ async function uploadMedia(name, base64Data) {
   return apiUpload(name, base64Data);
 }
 
+// Upload vers une clé fixe (Supabase uniquement) — le fichier persiste
+async function uploadMediaAs(name, base64Data, fixedKey) {
+  if (window.Supabase && window.Supabase.isConfigured() && fixedKey) {
+    return window.Supabase.uploadAs(fixedKey, base64Data);
+  }
+  return uploadMedia(name, base64Data);
+}
+
 // ---------- Utilitaires ----------
 const $ = (id) => document.getElementById(id);
 
@@ -374,7 +382,7 @@ function collectLines(container) {
 }
 
 // ---------- Fichier picker (PDF et autres) ----------
-function createFilePicker(container, value) {
+function createFilePicker(container, value, fixedKey) {
   container.innerHTML = `
     <div class="media-picker__row">
       <a class="media-picker__file-link" href="" target="_blank" rel="noopener" hidden>Voir le fichier ↗</a>
@@ -401,6 +409,14 @@ function createFilePicker(container, value) {
   }
 
   setPath(value);
+
+  // Clé fixe : vérifie si le fichier existe déjà dans le stockage et préremplit
+  if (!value && fixedKey && window.Supabase && window.Supabase.isConfigured()) {
+    const url = window.Supabase.publicUrl(fixedKey);
+    fetch(url, { method: 'HEAD' })
+      .then(r => { if (r.ok && !pathInput.value) setPath(url); })
+      .catch(() => {});
+  }
 
   urlToggle.addEventListener('click', () => {
     pathInput.hidden = false;
@@ -429,9 +445,9 @@ function createFilePicker(container, value) {
     reader.onload = async () => {
       try {
         const base64 = String(reader.result).split(',')[1];
-        const url = await uploadMedia(file.name, base64);
+        const url = await uploadMediaAs(file.name, base64, fixedKey);
         setPath(url);
-        status.textContent = '✓ Fichier envoyé';
+        status.textContent = '✓ Fichier envoyé' + (fixedKey ? ' (fichier permanent)' : '');
       } catch (e) {
         status.textContent = 'Échec de l\'envoi : ' + e.message;
         status.classList.add('error');
@@ -444,9 +460,11 @@ function createFilePicker(container, value) {
 }
 
 // ---------- Fichiers ----------
+const CV_STORAGE_KEY = 'fichiers/cv.graceouphouet.2026.pdf';
+
 function fillFiles() {
   if (!config.fichiers) config.fichiers = { cv: '', others: [] };
-  mediaPickers.cvFile = createFilePicker($('cvFilePicker'), config.fichiers.cv);
+  mediaPickers.cvFile = createFilePicker($('cvFilePicker'), config.fichiers.cv, CV_STORAGE_KEY);
 
   const list = $('filesList');
   list.innerHTML = '';
@@ -800,6 +818,7 @@ function applyPreviewScale() {
   const w = previewFrameWrap.clientWidth || 1;
   const scale = w / PREVIEW_DESKTOP_W;
   previewFrame.style.transform = 'scale(' + scale + ')';
+  previewFrame.style.width = PREVIEW_DESKTOP_W + 'px';
   previewFrameWrap.style.height = Math.round(previewNaturalH * scale) + 'px';
 }
 

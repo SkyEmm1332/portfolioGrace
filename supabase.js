@@ -131,6 +131,33 @@ window.Supabase = (() => {
     return URL + '/storage/v1/object/public/uploads/' + key;
   }
 
+  function publicUrl(key) {
+    return URL + '/storage/v1/object/public/uploads/' + String(key).replace(/^\/+/, '');
+  }
+
+  // Upload vers une clé FIXE (persistance + écrasement propre du fichier)
+  async function uploadAs(key, base64Data) {
+    const cleanKey = String(key || '').replace(/^\/+/, '');
+    const bin = atob(base64Data);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const r = await fetch(URL + '/storage/v1/object/uploads/uploads/' + cleanKey, {
+      method: 'POST',
+      headers: {
+        apikey: ANON,
+        Authorization: 'Bearer ' + getToken(),
+        'Content-Type': 'application/octet-stream',
+        'x-upsert': 'true'
+      },
+      body: bytes
+    });
+    if (!r.ok) {
+      const t = await r.text().catch(() => '');
+      throw new Error('Upload Supabase ' + r.status + ' : ' + t.slice(0, 120));
+    }
+    return publicUrl(cleanKey);
+  }
+
   async function deleteFile(publicUrl) {
     const prefix = URL + '/storage/v1/object/public/uploads/';
     if (typeof publicUrl !== 'string' || !publicUrl.startsWith(prefix)) return false;
@@ -152,6 +179,8 @@ window.Supabase = (() => {
     loadConfig,
     saveConfig,
     upload,
+    uploadAs,
+    publicUrl,
     deleteFile
   };
 })();
