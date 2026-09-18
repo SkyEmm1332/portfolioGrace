@@ -350,6 +350,34 @@
       });
     }
 
+    // Prépare toutes les images : chargement forcé + conversion en data URL.
+    // La capture n'a plus aucune dépendance réseau (fini les blocages).
+    async function inlineImages() {
+      const imgs = Array.from(document.querySelectorAll('#pvContent img'));
+      // 1. Chargement forcé (même hors écran)
+      imgs.forEach(img => { img.loading = 'eager'; });
+      await Promise.all(imgs.map(img => new Promise(resolve => {
+        if (img.complete && img.naturalWidth) { resolve(); return; }
+        img.addEventListener('load', () => resolve(), { once: true });
+        img.addEventListener('error', () => resolve(), { once: true });
+      })));
+      // 2. Remplacement par des data URLs
+      for (const img of imgs) {
+        try {
+          const res = await fetch(img.src);
+          if (!res.ok) continue;
+          const blob = await res.blob();
+          const dataUrl = await new Promise((res2, rej2) => {
+            const f = new FileReader();
+            f.onload = () => res2(f.result);
+            f.onerror = rej2;
+            f.readAsDataURL(blob);
+          });
+          img.src = dataUrl;
+        } catch (e) { /* garde la source originale */ }
+      }
+    }
+
     async function captureSlide(el, extra) {
       return domtoimage.toJpeg(el, {
         width: 1280,
@@ -366,10 +394,11 @@
     async function generatePdf() {
       if (generating) return;
       generating = true;
-      setStatus('Préparation…');
+      setStatus('Préparation des images…');
       try {
         if (!window.domtoimage) throw new Error('bibliothèque de capture indisponible (CDN bloqué ?)');
         if (document.fonts && document.fonts.ready) await document.fonts.ready.catch(() => {});
+        await withTimeout(inlineImages(), 60000);
         const slides = Array.from(document.querySelectorAll('#pvContent .pv-section'));
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({ orientation: 'landscape', unit: 'in', format: [13.333, 7.5] });
@@ -378,10 +407,10 @@
           setStatus('Génération du PDF… diapositive ' + (i + 1) + '/' + slides.length);
           let img;
           try {
-            img = await withTimeout(captureSlide(slides[i]), 25000);
+            img = await withTimeout(captureSlide(slides[i]), 15000);
           } catch (e1) {
             try {
-              img = await withTimeout(captureSlide(slides[i], { pixelRatio: 1 }), 25000);
+              img = await withTimeout(captureSlide(slides[i], { pixelRatio: 1 }), 15000);
             } catch (e2) {
               throw new Error('diapositive ' + (i + 1) + ' impossible à capturer');
             }
