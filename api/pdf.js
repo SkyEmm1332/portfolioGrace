@@ -6,15 +6,13 @@
 // ===========================
 let chromium = null;
 let puppeteer = null;
-try {
-  chromium = require('@sparticuz/chromium');
-  puppeteer = require('puppeteer-core');
-} catch (e) {
-  console.error('Échec import modules :', e);
-  module.exports = async function importError(req, res) {
-    res.status(500).json({ error: 'Échec import des modules', detail: String(e.message || e).slice(0, 500) });
-  };
-  return;
+
+async function loadModules() {
+  if (chromium && puppeteer) return;
+  const c = await import('@sparticuz/chromium');
+  const p = await import('puppeteer-core');
+  chromium = c.default || c;
+  puppeteer = p.default || p;
 }
 
 module.exports = async function handler(req, res) {
@@ -24,6 +22,8 @@ module.exports = async function handler(req, res) {
   }
   let browser;
   try {
+    await loadModules();
+
     const host = req.headers.host || 'portfolio-grace.vercel.app';
     const target = 'https://' + host + '/print.html';
 
