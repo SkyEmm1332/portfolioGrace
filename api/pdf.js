@@ -57,7 +57,7 @@ module.exports = async function handler(req, res) {
     res.status(200).send(pdf);
   } catch (e) {
     console.error('Erreur génération PDF :', e);
-    res.status(500).json({ error: 'Génération du PDF impossible' });
+    res.status(500).json({ error: 'Génération du PDF impossible', detail: String(e.message || e).slice(0, 300) });
   } finally {
     if (browser) await browser.close().catch(() => {});
   }
