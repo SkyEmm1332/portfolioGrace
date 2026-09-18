@@ -309,29 +309,33 @@ document.addEventListener('content-ready', function init() {
   }
 
   // ===========================
-  // PDF — téléchargement direct via /api/pdf
-  // (repli : ouverture de print.html dans un nouvel onglet)
+  // PDF — téléchargement direct via /api/pdf (rendu serveur exact)
+  // Repli : ouverture de print.html dans un nouvel onglet
   // ===========================
   document.querySelectorAll('.pdf-download').forEach(link => {
     link.addEventListener('click', async (e) => {
       e.preventDefault();
+      if (link.dataset.busy) return;
+      link.dataset.busy = '1';
+      const label = link.textContent;
+      link.textContent = 'Génération…';
       try {
         const r = await fetch('/api/pdf');
-        if (r.ok) {
-          const blob = await r.blob();
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'portfolio.graceouphouet.2026.pdf';
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          URL.revokeObjectURL(url);
-        } else {
-          window.open('print.html', '_blank');
-        }
+        if (!r.ok) throw new Error('http ' + r.status);
+        const blob = await r.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'portfolio.graceouphouet.2026.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
       } catch (err) {
         window.open('print.html', '_blank');
+      } finally {
+        link.textContent = label;
+        delete link.dataset.busy;
       }
     });
   });
