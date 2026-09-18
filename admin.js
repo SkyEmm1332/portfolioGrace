@@ -1059,7 +1059,8 @@ async function initSupabaseMode() {
 
   async function loadFromSupabase() {
     try {
-      let data = await window.Supabase.loadConfig();
+      const res = await window.Supabase.loadConfig();
+      let data = res && res.data;
       if (!data) {
         // Première connexion : initialise la table depuis data.json déployé
         const r = await fetch('data.json', { cache: 'no-store' });

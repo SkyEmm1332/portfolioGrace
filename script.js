@@ -332,7 +332,8 @@ document.addEventListener('content-ready', function init() {
       const label = link.textContent;
       link.textContent = 'Génération…';
       try {
-        const r = await fetch('/api/pdf');
+        const version = window.CONTENT_VERSION || '0';
+        const r = await fetch('/api/pdf?v=' + encodeURIComponent(version));
         if (!r.ok) throw new Error('http ' + r.status);
         const blob = await r.blob();
         const url = URL.createObjectURL(blob);

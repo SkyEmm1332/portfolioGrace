@@ -26,6 +26,8 @@ module.exports = async function handler(req, res) {
 
     const host = req.headers.host || 'portfolio-grace.vercel.app';
     const target = 'https://' + host + '/print.html';
+    // Version du contenu : le cache CDN est lié à l'URL (dont le paramètre v)
+    const version = (req.query && req.query.v) || '';
 
     browser = await puppeteer.launch({
       args: chromium.args,
@@ -82,7 +84,13 @@ module.exports = async function handler(req, res) {
 
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'attachment; filename="portfolio.graceouphouet.2026.pdf"');
-    res.setHeader('Cache-Control', 'no-store');
+    // Cache CDN : tant que la version du contenu est identique, le PDF déjà
+    // généré est servi instantanément (aucune attente de génération)
+    if (version) {
+      res.setHeader('Cache-Control', 'public, s-maxage=31536000, immutable');
+    } else {
+      res.setHeader('Cache-Control', 'no-store');
+    }
     res.status(200).send(Buffer.from(pdf));
   } catch (e) {
     console.error('Erreur génération PDF :', e);

@@ -367,8 +367,11 @@ async function loadContent() {
   // 1. Supabase si configuré (édition en ligne)
   if (window.Supabase && window.Supabase.isConfigured()) {
     try {
-      const data = await window.Supabase.loadConfig();
-      if (data) return data;
+      const res = await window.Supabase.loadConfig();
+      if (res && res.data) {
+        window.CONTENT_VERSION = res.version || '';
+        return res.data;
+      }
     } catch (e) { /* repli sur data.json */ }
   }
   // 2. data.json (serveur local ou hébergement statique)

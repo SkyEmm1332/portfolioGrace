@@ -92,11 +92,11 @@ window.Supabase = (() => {
 
   // ---------- DONNÉES (table content, ligne id='config') ----------
   async function loadConfig() {
-    const res = await api('/rest/v1/content?select=data&id=eq.config&limit=1', {
+    const res = await api('/rest/v1/content?select=data,updated_at&id=eq.config&limit=1', {
       headers: authHeaders()
     });
     if (!res || !res.length) return null;
-    return res[0].data;
+    return { data: res[0].data, version: res[0].updated_at || '' };
   }
 
   async function saveConfig(data) {
