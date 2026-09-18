@@ -519,9 +519,113 @@ function restoreTab(name) {
   toast('↺ Section restaurée depuis la dernière sauvegarde');
 }
 
-// ---------- Sauvegarde ----------
-async function saveAll() {
+// ---------- Diff : récapitulatif des modifications ----------
+const SECTION_LABELS = {
+  meta: 'Général (SEO)', hero: 'Hero', about: 'À propos', services: 'Services',
+  experience: 'Expérience', work: 'Travaux', videos: 'Vidéos', stats: 'Stats',
+  topPosts: 'Top posts', packages: 'Forfaits', testimonials: 'Témoignages',
+  contact: 'Contact', socials: 'Réseaux sociaux'
+};
+
+const FIELD_LABELS = {
+  sub: 'sous-titre', titleLines: 'titre', tags: 'tags', image: 'image',
+  imageAlt: 'texte alternatif', stats: 'stats', title: 'titre', description: 'description',
+  eyebrow: 'sur-titre', body: 'paragraphes', imageLabel: 'étiquette', paragraphs: 'paragraphes',
+  listTitle: 'titre de liste', list: 'liste', cat: 'catégorie', desc: 'description',
+  alt: 'texte alternatif', thumb: 'vignette', video: 'vidéo', platform: 'plateforme',
+  views: 'vues', likes: 'likes', comments: 'commentaires', quote: 'citation',
+  author: 'auteur', brand: 'marque', red: 'fond rouge', rows: 'tarifs',
+  label: 'libellé', num: 'nombre', email: 'e-mail', instagram: 'Instagram',
+  instagramLabel: 'libellé Instagram', tiktok: 'TikTok', tiktokLabel: 'libellé TikTok',
+  aria: 'nom', url: 'URL', icon: 'icône', tall: 'grande carte', wide: 'carte large',
+  items: 'statistiques'
+};
+
+function labelPath(path) {
+  const parts = [];
+  let section = '';
+  path.forEach((p, i) => {
+    if (i === 0) { section = SECTION_LABELS[p] || p; return; }
+    if (typeof p === 'number') parts.push('#' + (p + 1));
+    else parts.push(FIELD_LABELS[p] || p);
+  });
+  return section + (parts.length ? ' › ' + parts.join(' › ') : '');
+}
+
+function fmtVal(v) {
+  if (Array.isArray(v)) return v.map(fmtVal).join(' · ');
+  if (typeof v === 'boolean') return v ? 'oui' : 'non';
+  const s = String(v == null ? '' : v).replace(/\n/g, ' ⏎ ');
+  return s.length > 60 ? s.slice(0, 57) + '…' : s;
+}
+
+function itemName(x) {
+  if (!x || typeof x !== 'object') return '';
+  return x.title || x.author || x.platform || x.label || '';
+}
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function diffConfig(a, b, path, changes) {
+  if (Array.isArray(a) || Array.isArray(b)) {
+    const A = Array.isArray(a) ? a : [];
+    const B = Array.isArray(b) ? b : [];
+    if (JSON.stringify(A) === JSON.stringify(B)) return;
+    const maxN = Math.max(A.length, B.length);
+    for (let i = 0; i < maxN; i++) {
+      if (!A[i] && B[i]) changes.push({ text: labelPath(path) + ' : « ' + (itemName(B[i]) || '#' + (i + 1)) + ' » ajouté' });
+      else if (A[i] && !B[i]) changes.push({ text: labelPath(path) + ' : « ' + (itemName(A[i]) || '#' + (i + 1)) + ' » supprimé' });
+    }
+    for (let i = 0; i < Math.min(A.length, B.length); i++) {
+      diffConfig(A[i], B[i], path.concat(i), changes);
+    }
+    return;
+  }
+  if (a && b && typeof a === 'object' && typeof b === 'object') {
+    const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+    keys.forEach(k => diffConfig(a[k], b[k], path.concat(k), changes));
+    return;
+  }
+  if (JSON.stringify(a) !== JSON.stringify(b)) {
+    changes.push({ text: labelPath(path) + ' : « ' + fmtVal(a) + ' » → « ' + fmtVal(b) + ' »' });
+  }
+}
+
+// ---------- Sauvegarde avec récapitulatif ----------
+let pendingSaveData = null;
+
+function openSaveConfirm() {
   const data = collectConfig();
+  if (!config) {
+    doSave(data);
+    return;
+  }
+  const changes = [];
+  diffConfig(config, data, [], changes);
+  if (!changes.length) {
+    toast('Aucune modification à sauvegarder');
+    return;
+  }
+  pendingSaveData = data;
+  const list = $('confirmList');
+  list.innerHTML = changes.slice(0, 60).map(c => `<li>${esc(c.text)}</li>`).join('');
+  if (changes.length > 60) {
+    list.innerHTML += `<li>… et ${changes.length - 60} autre(s) modification(s)</li>`;
+  }
+  $('confirmCount').textContent = changes.length + ' modification(s) détectée(s)';
+  $('confirmModal').hidden = false;
+}
+
+function closeSaveConfirm() {
+  $('confirmModal').hidden = true;
+  pendingSaveData = null;
+}
+
+async function doSave(data) {
   try {
     if (window.Supabase && window.Supabase.isConfigured()) {
       await window.Supabase.saveConfig(data);
@@ -898,8 +1002,22 @@ async function initServerMode() {
 
 // ---------- Initialisation ----------
 async function init() {
-  $('saveBtn').addEventListener('click', saveAll);
+  $('saveBtn').addEventListener('click', openSaveConfirm);
   $('restoreBtn').addEventListener('click', restoreAll);
+
+  const confirmModal = $('confirmModal');
+  $('confirmCancel').addEventListener('click', closeSaveConfirm);
+  $('confirmSave').addEventListener('click', async () => {
+    const d = pendingSaveData;
+    closeSaveConfirm();
+    if (d) await doSave(d);
+  });
+  confirmModal.addEventListener('click', (e) => {
+    if (e.target === confirmModal) closeSaveConfirm();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !confirmModal.hidden) closeSaveConfirm();
+  });
 
   document.querySelectorAll('.admin__nav-btn').forEach(btn => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));

@@ -6,6 +6,7 @@
   --red: #C8102E;
   --red-dark: #a00d24;
   --black: #0a0a0a;
+  --white: #ffffff;
   --off-white: #f5f4f0;
   --gray: #888;
   --light-gray: #e0deda;
@@ -135,6 +136,32 @@ body {
   transition: color .2s;
 }
 .admin__link:hover { color: var(--red); }
+
+.admin__sidebar-actions {
+  display: flex;
+  gap: .6rem;
+  align-items: center;
+}
+.admin__sidebar-actions .admin__btn--save { flex: 1; }
+
+.admin__icon-btn {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid rgba(255,255,255,.25);
+  color: rgba(255,255,255,.7);
+  cursor: pointer;
+  transition: all .2s;
+}
+.admin__icon-btn:hover {
+  border-color: var(--red);
+  color: var(--white);
+  background: rgba(200,16,46,.15);
+}
 
 /* ===========================
    MAIN — colonne éditoriale
@@ -608,6 +635,76 @@ select {
   min-height: 1rem;
 }
 .admin__login-msg.ok { color: var(--green); }
+
+/* ===========================
+   RÉCAPITULATIF AVANT SAUVEGARDE
+   =========================== */
+.admin__confirm {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,10,10,.65);
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.admin__confirm[hidden] { display: none; }
+
+.admin__confirm-box {
+  background: #fff;
+  border: 1px solid var(--light-gray);
+  width: 660px;
+  max-width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 2rem 1.6rem;
+}
+
+.admin__confirm-kicker {
+  font-family: var(--font-display);
+  font-size: .78rem;
+  letter-spacing: 4px;
+  color: var(--red);
+  margin-bottom: .2rem;
+}
+
+.admin__confirm-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.admin__confirm-count {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: .88rem;
+  color: var(--gray);
+  margin-top: .2rem;
+}
+
+.admin__confirm-list {
+  list-style: none;
+  overflow-y: auto;
+  margin: 1.2rem 0 1.4rem;
+  border-top: 1px solid var(--light-gray);
+  max-height: 45vh;
+}
+.admin__confirm-list li {
+  font-size: .84rem;
+  line-height: 1.5;
+  padding: .55rem 0;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.admin__confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.4rem;
+  align-items: center;
+}
 
 /* ===========================
    TOAST — encadré presse

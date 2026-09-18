@@ -35,8 +35,12 @@
 
       <div class="admin__sidebar-foot">
         <a href="index.html" class="admin__link">← Voir le portfolio</a>
-        <button class="admin__link" id="logoutBtn" hidden>Se déconnecter</button>
-        <button class="admin__btn admin__btn--save" id="saveBtn">💾 Sauvegarder</button>
+        <div class="admin__sidebar-actions">
+          <button class="admin__btn admin__btn--save" id="saveBtn">💾 Sauvegarder</button>
+          <button class="admin__icon-btn" id="logoutBtn" hidden aria-label="Se déconnecter" title="Se déconnecter">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </button>
+        </div>
       </div>
     </aside>
 
@@ -273,6 +277,20 @@
       <button class="admin__btn admin__btn--save" id="loginBtn">Se connecter</button>
       <button type="button" class="admin__btn admin__btn--ghost" id="signupBtn">Créer un compte</button>
       <p class="admin__login-msg" id="loginMsg"></p>
+    </div>
+  </div>
+
+  <!-- RÉCAPITULATIF AVANT SAUVEGARDE -->
+  <div class="admin__confirm" id="confirmModal" hidden>
+    <div class="admin__confirm-box">
+      <p class="admin__confirm-kicker">Avant de sauvegarder</p>
+      <h3 class="admin__confirm-title">Récapitulatif des modifications</h3>
+      <p class="admin__confirm-count" id="confirmCount"></p>
+      <ul class="admin__confirm-list" id="confirmList"></ul>
+      <div class="admin__confirm-actions">
+        <button type="button" class="admin__btn admin__btn--ghost" id="confirmCancel">Annuler</button>
+        <button type="button" class="admin__btn admin__btn--save" id="confirmSave">Confirmer la sauvegarde</button>
+      </div>
     </div>
   </div>
 
