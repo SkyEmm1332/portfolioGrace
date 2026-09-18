@@ -340,25 +340,52 @@
       document.getElementById('toolbarHint').textContent = msg;
     }
 
+    function withTimeout(promise, ms) {
+      return new Promise((resolve, reject) => {
+        const t = setTimeout(() => reject(new Error('timeout')), ms);
+        promise.then(
+          v => { clearTimeout(t); resolve(v); },
+          e => { clearTimeout(t); reject(e); }
+        );
+      });
+    }
+
+    async function captureSlide(el, extra) {
+      return domtoimage.toJpeg(el, {
+        width: 1280,
+        height: 720,
+        pixelRatio: 2,
+        quality: 0.92,
+        backgroundColor: '#f5f4f0',
+        skipFonts: true,
+        cacheBust: false,
+        ...extra
+      });
+    }
+
     async function generatePdf() {
       if (generating) return;
       generating = true;
-      setStatus('Génération du PDF…');
+      setStatus('Préparation…');
       try {
+        if (!window.domtoimage) throw new Error('bibliothèque de capture indisponible (CDN bloqué ?)');
+        if (document.fonts && document.fonts.ready) await document.fonts.ready.catch(() => {});
         const slides = Array.from(document.querySelectorAll('#pvContent .pv-section'));
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({ orientation: 'landscape', unit: 'in', format: [13.333, 7.5] });
         window.scrollTo(0, 0);
         for (let i = 0; i < slides.length; i++) {
-          // Capture via le moteur de rendu réel du navigateur (SVG foreignObject)
-          const img = await domtoimage.toJpeg(slides[i], {
-            width: 1280,
-            height: 720,
-            pixelRatio: 2,
-            quality: 0.92,
-            backgroundColor: '#f5f4f0',
-            cacheBust: true
-          });
+          setStatus('Génération du PDF… diapositive ' + (i + 1) + '/' + slides.length);
+          let img;
+          try {
+            img = await withTimeout(captureSlide(slides[i]), 25000);
+          } catch (e1) {
+            try {
+              img = await withTimeout(captureSlide(slides[i], { pixelRatio: 1 }), 25000);
+            } catch (e2) {
+              throw new Error('diapositive ' + (i + 1) + ' impossible à capturer');
+            }
+          }
           if (i > 0) pdf.addPage([13.333, 7.5], 'landscape');
           pdf.addImage(img, 'JPEG', 0, 0, 13.333, 7.5);
         }
@@ -366,7 +393,7 @@
         setStatus('✓ PDF téléchargé : portfolio.graceouphouet.2026.pdf');
       } catch (e) {
         console.error(e);
-        setStatus('Génération impossible : ' + e.message);
+        setStatus('Génération impossible : ' + e.message + ' — réessayez ou utilisez Imprimer');
       }
       generating = false;
     }
