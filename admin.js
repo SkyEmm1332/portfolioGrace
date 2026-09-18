@@ -519,6 +519,26 @@ function restoreTab(name) {
   toast('↺ Section restaurée depuis la dernière sauvegarde');
 }
 
+// Remplit la section courante depuis le data.json déployé
+// (utile pour récupérer une section effacée en ligne, puis Sauvegarder)
+async function restoreTabFromDataJson(name) {
+  const fn = TAB_FILLERS[name];
+  if (!fn) return;
+  try {
+    const r = await fetch('data.json', { cache: 'no-store' });
+    if (!r.ok) throw new Error('data.json introuvable');
+    const ref = await r.json();
+    const saved = config;
+    config = ref;
+    fn();
+    config = saved;
+    updatePreview();
+    toast('↺ Section remplie depuis data.json — vérifiez puis sauvegardez');
+  } catch (e) {
+    toast('Impossible de charger data.json : ' + e.message, true);
+  }
+}
+
 // ---------- Diff : récapitulatif des modifications ----------
 const SECTION_LABELS = {
   meta: 'Général (SEO)', hero: 'Hero', about: 'À propos', services: 'Services',
@@ -1025,15 +1045,26 @@ async function init() {
 
   bindAddButtons();
 
-  // Bouton "Restaurer cette section" au-dessus de chaque formulaire
+  // Boutons "Restaurer" au-dessus de chaque formulaire
   document.querySelectorAll('.admin__tab').forEach(panel => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'admin__btn admin__btn--ghost admin__btn--restore admin__btn--restore-section';
-    btn.textContent = '↺ Restaurer cette section';
-    btn.addEventListener('click', () => restoreTab(panel.dataset.panel));
+    const name = panel.dataset.panel;
+    const wrap = document.createElement('div');
+    wrap.className = 'admin__tab-actions';
+    const btn1 = document.createElement('button');
+    btn1.type = 'button';
+    btn1.className = 'admin__btn admin__btn--ghost admin__btn--restore';
+    btn1.textContent = '↺ Restaurer cette section';
+    btn1.addEventListener('click', () => restoreTab(name));
+    const btn2 = document.createElement('button');
+    btn2.type = 'button';
+    btn2.className = 'admin__btn admin__btn--ghost admin__btn--restore';
+    btn2.textContent = '↺ Depuis data.json';
+    btn2.title = 'Remplir cette section avec le contenu de data.json (version déployée)';
+    btn2.addEventListener('click', () => restoreTabFromDataJson(name));
+    wrap.appendChild(btn1);
+    wrap.appendChild(btn2);
     const h2 = panel.querySelector('h2');
-    if (h2) h2.after(btn);
+    if (h2) h2.after(wrap);
   });
 
   if (window.Supabase && window.Supabase.isConfigured()) {
