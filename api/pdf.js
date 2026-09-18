@@ -31,7 +31,8 @@ module.exports = async function handler(req, res) {
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath(),
-      headless: chromium.headless
+      headless: chromium.headless,
+      protocolTimeout: 120000
     });
 
     const page = await browser.newPage();
@@ -46,12 +47,26 @@ module.exports = async function handler(req, res) {
       { timeout: 20000 }
     );
 
-    // Attend que toutes les images soient chargées
+    // Force le chargement de toutes les images (y compris lazy hors écran)
+    await page.evaluate(() => {
+      document.querySelectorAll('img').forEach(img => { img.loading = 'eager'; });
+    });
+    await page.evaluate(async () => {
+      const h = document.body.scrollHeight;
+      for (let y = 0; y < h; y += 700) {
+        window.scrollTo(0, y);
+        await new Promise(r => setTimeout(r, 80));
+      }
+      window.scrollTo(0, 0);
+    });
+    // Attend la fin du chargement des images (délai borné : 5 s par image)
     await page.evaluate(async () => {
       const imgs = Array.from(document.images);
-      await Promise.all(imgs.map(img =>
-        img.complete ? Promise.resolve() : new Promise(r => { img.onload = r; img.onerror = r; })
-      ));
+      await Promise.all(imgs.map(img => new Promise(r => {
+        if (img.complete) return r();
+        const t = setTimeout(r, 5000);
+        img.onload = img.onerror = () => { clearTimeout(t); r(); };
+      })));
     });
     await new Promise(r => setTimeout(r, 800));
 
