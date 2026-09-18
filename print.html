@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>portfolio.graceouphouet.2026</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    body { margin: 0; padding: 0; background: var(--off-white); }
+    .no-print { display: block; }
+    .pv-section { display: none; }
+    .pv-section.active { display: block; }
+
+    /* Barre d'outils à l'écran (masquée à l'impression) */
+    .print-toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      background: #0a0a0a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .8rem 1.5rem;
+      font-family: var(--font-body);
+    }
+    .print-toolbar__title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
+    .print-toolbar__title span { color: var(--red); }
+    .print-toolbar__hint { font-size: .75rem; color: rgba(255,255,255,.55); }
+    .print-toolbar__btn {
+      background: var(--red);
+      color: #fff;
+      border: none;
+      padding: .6rem 1.2rem;
+      font-family: var(--font-display);
+      font-size: .9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+    .print-toolbar__btn:hover { background: var(--red-dark); }
+
+    .pv-content { margin-top: 64px; }
+
+    /* Impression */
+    @media print {
+      .no-print { display: none !important; }
+      .pv-content { margin-top: 0; }
+      body { background: #fff !important; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      @page { size: A4; margin: 12mm; }
+      .pv-section { display: block !important; }
+      .pv-section .hero { min-height: 0 !important; padding-top: 0 !important; }
+      .pv-section .hero__scroll { display: none !important; }
+      .pv-section .stats-section { min-height: 0 !important; }
+      .pv-section .hero__bg-text { display: none !important; }
+      .pv-section .video-thumb__play { display: none !important; }
+      .pv-section .experience,
+      .pv-section .stats-section,
+      .pv-section .work,
+      .pv-section .top-perf,
+      .pv-section .packages,
+      .pv-section .testimonials,
+      .pv-section .contact,
+      .pv-section .video-section,
+      .pv-section .services { break-before: page; }
+      .service-card, .work-item, .perf-card, .pkg-col, .testi-card,
+      .video-thumb, .big-stat, .content-list { break-inside: avoid; }
+      .pv-section .about__img-label { position: static; max-width: none; margin-top: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barre d'outils (écran uniquement) -->
+  <div class="print-toolbar no-print">
+    <div>
+      <p class="print-toolbar__title">PORTFOLIO <span>PDF</span></p>
+      <p class="print-toolbar__hint">Choisissez « Enregistrer au format PDF » comme destination.</p>
+    </div>
+    <button type="button" class="print-toolbar__btn" id="printBtn">Imprimer / Télécharger</button>
+  </div>
+
+  <div class="pv-content">
+
+    <!-- HERO -->
+    <div class="pv-section active" data-pv="hero">
+      <section class="hero">
+        <div class="hero__content">
+          <div class="hero__text" id="heroText">
+            <p class="hero__sub script"></p>
+            <h1 class="hero__title"></h1>
+            <div class="hero__meta"></div>
+            <div class="hero__buttons">
+              <a href="#" class="btn btn--red">Travaillons Ensemble ★</a>
+              <a href="#" class="btn btn--outline">Télécharger CV</a>
+            </div>
+          </div>
+          <div class="hero__image-wrap">
+            <div class="hero__image-frame">
+              <img src="" alt="" class="hero__img" id="heroImg" />
+              <div class="hero__frame-deco"></div>
+            </div>
+            <div class="hero__stats" id="heroStats"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- À PROPOS -->
+    <div class="pv-section" data-pv="about">
+      <section class="about">
+        <div class="about__inner">
+          <div class="about__left">
+            <div class="about__img-wrap">
+              <img src="" alt="" id="aboutImg" />
+              <div class="about__img-label script" id="aboutLabel"></div>
+            </div>
+          </div>
+          <div class="about__right">
+            <p class="section__eyebrow script" id="aboutEyebrow"></p>
+            <h2 class="section__title red" id="aboutTitle"></h2>
+            <div id="aboutBody"></div>
+            <div class="about__tags" id="aboutTags"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="pv-section" data-pv="services">
+      <section class="services section">
+        <div class="services__header">
+          <h2 class="section__title">SERVICES <span class="script red">créatrice de contenu</span></h2>
+          <div class="divider"></div>
+        </div>
+        <div class="services__grid" id="servicesGrid"></div>
+      </section>
+    </div>
+
+    <!-- EXPÉRIENCE -->
+    <div class="pv-section" data-pv="experience">
+      <section class="experience">
+        <div class="experience__inner">
+          <div class="experience__image">
+            <img src="" alt="" id="expImg" />
+          </div>
+          <div class="experience__content">
+            <p class="section__eyebrow script" id="expEyebrow"></p>
+            <h2 class="section__title red" id="expTitle"></h2>
+            <div id="expParagraphs"></div>
+            <div class="content-list">
+              <p class="content-list__title" id="expListTitle"></p>
+              <ul id="expList"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- TRAVAUX -->
+    <div class="pv-section" data-pv="work">
+      <section class="work section">
+        <div class="work__header">
+          <h2 class="section__title">PORTFOLIO <span class="script red">mes travaux</span></h2>
+          <div class="divider"></div>
+        </div>
+        <div class="work__grid" id="workGrid"></div>
+      </section>
+    </div>
+
+    <!-- VIDÉOS -->
+    <div class="pv-section" data-pv="videos">
+      <section class="video-section section">
+        <div class="video-section__header">
+          <h2 class="section__title">VIDÉOGRAPHIE <span class="script red">créatrice de contenu</span></h2>
+          <div class="divider"></div>
+        </div>
+        <div class="video-section__grid" id="videoGrid"></div>
+      </section>
+    </div>
+
+    <!-- STATS -->
+    <div class="pv-section" data-pv="stats">
+      <section class="stats-section">
+        <div class="stats-section__left">
+          <h2 class="section__title white" id="statsTitle"></h2>
+          <div class="stats-section__star">★</div>
+        </div>
+        <div class="stats-section__right" id="statsGrid"></div>
+      </section>
+    </div>
+
+    <!-- TOP POSTS -->
+    <div class="pv-section" data-pv="top">
+      <section class="top-perf section">
+        <div class="top-perf__header">
+          <h2 class="section__title">MEILLEURES <span class="script red">publications</span></h2>
+        </div>
+        <div class="top-perf__grid" id="topPerfGrid"></div>
+      </section>
+    </div>
+
+    <!-- FORFAITS -->
+    <div class="pv-section" data-pv="packages">
+      <section class="packages section">
+        <div class="packages__header">
+          <h2 class="section__title">FORFAITS <span class="script red">tarifs</span></h2>
+          <div class="divider"></div>
+        </div>
+        <div class="packages__grid" id="packagesGrid"></div>
+        <p class="packages__note script">* Forfaits personnalisés disponibles — demandez-moi !</p>
+      </section>
+    </div>
+
+    <!-- TÉMOIGNAGES -->
+    <div class="pv-section" data-pv="testimonials">
+      <section class="testimonials section">
+        <div class="testimonials__header">
+          <h2 class="section__title">CE QUE LES MARQUES <span class="script red">disent</span></h2>
+          <div class="divider"></div>
+        </div>
+        <div class="testimonials__grid" id="testiGrid"></div>
+      </section>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="pv-section" data-pv="contact">
+      <section class="contact section" id="contact">
+        <div class="contact__left">
+          <p class="section__eyebrow script">prenons contact</p>
+          <h2 class="section__title red">COLLABO-<br/>RONS.</h2>
+          <p>Prête à créer quelque chose d'inoubliable ? Contactez-moi et construisons ensemble votre prochaine campagne.</p>
+          <div class="contact__links" id="contactLinks"></div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <script src="supabase-config.js"></script>
+  <script src="supabase.js"></script>
+  <script src="render.js"></script>
+  <script>
+    // Toutes les sections sont affichées (contenu live : Supabase → data.json → défauts)
+    document.querySelectorAll('.pv-section').forEach(s => s.classList.add('active'));
+
+    // Rendu du contact (les autres sections sont rendues par render.js)
+    // (le rendu contactLinks est déjà fait par Renderers.contact)
+
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+    // Impression automatique quand tout est prêt (fonts + images)
+    let printed = false;
+    function autoPrint() {
+      if (printed) return;
+      printed = true;
+      setTimeout(() => window.print(), 800);
+    }
+    window.addEventListener('load', autoPrint);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(autoPrint).catch(() => {});
+    }
+    setTimeout(autoPrint, 3000);
+  </script>
+</body>
+</html>

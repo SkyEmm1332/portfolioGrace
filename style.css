@@ -203,6 +203,18 @@ ul { list-style: none; }
   transform: scale(1.05);
 }
 
+.nav__pdf {
+  border: 1.5px solid var(--black);
+  padding: 5px 16px;
+  border-radius: 2px;
+  transition: border-color .2s, color .2s;
+}
+.nav__pdf::after { display: none !important; }
+.nav__pdf:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
 .nav__burger {
   display: none;
   flex-direction: column;
@@ -239,6 +251,11 @@ ul { list-style: none; }
   letter-spacing: 2px;
 }
 .nav__mobile a[href$=".pdf"] {
+  color: var(--red);
+  border-bottom: 2px solid var(--red);
+  margin-top: .5rem;
+}
+.nav__mobile a[href="print.html"] {
   color: var(--red);
   border-bottom: 2px solid var(--red);
   margin-top: .5rem;
