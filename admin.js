@@ -488,14 +488,48 @@ function collectConfig() {
   return c;
 }
 
+// ---------- Restauration (annuler les modifications non sauvegardées) ----------
+const TAB_FILLERS = {
+  general: fillGeneral,
+  hero: fillHero,
+  about: fillAbout,
+  services: fillServices,
+  experience: fillExperience,
+  work: fillWork,
+  videos: fillVideos,
+  stats: fillStats,
+  top: fillTop,
+  packages: fillPackages,
+  testimonials: fillTestimonials
+};
+
+function restoreAll() {
+  if (!config) return;
+  fillAll();
+  updatePreview();
+  toast('↺ Modifications annulées — contenu restauré depuis la dernière sauvegarde');
+}
+
+function restoreTab(name) {
+  if (!config) return;
+  const fn = TAB_FILLERS[name];
+  if (!fn) return;
+  fn();
+  updatePreview();
+  toast('↺ Section restaurée depuis la dernière sauvegarde');
+}
+
+// ---------- Sauvegarde ----------
 async function saveAll() {
   const data = collectConfig();
   try {
     if (window.Supabase && window.Supabase.isConfigured()) {
       await window.Supabase.saveConfig(data);
+      config = data;
       toast('✓ Sauvegardé dans Supabase — le portfolio en ligne est à jour');
     } else {
       await apiSaveData(data);
+      config = data;
       toast('✓ Données sauvegardées dans data.json');
     }
   } catch (e) {
@@ -865,12 +899,24 @@ async function initServerMode() {
 // ---------- Initialisation ----------
 async function init() {
   $('saveBtn').addEventListener('click', saveAll);
+  $('restoreBtn').addEventListener('click', restoreAll);
 
   document.querySelectorAll('.admin__nav-btn').forEach(btn => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
   });
 
   bindAddButtons();
+
+  // Bouton "Restaurer cette section" au-dessus de chaque formulaire
+  document.querySelectorAll('.admin__tab').forEach(panel => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'admin__btn admin__btn--ghost admin__btn--restore admin__btn--restore-section';
+    btn.textContent = '↺ Restaurer cette section';
+    btn.addEventListener('click', () => restoreTab(panel.dataset.panel));
+    const h2 = panel.querySelector('h2');
+    if (h2) h2.after(btn);
+  });
 
   if (window.Supabase && window.Supabase.isConfigured()) {
     await initSupabaseMode();
