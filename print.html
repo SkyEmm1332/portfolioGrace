@@ -33,6 +33,7 @@
     .pv-content .experience__inner { grid-template-columns: 1fr 1fr; }
     .pv-content .video-section__grid { grid-template-columns: repeat(4, 1fr); }
     .pv-content .video-thumb__play { display: none; }
+    .pv-content .video-section .section__title { white-space: nowrap; }
     .pv-content .stats-section { grid-template-columns: 1fr 2fr; min-height: 0; }
     .pv-content .stats-section__right { grid-template-columns: repeat(3, 1fr); }
     .pv-content .top-perf__grid { grid-template-columns: repeat(3, 1fr); }
@@ -46,6 +47,14 @@
     .pv-content .work__grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: none; gap: 14px; }
     .pv-content .work-item { aspect-ratio: 3/5; grid-row: auto; grid-column: auto; }
     .pv-content .work-item__overlay { transform: translateY(0); opacity: 1; }
+
+    /* Centrage vertical : chaque diapositive centre sa section,
+       espacements hauts et bas égaux */
+    .pv-section { display: flex; flex-direction: column; justify-content: center; }
+    .pv-section > section { width: 100%; }
+    .pv-content .experience__content { justify-content: center; }
+    .pv-content .stats-section { min-height: 100%; }
+    .pv-content .contact { align-items: center; }
 
     /* Sections courtes : étoffées pour approcher la hauteur de page */
     .pv-content .hero { padding-bottom: 2rem; }
@@ -291,56 +300,8 @@
         </div>`).join('');
     }
 
-    // ---------- Ajustement des diapositives : chaque section remplit exactement sa page ----------
-    function fitSlides() {
-      const debug = location.search.indexOf('debug') !== -1;
-      const slides = document.querySelectorAll('#pvContent .pv-section');
-      slides.forEach(sl => {
-        const inner = sl.querySelector(':scope > section, :scope > .work');
-        if (!inner) return;
-        // offsetHeight = hauteur de mise en page (transformations ignorées)
-        const H = inner.offsetHeight;
-        if (!H) return;
-        if (debug) {
-          const sD = Math.min(720 / H, 1.05);
-          const tD = (720 - H * sD) / 2;
-          sl.dataset.h = Math.round(H);
-          sl.dataset.s = sD.toFixed(3);
-          sl.dataset.t = Math.round(tD);
-          sl.dataset.bottom = '';
-          inner.style.transformOrigin = '50% 0';
-          inner.style.transform = 'translateY(' + tD + 'px) scale(' + sD + ')';
-          sl.dataset.bottom = Math.round(inner.getBoundingClientRect().bottom);
-          return;
-        }
-        // Remplit la hauteur sans jamais déborder : agrandissement borné à 105%,
-        // origine en haut + translation pour centrer le contenu dans la page
-        const s = Math.min(720 / H, 1.05);
-        if (Math.abs(s - 1) < 0.005) {
-          inner.style.transform = 'none';
-          return;
-        }
-        inner.style.transformOrigin = '50% 0';
-        inner.style.transform = 'translateY(' + ((720 - H * s) / 2) + 'px) scale(' + s + ')';
-      });
-    }
-
-    // Re-calcule au chargement du contenu, des images et des polices
-    document.addEventListener('content-ready', () => {
-      buildWorkSlides();
-      fitSlides();
-    });
-    window.addEventListener('load', fitSlides);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(fitSlides).catch(() => {});
-    }
-    const fitIv = setInterval(() => {
-      fitSlides();
-      if (document.images.length && Array.from(document.images).every(i => i.complete)) {
-        clearInterval(fitIv);
-      }
-    }, 500);
-    setTimeout(() => clearInterval(fitIv), 12000);
+    document.addEventListener('content-ready', buildWorkSlides);
+    if (window.CONTENT) buildWorkSlides();
   </script>
 </body>
 </html>
