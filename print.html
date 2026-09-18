@@ -295,7 +295,7 @@
   <script src="supabase-config.js"></script>
   <script src="supabase.js"></script>
   <script src="render.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dom-to-image-more@3.4.3/dist/dom-to-image-more.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     // Diapositives travaux : groupes de 4, format portrait
@@ -350,24 +350,15 @@
         const pdf = new jsPDF({ orientation: 'landscape', unit: 'in', format: [13.333, 7.5] });
         window.scrollTo(0, 0);
         for (let i = 0; i < slides.length; i++) {
-          const canvas = await html2canvas(slides[i], {
-            scale: 2,
-            useCORS: true,
+          // Capture via le moteur de rendu réel du navigateur (SVG foreignObject)
+          const img = await domtoimage.toJpeg(slides[i], {
+            width: 1280,
+            height: 720,
+            pixelRatio: 2,
+            quality: 0.92,
             backgroundColor: '#f5f4f0',
-            logging: false,
-            scrollX: 0,
-            scrollY: -window.scrollY,
-            windowWidth: 1280,
-            windowHeight: 720,
-            imageTimeout: 15000,
-            ignoreElements: (el) => el.classList && el.classList.contains('print-toolbar'),
-            onclone: (doc) => {
-              const tb = doc.querySelector('.print-toolbar');
-              if (tb) tb.remove();
-              doc.querySelectorAll('.hero__frame-deco').forEach(el => { el.style.zIndex = 'auto'; });
-            }
+            cacheBust: true
           });
-          const img = canvas.toDataURL('image/jpeg', 0.92);
           if (i > 0) pdf.addPage([13.333, 7.5], 'landscape');
           pdf.addImage(img, 'JPEG', 0, 0, 13.333, 7.5);
         }
