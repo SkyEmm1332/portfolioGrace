@@ -163,6 +163,29 @@ body {
   background: rgba(200,16,46,.15);
 }
 
+.admin__btn--logout {
+  background: none;
+  border: 1px solid rgba(255,255,255,.25);
+  color: rgba(255,255,255,.8);
+  padding: .7rem 1rem;
+  font-family: var(--font-body);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+.admin__btn--logout:hover {
+  border-color: var(--red);
+  color: var(--white);
+  background: rgba(200,16,46,.15);
+}
+
 /* ===========================
    MAIN — colonne éditoriale
    =========================== */

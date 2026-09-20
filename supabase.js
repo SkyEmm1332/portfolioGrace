@@ -20,7 +20,8 @@ window.Supabase = (() => {
   }
 
   function api(path, opts = {}) {
-    return fetch(URL + path, opts).then(async (r) => {
+    const options = { ...opts, cache: 'no-store' };
+    return fetch(URL + path, options).then(async (r) => {
       if (!r.ok) {
         const t = await r.text().catch(() => '');
         const err = new Error('Supabase ' + r.status + ' : ' + t.slice(0, 120));
