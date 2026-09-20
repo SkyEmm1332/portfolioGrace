@@ -546,6 +546,7 @@ function fillAll() {
 
 // ---------- Collecte + sauvegarde ----------
 function collectConfig() {
+  if (!config) return null;
   const c = JSON.parse(JSON.stringify(config));
 
   c.meta.title = $('metaTitle').value.trim();
@@ -815,11 +816,8 @@ function diffConfig(a, b, path, changes) {
 let pendingSaveData = null;
 
 function openSaveConfirm() {
+  if (!config) return;
   const data = collectConfig();
-  if (!config) {
-    doSave(data);
-    return;
-  }
   const changes = [];
   diffConfig(config, data, [], changes);
   if (!changes.length) {

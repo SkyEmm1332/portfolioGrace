@@ -311,7 +311,7 @@
           s.classList.toggle('active', s.dataset.pv === m.section);
         });
         const renderer = window.Renderers[m.section];
-        if (renderer) renderer.call(window.Renderers, m.config);
+        if (renderer && m.config) renderer.call(window.Renderers, m.config);
         setTimeout(reportHeight, 60);
       }
     });
