@@ -211,10 +211,11 @@ window.Supabase = (() => {
   }
 
   // Vérifie qu'un objet public existe réellement dans le stockage
+  // (GET partiel : Supabase ne gère pas les HEAD sur les objets publics)
   async function checkExists(publicUrl) {
     try {
-      const r = await fetch(publicUrl, { method: 'HEAD' });
-      return r.ok;
+      const r = await fetch(publicUrl, { headers: { Range: 'bytes=0-0' } });
+      return r.status === 200 || r.status === 206;
     } catch (e) {
       return false;
     }
