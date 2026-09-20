@@ -289,8 +289,13 @@ document.addEventListener('content-ready', function init() {
         if (!src) return;
         videoModalPlayer.src = src;
         videoModal.classList.add('open');
+        videoModalPlayer.load();
         videoModalPlayer.play();
       });
+    });
+
+    videoModalPlayer.addEventListener('error', () => {
+      showNotice('Vidéo introuvable ou illisible — réuploadez-la depuis l\'administration (onglet Vidéos).');
     });
 
     function closeVideoModal() {

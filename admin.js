@@ -122,6 +122,12 @@ function createMediaPicker(container, value, accept = 'image/*') {
       try {
         const base64 = String(reader.result).split(',')[1];
         const path = await uploadMedia(file.name, base64);
+        // Vérifie que le fichier est bien accessible avant de le référencer
+        let ok = true;
+        if (window.Supabase && window.Supabase.isConfigured()) {
+          ok = await window.Supabase.checkExists(path);
+        }
+        if (!ok) throw new Error('fichier introuvable après l\'envoi (trop volumineux ?)');
         setPath(path);
         status.textContent = '✓ Média envoyé — aperçu mis à jour';
       } catch (e) {
@@ -466,6 +472,11 @@ function createFilePicker(container, value, fixedKey) {
       try {
         const base64 = String(reader.result).split(',')[1];
         const url = await uploadMediaAs(file.name, base64, fixedKey);
+        let ok = true;
+        if (window.Supabase && window.Supabase.isConfigured()) {
+          ok = await window.Supabase.checkExists(url);
+        }
+        if (!ok) throw new Error('fichier introuvable après l\'envoi (trop volumineux ?)');
         setPath(url);
         status.textContent = '✓ Fichier envoyé' + (fixedKey ? ' (fichier permanent)' : '');
       } catch (e) {

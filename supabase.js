@@ -109,6 +109,20 @@ window.Supabase = (() => {
   }
 
   // ---------- STORAGE (bucket public uploads) ----------
+  function mimeFromName(name) {
+    const ext = String(name || '').split('.').pop().toLowerCase();
+    const map = {
+      mp4: 'video/mp4', m4v: 'video/mp4', webm: 'video/webm', mov: 'video/quicktime',
+      jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp',
+      gif: 'image/gif', svg: 'image/svg+xml', pdf: 'application/pdf',
+      doc: 'application/msword',
+      docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      zip: 'application/zip'
+    };
+    return map[ext] || 'application/octet-stream';
+  }
+
   async function upload(name, base64Data, prefix = '') {
     const clean = String(name || '').replace(/[^a-zA-Z0-9._-]/g, '_');
     const key = prefix + Date.now() + '_' + clean;
@@ -120,7 +134,7 @@ window.Supabase = (() => {
       headers: {
         apikey: ANON,
         Authorization: 'Bearer ' + getToken(),
-        'Content-Type': 'application/octet-stream',
+        'Content-Type': mimeFromName(name),
         'x-upsert': 'true'
       },
       body: bytes
@@ -129,7 +143,7 @@ window.Supabase = (() => {
       const t = await r.text().catch(() => '');
       throw new Error('Upload Supabase ' + r.status + ' : ' + t.slice(0, 120));
     }
-    return URL + '/storage/v1/object/public/uploads/' + key;
+    return publicUrl(key);
   }
 
   function publicUrl(key) {
@@ -147,7 +161,7 @@ window.Supabase = (() => {
       headers: {
         apikey: ANON,
         Authorization: 'Bearer ' + getToken(),
-        'Content-Type': 'application/octet-stream',
+        'Content-Type': mimeFromName(cleanKey),
         'x-upsert': 'true'
       },
       body: bytes
@@ -157,6 +171,16 @@ window.Supabase = (() => {
       throw new Error('Upload Supabase ' + r.status + ' : ' + t.slice(0, 120));
     }
     return publicUrl(cleanKey);
+  }
+
+  // Vérifie qu'un objet public existe réellement dans le stockage
+  async function checkExists(publicUrl) {
+    try {
+      const r = await fetch(publicUrl, { method: 'HEAD' });
+      return r.ok;
+    } catch (e) {
+      return false;
+    }
   }
 
   async function deleteFile(publicUrl) {
@@ -182,6 +206,7 @@ window.Supabase = (() => {
     upload,
     uploadAs,
     publicUrl,
+    checkExists,
     deleteFile
   };
 })();
