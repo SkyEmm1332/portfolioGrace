@@ -1267,12 +1267,21 @@ async function init() {
   $('saveBtn').addEventListener('click', openSaveConfirm);
   $('restoreBtn').addEventListener('click', restoreAll);
 
-  // Groupes de la sidebar : repli/dépli des sous-menus
+  // Groupes de la sidebar : accordéon — ouvrir un groupe replie les autres
   document.querySelectorAll('.admin__nav-group-title').forEach(title => {
     title.addEventListener('click', () => {
-      title.closest('.admin__nav-group').classList.toggle('collapsed');
+      const group = title.closest('.admin__nav-group');
+      const wasOpen = !group.classList.contains('collapsed');
+      document.querySelectorAll('.admin__nav-group').forEach(g => g.classList.add('collapsed'));
+      if (!wasOpen) group.classList.remove('collapsed');
     });
   });
+  // Au chargement : déplie le groupe contenant la page active
+  const activeBtn = document.querySelector('.admin__nav-btn.active');
+  if (activeBtn) {
+    const g = activeBtn.closest('.admin__nav-group');
+    if (g) g.classList.remove('collapsed');
+  }
 
   const confirmModal = $('confirmModal');
   $('confirmCancel').addEventListener('click', closeSaveConfirm);
