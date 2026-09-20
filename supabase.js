@@ -123,12 +123,46 @@ window.Supabase = (() => {
     return map[ext] || 'application/octet-stream';
   }
 
+  function base64ToBytes(b64) {
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return bytes;
+  }
+
+  // Upload résumable TUS (fichiers > 50 Mo — limite de l'upload direct Supabase)
+  function tusUpload(key, bytes) {
+    return new Promise((resolve, reject) => {
+      const upload = new tus.Upload(new Blob([bytes]), {
+        endpoint: URL + '/storage/v1/upload/resumable',
+        retryDelays: [0, 1000, 3000, 5000],
+        chunkSize: 6 * 1024 * 1024,
+        headers: {
+          authorization: 'Bearer ' + getToken(),
+          'x-upsert': 'true'
+        },
+        metadata: {
+          bucketName: 'uploads',
+          objectName: key,
+          contentType: mimeFromName(key),
+          cacheControl: '3600'
+        },
+        onError: (e) => reject(e),
+        onSuccess: () => resolve(publicUrl(key))
+      });
+      upload.start();
+    });
+  }
+
   async function upload(name, base64Data, prefix = '') {
     const clean = String(name || '').replace(/[^a-zA-Z0-9._-]/g, '_');
     const key = prefix + Date.now() + '_' + clean;
-    const bin = atob(base64Data);
-    const bytes = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const bytes = base64ToBytes(base64Data);
+    // Fichiers volumineux : upload résumable TUS
+    if (bytes.length > 50 * 1024 * 1024) {
+      if (!window.tus) throw new Error('fichier trop volumineux pour l\'upload direct (max 50 Mo)');
+      return tusUpload(key, bytes);
+    }
     const r = await fetch(URL + '/storage/v1/object/uploads/uploads/' + key, {
       method: 'POST',
       headers: {
@@ -153,9 +187,12 @@ window.Supabase = (() => {
   // Upload vers une clé FIXE (persistance + écrasement propre du fichier)
   async function uploadAs(key, base64Data) {
     const cleanKey = String(key || '').replace(/^\/+/, '');
-    const bin = atob(base64Data);
-    const bytes = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const bytes = base64ToBytes(base64Data);
+    // Fichiers volumineux : upload résumable TUS
+    if (bytes.length > 50 * 1024 * 1024) {
+      if (!window.tus) throw new Error('fichier trop volumineux pour l\'upload direct (max 50 Mo)');
+      return tusUpload(cleanKey, bytes);
+    }
     const r = await fetch(URL + '/storage/v1/object/uploads/uploads/' + cleanKey, {
       method: 'POST',
       headers: {
