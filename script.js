@@ -295,7 +295,8 @@ document.addEventListener('content-ready', function init() {
     });
 
     videoModalPlayer.addEventListener('error', () => {
-      showNotice('Vidéo introuvable ou illisible — réuploadez-la depuis l\'administration (onglet Vidéos).');
+      // Fermeture silencieuse : les visiteurs n'ont pas besoin de détails internes
+      closeVideoModal();
     });
 
     function closeVideoModal() {
