@@ -186,7 +186,21 @@ body {
   background: rgba(200,16,46,.15);
 }
 
-/* Boutons de la sidebar — style éditorial (fond blanc cassé, filets fins) */
+/* Boutons de la sidebar — icônes seules, style éditorial */
+.admin__sidebar-actions {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+}
+.admin__sidebar-actions .admin__btn {
+  flex: 1;
+  height: 42px;
+  min-width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
 .admin__sidebar .admin__btn--save {
   background: none;
   border: 1px solid var(--black);
