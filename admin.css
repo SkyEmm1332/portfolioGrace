@@ -200,7 +200,28 @@ body {
   align-items: center;
   justify-content: center;
   padding: 0;
+  position: relative;
 }
+#saveBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: .66rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 2px 8px rgba(200,16,46,.45);
+  pointer-events: none;
+}
+#saveBadge:empty { display: none; }
 .admin__sidebar .admin__btn--save {
   background: none;
   border: 1px solid var(--black);

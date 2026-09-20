@@ -678,6 +678,7 @@ function restoreAll() {
   if (!config) return;
   fillAll();
   updatePreview();
+  updateDirtyCount();
   toast('↺ Modifications annulées — contenu restauré depuis la dernière sauvegarde');
 }
 
@@ -687,7 +688,31 @@ function restoreTab(name) {
   if (!fn) return;
   fn();
   updatePreview();
+  updateDirtyCount();
   toast('↺ Section restaurée depuis la dernière sauvegarde');
+}
+
+// Compteur de modifications non sauvegardées sur le bouton Sauvegarder
+function updateDirtyCount() {
+  const btn = $('saveBtn');
+  if (!btn) return;
+  if (!config) return;
+  let badge = document.getElementById('saveBadge');
+  if (!badge) {
+    badge = document.createElement('span');
+    badge.id = 'saveBadge';
+    btn.appendChild(badge);
+  }
+  try {
+    const changes = [];
+    diffConfig(config, collectConfig(), [], changes);
+    const n = changes.length;
+    badge.textContent = n > 0 ? (n > 99 ? '99+' : String(n)) : '';
+    btn.classList.toggle('dirty', n > 0);
+    btn.title = n > 0 ? n + ' modification(s) non sauvegardée(s)' : 'Sauvegarder';
+  } catch (e) {
+    badge.textContent = '';
+  }
 }
 
 // Remplit la section courante depuis le data.json déployé
@@ -821,10 +846,12 @@ async function doSave(data) {
     if (window.Supabase && window.Supabase.isConfigured()) {
       await window.Supabase.saveConfig(data);
       config = data;
+      updateDirtyCount();
       toast('✓ Sauvegardé dans Supabase — le portfolio en ligne est à jour');
     } else {
       await apiSaveData(data);
       config = data;
+      updateDirtyCount();
       toast('✓ Données sauvegardées dans data.json');
     }
   } catch (e) {
@@ -874,11 +901,13 @@ function updatePreview() {
     if (currentTab === 'files') {
       const cv = mediaPickers.cvFile ? mediaPickers.cvFile.getValue() : '';
       showFilePreview(cv);
+      updateDirtyCount();
       return;
     }
     applyPreviewScale();
-    const config = collectConfig();
-    previewFrame.contentWindow.postMessage({ type: 'preview', section: currentTab, config }, '*');
+    const current = collectConfig();
+    previewFrame.contentWindow.postMessage({ type: 'preview', section: currentTab, config: current }, '*');
+    updateDirtyCount();
   } catch (e) { /* silencieux */ }
 }
 
