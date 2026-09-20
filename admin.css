@@ -69,13 +69,48 @@ body {
   border-bottom: 2px solid var(--black);
 }
 
-/* Navigation : liste classique */
+/* Navigation : groupes avec sous-menus (style simple) */
 .admin__nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: .2rem;
   flex: 1;
 }
+
+.admin__nav-group { margin-bottom: .6rem; }
+
+.admin__nav-group-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  font-family: var(--font-body);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray);
+  cursor: pointer;
+  transition: color .15s;
+}
+.admin__nav-group-title:hover { color: var(--red); }
+
+.admin__nav-chevron {
+  font-size: .6rem;
+  transition: transform .15s;
+}
+.admin__nav-group.collapsed .admin__nav-chevron { transform: rotate(-90deg); }
+
+.admin__nav-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 6px;
+}
+.admin__nav-group.collapsed .admin__nav-sub { display: none; }
 
 .admin__nav-btn {
   display: block;
@@ -83,9 +118,9 @@ body {
   text-align: left;
   background: none;
   border: none;
-  padding: 10px 14px;
+  padding: 8px 12px;
   font-family: var(--font-body);
-  font-size: .9rem;
+  font-size: .88rem;
   color: var(--black);
   border-radius: 4px;
   cursor: pointer;
@@ -846,7 +881,8 @@ select {
   }
   .admin__brand { font-size: 2.2rem; }
   .admin__brand-sub { margin-bottom: 1rem; padding-bottom: .8rem; }
-  .admin__nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+  .admin__nav { flex-direction: column; gap: .4rem; }
+  .admin__nav-sub { flex-direction: row; flex-wrap: wrap; gap: 4px; }
   .admin__nav-btn { width: auto; padding: 8px 12px; border-radius: 4px; }
   .admin__sidebar-foot {
     flex-direction: row;

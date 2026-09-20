@@ -1267,6 +1267,13 @@ async function init() {
   $('saveBtn').addEventListener('click', openSaveConfirm);
   $('restoreBtn').addEventListener('click', restoreAll);
 
+  // Groupes de la sidebar : repli/dépli des sous-menus
+  document.querySelectorAll('.admin__nav-group-title').forEach(title => {
+    title.addEventListener('click', () => {
+      title.closest('.admin__nav-group').classList.toggle('collapsed');
+    });
+  });
+
   const confirmModal = $('confirmModal');
   $('confirmCancel').addEventListener('click', closeSaveConfirm);
   $('confirmSave').addEventListener('click', async () => {
