@@ -69,13 +69,46 @@ body {
   border-bottom: 2px solid var(--black);
 }
 
-/* Navigation : sommaire numéroté */
+/* Navigation : groupes avec sous-menus */
 .admin__nav {
   display: flex;
   flex-direction: column;
   flex: 1;
   counter-reset: edition;
 }
+
+.admin__nav-group { border-bottom: 1px solid var(--light-gray); padding-bottom: .4rem; }
+.admin__nav-group:first-child { border-top: 1px solid var(--light-gray); }
+
+.admin__nav-group-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  font-family: var(--font-display);
+  font-size: .82rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray);
+  padding: .75rem 0 .5rem;
+  cursor: pointer;
+  transition: color .2s;
+}
+.admin__nav-group-title:hover { color: var(--red); }
+
+.admin__nav-chevron {
+  font-size: .7rem;
+  transition: transform .2s;
+}
+.admin__nav-group.collapsed .admin__nav-chevron { transform: rotate(-90deg); }
+
+.admin__nav-sub {
+  display: flex;
+  flex-direction: column;
+}
+.admin__nav-group.collapsed .admin__nav-sub { display: none; }
 
 .admin__nav-btn {
   counter-increment: edition;
@@ -92,11 +125,11 @@ body {
   font-weight: 500;
   letter-spacing: 2px;
   text-transform: uppercase;
-  padding: .85rem 0;
+  padding: .7rem 0;
   cursor: pointer;
   transition: color .2s, padding-left .2s;
 }
-.admin__nav-btn:first-child { border-top: 1px solid var(--light-gray); }
+.admin__nav-sub .admin__nav-btn:first-child { border-top: 1px solid var(--light-gray); }
 
 .admin__nav-btn::before {
   content: counter(edition, decimal-leading-zero);
@@ -867,12 +900,14 @@ select {
   }
   .admin__brand { font-size: 2.2rem; }
   .admin__brand-sub { margin-bottom: 1rem; padding-bottom: .8rem; }
-  .admin__nav { flex-direction: row; flex-wrap: wrap; gap: 0 1.6rem; }
+  .admin__nav { flex-direction: column; gap: .6rem; }
+  .admin__nav-group:first-child { border-top: none; }
+  .admin__nav-sub { flex-direction: row; flex-wrap: wrap; gap: 0 1.6rem; }
   .admin__nav-btn {
     border: none;
     padding: .5rem 0;
   }
-  .admin__nav-btn:first-child { border-top: none; }
+  .admin__nav-sub .admin__nav-btn:first-child { border-top: none; }
   .admin__nav-btn::after { display: none; }
   .admin__sidebar-foot {
     flex-direction: row;
