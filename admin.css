@@ -186,6 +186,27 @@ body {
   background: rgba(200,16,46,.15);
 }
 
+/* Boutons de la sidebar — style éditorial (fond blanc cassé, filets fins) */
+.admin__sidebar .admin__btn--save {
+  background: none;
+  border: 1px solid var(--black);
+  color: var(--black);
+}
+.admin__sidebar .admin__btn--save:hover {
+  background: var(--black);
+  color: var(--white);
+}
+.admin__sidebar .admin__btn--logout {
+  background: none;
+  border: 1px solid var(--light-gray);
+  color: var(--gray);
+}
+.admin__sidebar .admin__btn--logout:hover {
+  border-color: var(--red);
+  color: var(--red);
+  background: none;
+}
+
 /* ===========================
    MAIN — colonne éditoriale
    =========================== */
