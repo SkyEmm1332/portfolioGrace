@@ -439,9 +439,9 @@ function createFilePicker(container, value, fixedKey) {
   // Clé fixe : vérifie si le fichier existe déjà dans le stockage et préremplit
   if (!value && fixedKey && window.Supabase && window.Supabase.isConfigured()) {
     const url = window.Supabase.publicUrl(fixedKey);
-    fetch(url, { method: 'HEAD' })
-      .then(r => { if (r.ok && !pathInput.value) setPath(url); })
-      .catch(() => {});
+    window.Supabase.checkExists(url).then(ok => {
+      if (ok && !pathInput.value) setPath(url);
+    }).catch(() => {});
   }
 
   urlToggle.addEventListener('click', () => {

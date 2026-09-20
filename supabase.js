@@ -158,9 +158,8 @@ window.Supabase = (() => {
     const clean = String(name || '').replace(/[^a-zA-Z0-9._-]/g, '_');
     const key = prefix + Date.now() + '_' + clean;
     const bytes = base64ToBytes(base64Data);
-    // Fichiers volumineux : upload résumable TUS
-    if (bytes.length > 50 * 1024 * 1024) {
-      if (!window.tus) throw new Error('fichier trop volumineux pour l\'upload direct (max 50 Mo)');
+    // TUS : méthode officielle Supabase (erreurs explicites, reprise, fiable)
+    if (window.tus) {
       return tusUpload(key, bytes);
     }
     const r = await fetch(URL + '/storage/v1/object/uploads/uploads/' + key, {
@@ -173,9 +172,10 @@ window.Supabase = (() => {
       },
       body: bytes
     });
-    if (!r.ok) {
-      const t = await r.text().catch(() => '');
-      throw new Error('Upload Supabase ' + r.status + ' : ' + t.slice(0, 120));
+    const text = await r.text().catch(() => '');
+    if (!r.ok) throw new Error('Upload Supabase ' + r.status + ' : ' + text.slice(0, 160));
+    if (text && !text.includes('"Key"') && text.indexOf('error') !== -1) {
+      throw new Error('Upload Supabase (réponse anormale) : ' + text.slice(0, 160));
     }
     return publicUrl(key);
   }
@@ -188,9 +188,8 @@ window.Supabase = (() => {
   async function uploadAs(key, base64Data) {
     const cleanKey = String(key || '').replace(/^\/+/, '');
     const bytes = base64ToBytes(base64Data);
-    // Fichiers volumineux : upload résumable TUS
-    if (bytes.length > 50 * 1024 * 1024) {
-      if (!window.tus) throw new Error('fichier trop volumineux pour l\'upload direct (max 50 Mo)');
+    // TUS : méthode officielle Supabase (erreurs explicites, reprise, fiable)
+    if (window.tus) {
       return tusUpload(cleanKey, bytes);
     }
     const r = await fetch(URL + '/storage/v1/object/uploads/uploads/' + cleanKey, {
@@ -203,9 +202,10 @@ window.Supabase = (() => {
       },
       body: bytes
     });
-    if (!r.ok) {
-      const t = await r.text().catch(() => '');
-      throw new Error('Upload Supabase ' + r.status + ' : ' + t.slice(0, 120));
+    const text = await r.text().catch(() => '');
+    if (!r.ok) throw new Error('Upload Supabase ' + r.status + ' : ' + text.slice(0, 160));
+    if (text && !text.includes('"Key"') && text.indexOf('error') !== -1) {
+      throw new Error('Upload Supabase (réponse anormale) : ' + text.slice(0, 160));
     }
     return publicUrl(cleanKey);
   }
