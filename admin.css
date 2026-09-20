@@ -359,22 +359,36 @@ body {
 }
 
 /* ===========================
-   CARTES — rubriques éditoriales
+   CARTES — fiches éditoriales numérotées
    =========================== */
+.admin__form { counter-reset: fiche; }
+
 .admin__card {
+  counter-increment: fiche;
   padding: 1.2rem 0 1.6rem;
   border-bottom: 1px solid var(--light-gray);
   margin-bottom: 1.6rem;
 }
 .admin__card h3 {
-  font-size: .72rem;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  font-size: .78rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2.5px;
+  letter-spacing: 2px;
   color: var(--black);
   margin-bottom: .9rem;
   position: relative;
   padding-bottom: .45rem;
+}
+.admin__card h3::before {
+  content: counter(fiche, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+  color: var(--red);
+  line-height: 1;
 }
 .admin__card h3::after {
   content: '';
@@ -383,6 +397,7 @@ body {
   height: 2px;
   background: var(--red);
   margin-top: .45rem;
+  margin-left: auto;
 }
 
 .admin__label {
@@ -490,9 +505,16 @@ select {
 .admin__btn--danger:hover { text-decoration: underline; }
 
 /* ===========================
-   MÉDIA — planches contact
+   MÉDIA — planches contact (zones teintées pour les repérer)
    =========================== */
-.media-picker { display: flex; flex-direction: column; gap: .7rem; }
+.media-picker {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  background: #fbf5f5;
+  border: 1px dashed #eccfd3;
+  padding: .9rem;
+}
 .media-picker__preview {
   width: 180px;
   height: 130px;
@@ -579,10 +601,11 @@ select {
 }
 
 /* ===========================
-   ÉLÉMENTS DE LISTE — bloc-notes
+   ÉLÉMENTS DE LISTE — bloc-notes (accent rouge à gauche)
    =========================== */
 .list-item {
-  padding: 1.4rem 0;
+  padding: 1.4rem 0 1.4rem 1.1rem;
+  border-left: 3px solid var(--red);
   border-bottom: 1px solid var(--light-gray);
   margin-bottom: 1.2rem;
 }
