@@ -129,7 +129,7 @@ function createMediaPicker(container, value, accept = 'image/*') {
         }
         if (!ok) throw new Error('fichier introuvable après l\'envoi (trop volumineux ?)');
         setPath(path);
-        status.textContent = '✓ Média envoyé — aperçu mis à jour';
+        status.textContent = '✓ Média envoyé — cliquez sur 💾 Sauvegarder pour l\'appliquer';
       } catch (e) {
         status.textContent = 'Échec de l\'envoi : ' + e.message;
         status.classList.add('error');
@@ -478,7 +478,7 @@ function createFilePicker(container, value, fixedKey) {
         }
         if (!ok) throw new Error('fichier introuvable après l\'envoi (trop volumineux ?)');
         setPath(url);
-        status.textContent = '✓ Fichier envoyé' + (fixedKey ? ' (fichier permanent)' : '');
+        status.textContent = '✓ Fichier envoyé — cliquez sur 💾 Sauvegarder pour l\'appliquer' + (fixedKey ? ' (permanent)' : '');
       } catch (e) {
         status.textContent = 'Échec de l\'envoi : ' + e.message;
         status.classList.add('error');
