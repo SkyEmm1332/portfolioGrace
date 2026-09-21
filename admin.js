@@ -1183,6 +1183,27 @@ async function initSupabaseMode() {
     loginScreen.hidden = false;
   }
 
+  // Déconnexion automatique après 15 min d'inactivité
+  let inactivityTimer = null;
+  function clearInactivity() {
+    if (inactivityTimer) { clearTimeout(inactivityTimer); inactivityTimer = null; }
+  }
+  function startInactivity() {
+    clearInactivity();
+    inactivityTimer = setTimeout(() => {
+      inactivityTimer = null;
+      window.Supabase.logout();
+      logoutBtn.hidden = true;
+      showLogin();
+      toast('Déconnecté après 15 minutes d\'inactivité — reconnectez-vous.');
+    }, 15 * 60 * 1000);
+  }
+  ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(ev => {
+    window.addEventListener(ev, () => {
+      if (!logoutBtn.hidden) startInactivity();
+    }, { passive: true });
+  });
+
   $('loginBtn').addEventListener('click', async () => {
     const email = $('loginEmail').value.trim();
     const pass = $('loginPassword').value;
@@ -1197,6 +1218,7 @@ async function initSupabaseMode() {
       await window.Supabase.login(email, pass);
       loginScreen.hidden = true;
       logoutBtn.hidden = false;
+      startInactivity();
       await loadFromSupabase();
     } catch (e) {
       msg.textContent = 'Connexion impossible : ' + (e.message || '').slice(0, 100);
@@ -1223,6 +1245,7 @@ async function initSupabaseMode() {
   });
 
   logoutBtn.addEventListener('click', () => {
+    clearInactivity();
     window.Supabase.logout();
     logoutBtn.hidden = true;
     showLogin();
@@ -1233,6 +1256,7 @@ async function initSupabaseMode() {
   if (refreshed) {
     loginScreen.hidden = true;
     logoutBtn.hidden = false;
+    startInactivity();
     await loadFromSupabase();
   } else {
     showLogin();
