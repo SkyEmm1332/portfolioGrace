@@ -122,6 +122,20 @@ window.SUPABASE_CONFIG = {
 **Si Supabase n'est pas configuré** (`supabase-config.js` vide), tout fonctionne
 comme avant : mode local `data.json` + serveur Node + sauvegarde git.
 
+### ⏰ Keep-alive — empêcher la mise en pause
+
+Les projets Supabase gratuits sont **mis en pause après 7 jours sans activité
+base de données** (le DNS est retiré, la connexion devient impossible — les
+données, elles, sont conservées).
+
+Le site est protégé automatiquement : un **cron Vercel** appelle
+`/api/keepalive` **chaque jour à 06:00 UTC** (déclaré dans `vercel.json`), ce
+qui exécute une vraie requête sur la table `content` et maintient le projet
+éveillé.
+
+- **Tester** : ouvre `https://ton-site.vercel.app/api/keepalive` → doit répondre `{"ok":true,...}`
+- **Si le projet s'endort malgré tout** : Dashboard Supabase → **Restore project** (aucune donnée perdue, DNS rétabli en quelques minutes)
+
 ---
 
 ### 🛠️ Utiliser l'administration
