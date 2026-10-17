@@ -89,6 +89,47 @@
       height: 1em;
       display: block;
     }
+
+    /* Parcours professionnel : deux colonnes compactes, texte foncé sur fond clair */
+    .pv-content .jobs-slide { background: var(--off-white); }
+    .pv-content .jobs-slide__header .section__title { font-size: clamp(1.8rem, 3.6vw, 2.8rem); }
+    .pv-content .jobs-slide__header { margin-bottom: .9rem; }
+    .pv-content .jobs-slide__grid { columns: 2; column-gap: 60px; }
+    .pv-content .jobs-slide .job {
+      padding: .5rem 0 .55rem;
+      border-bottom: 1px solid rgba(10,10,10,.12);
+      break-inside: avoid;
+    }
+    .pv-content .jobs-slide .job__period {
+      color: var(--red);
+      font-size: .7rem;
+      margin-bottom: .1rem;
+    }
+    .pv-content .jobs-slide .job__role {
+      color: var(--black);
+      font-size: .8rem;
+      margin-bottom: .08rem;
+    }
+    .pv-content .jobs-slide .job__company {
+      color: rgba(10,10,10,.55);
+      font-size: .7rem;
+      margin-bottom: .15rem;
+    }
+    .pv-content .jobs-slide .job__missions { margin-top: .15rem; }
+    .pv-content .jobs-slide .job__missions li {
+      color: rgba(10,10,10,.72);
+      font-size: .7rem;
+      padding: .1rem 0 .1rem .95rem;
+    }
+    .pv-content .jobs-slide .job__missions li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: .42em;
+      width: .7em;
+      height: .7em;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23cc2d30' d='M12 2l2.9 6.26 6.85.6-5.2 4.5 1.55 6.7L12 16.6l-6.1 3.46 1.55-6.7-5.2-4.5 6.85-.6z'/></svg>") no-repeat center / contain;
+    }
     .pv-content .btn { font-family: var(--font-display); }
     .pv-content .content-list ul li::before {
       content: '';
@@ -191,7 +232,18 @@
       </section>
     </div>
 
-    <!-- 5. PORTFOLIO / TRAVAUX — groupes de 4, format portrait -->
+    <!-- 5. PARCOURS PROFESSIONNEL -->
+    <div class="pv-section" data-pv="parcours">
+      <section class="jobs-slide section">
+        <div class="jobs-slide__header">
+          <h2 class="section__title" id="expJobsTitle"></h2>
+          <div class="divider"></div>
+        </div>
+        <div class="jobs-slide__grid" id="expJobs"></div>
+      </section>
+    </div>
+
+    <!-- 6. PORTFOLIO / TRAVAUX — groupes de 4, format portrait -->
     <div id="workSlides"></div>
 
     <!-- 6. VIDÉOGRAPHIE -->
@@ -324,6 +376,18 @@
       if (v.work === false) {
         document.querySelectorAll('.pv-work-group').forEach(el => el.style.display = 'none');
       }
+      if (v.experience === false) {
+        document.querySelectorAll('.pv-section[data-pv="parcours"]').forEach(el => el.style.display = 'none');
+      }
+    }
+
+    // Masque la diapositive parcours si aucune expérience n'est renseignée
+    function hideEmptyJobs() {
+      const jobs = (window.CONTENT && window.CONTENT.experience && window.CONTENT.experience.jobs) || [];
+      if (!jobs.length) {
+        const el = document.querySelector('.pv-section[data-pv="parcours"]');
+        if (el) el.style.display = 'none';
+      }
     }
 
     function buildWorkSlides() {
@@ -358,11 +422,13 @@
       buildWorkSlides();
       replaceStars();
       applyVisibility();
+      hideEmptyJobs();
     });
     if (window.CONTENT) {
       buildWorkSlides();
       replaceStars();
       applyVisibility();
+      hideEmptyJobs();
     }
   </script>
 </body>

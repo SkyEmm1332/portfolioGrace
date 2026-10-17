@@ -146,7 +146,7 @@ Le panneau `admin.html` permet de modifier **tout le contenu** sans toucher au c
 - **Hero** — sous-titre, lignes du titre, tags, photo, stats rapides
 - **À propos** — texte, photo, étiquette, tags
 - **Services** — ajouter/supprimer/modifier les cartes (fond rouge ou non)
-- **Expérience** — texte, liste, photo
+- **Expérience** — texte, liste, photo + **parcours professionnel** (périodes, postes, entreprises, missions — blocs séparés par une ligne vide)
 - **Travaux** — ajouter/supprimer des projets (photo, catégorie, description, tags, mise en page)
 - **Vidéos** — vignettes + **upload de fichiers vidéo (mp4)** : la vidéo s'ouvre dans une fenêtre au clic
 - **Stats** — nombres et libellés (animation au scroll)

@@ -67,6 +67,25 @@ function splitCommas(text) {
   return text.split(',').map(s => s.trim()).filter(Boolean);
 }
 
+function parseJobsBlocks(text) {
+  return text.split(/\r?\n\s*\r?\n/).map(b => b.trim()).filter(Boolean).map(block => {
+    const lines = block.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    return {
+      period: lines[0] || '',
+      role: lines[1] || '',
+      company: lines[2] || '',
+      missions: lines.slice(3).map(m => m.replace(/^[•\-*]\s*/, '').trim()).filter(Boolean)
+    };
+  });
+}
+
+function jobsBlocks(jobs) {
+  return (jobs || []).map(j =>
+    [j.period || '', j.role || '', j.company || ''].filter(Boolean).join('\n') +
+    (j.missions && j.missions.length ? '\n' + j.missions.map(m => '• ' + m).join('\n') : '')
+  ).join('\n\n');
+}
+
 // ---------- Média picker ----------
 function createMediaPicker(container, value, accept = 'image/*') {
   container.innerHTML = `
@@ -260,6 +279,8 @@ function fillExperience() {
   $('expParagraphs').value = (config.experience.paragraphs || []).join('\n\n');
   $('expListTitle').value = config.experience.listTitle || '';
   $('expList').value = (config.experience.list || []).join('\n');
+  $('expJobsTitle').value = config.experience.jobsTitle || '';
+  $('expJobs').value = jobsBlocks(config.experience.jobs);
 }
 
 function fillWork() {
@@ -601,6 +622,8 @@ function collectConfig() {
   c.experience.paragraphs = splitLines($('expParagraphs').value);
   c.experience.listTitle = $('expListTitle').value.trim();
   c.experience.list = splitLines($('expList').value);
+  c.experience.jobsTitle = $('expJobsTitle').value.trim();
+  c.experience.jobs = parseJobsBlocks($('expJobs').value);
 
   c.work = Array.from($('workList').querySelectorAll('.list-item')).map(item => ({
     title: item.querySelector('.f-title').value.trim(),

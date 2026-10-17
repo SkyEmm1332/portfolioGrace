@@ -552,6 +552,53 @@ ul { list-style: none; }
   top: .55rem;
 }
 
+/* Parcours professionnel (expériences du CV) */
+.jobs { margin-top: 2rem; }
+.experience .jobs__title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+.job {
+  padding: 1rem 0 1.1rem;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.experience .job__period {
+  font-family: var(--font-display);
+  font-size: .82rem;
+  letter-spacing: 2px;
+  color: var(--red);
+  margin-bottom: .2rem;
+}
+.job__role {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: .1rem;
+}
+.experience .job__company {
+  font-size: .82rem;
+  font-style: italic;
+  color: rgba(255,255,255,.55);
+  margin-bottom: .4rem;
+}
+.job__missions { margin-top: .25rem; }
+.job__missions li {
+  position: relative;
+  padding: .3rem 0 .3rem 1.2rem;
+  font-size: .85rem;
+  color: rgba(255,255,255,.7);
+}
+.job__missions li::before {
+  content: '★';
+  position: absolute; left: 0;
+  color: var(--red);
+  font-size: .6rem;
+  top: .55rem;
+}
+
 /* ===========================
    WORK / PORTFOLIO
    =========================== */
