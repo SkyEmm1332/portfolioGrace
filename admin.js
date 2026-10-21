@@ -1270,7 +1270,10 @@ async function initSupabaseMode() {
     }, { passive: true });
   });
 
-  $('loginBtn').addEventListener('click', async () => {
+  const loginBtn = $('loginBtn');
+  let loginBusy = false;
+  loginBtn.addEventListener('click', async () => {
+    if (loginBusy) return;
     const email = $('loginEmail').value.trim();
     const pass = $('loginPassword').value;
     const msg = $('loginMsg');
@@ -1280,6 +1283,10 @@ async function initSupabaseMode() {
       msg.textContent = 'Renseignez votre e-mail et votre mot de passe.';
       return;
     }
+    loginBusy = true;
+    loginBtn.disabled = true;
+    loginBtn.classList.add('admin__btn--loading');
+    loginBtn.textContent = 'Connexion en cours';
     try {
       await window.Supabase.login(email, pass);
       loginScreen.hidden = true;
@@ -1288,25 +1295,11 @@ async function initSupabaseMode() {
       await loadFromSupabase();
     } catch (e) {
       msg.textContent = 'Connexion impossible : ' + (e.message || '').slice(0, 100);
-    }
-  });
-
-  $('signupBtn').addEventListener('click', async () => {
-    const email = $('loginEmail').value.trim();
-    const pass = $('loginPassword').value;
-    const msg = $('loginMsg');
-    msg.textContent = '';
-    msg.classList.remove('ok');
-    if (!email || !pass) {
-      msg.textContent = 'Renseignez votre e-mail et votre mot de passe.';
-      return;
-    }
-    try {
-      await window.Supabase.signup(email, pass);
-      msg.textContent = 'Compte créé ! Confirmez votre e-mail puis connectez-vous (ou désactivez la confirmation e-mail dans Supabase).';
-      msg.classList.add('ok');
-    } catch (e) {
-      msg.textContent = 'Échec : ' + (e.message || '').slice(0, 100);
+    } finally {
+      loginBusy = false;
+      loginBtn.disabled = false;
+      loginBtn.classList.remove('admin__btn--loading');
+      loginBtn.textContent = 'Se connecter';
     }
   });
 

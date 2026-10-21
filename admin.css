@@ -504,6 +504,27 @@ select {
 }
 .admin__btn--danger:hover { text-decoration: underline; }
 
+.admin__btn--loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  pointer-events: none;
+  opacity: .9;
+  cursor: default;
+}
+.admin__btn--loading::before {
+  content: "";
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+  border: 2px solid rgba(255,255,255,.35);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: admin-spin .7s linear infinite;
+}
+@keyframes admin-spin { to { transform: rotate(360deg); } }
+
 /* ===========================
    MÉDIA — planches contact (zones teintées pour les repérer)
    =========================== */
