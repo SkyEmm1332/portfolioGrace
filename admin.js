@@ -84,16 +84,16 @@ function createMediaPicker(container, value, accept = 'image/*') {
   const status = container.querySelector('.media-picker__status');
   const urlToggle = container.querySelector('.media-picker__url-toggle');
 
+  const videoOnly = accept.startsWith('video');
   function setPath(p) {
     pathInput.value = p || '';
-    preview.src = p || '';
-    preview.style.opacity = p ? '1' : '.25';
+    const vid = videoOnly || /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(p || '');
+    preview.style.display = vid ? 'none' : '';
+    preview.src = vid ? '' : (p || '');
+    preview.style.opacity = p && !vid ? '1' : '.25';
   }
 
   setPath(value);
-  if (accept.startsWith('video')) {
-    preview.style.display = 'none';
-  }
 
   urlToggle.addEventListener('click', () => {
     pathInput.hidden = false;
@@ -102,9 +102,7 @@ function createMediaPicker(container, value, accept = 'image/*') {
   });
 
   pathInput.addEventListener('input', () => {
-    const p = pathInput.value.trim();
-    preview.src = p || '';
-    preview.style.opacity = p ? '1' : '.25';
+    setPath(pathInput.value.trim());
   });
 
   fileInput.addEventListener('change', () => {
@@ -276,10 +274,31 @@ function createJobItem(job) {
       <div class="full"><label>Entreprise, lieu</label><input type="text" class="f-company" value="${j.company || ''}" /></div>
       <div class="full"><label>Missions (une par ligne)</label><textarea class="f-missions" rows="3">${(j.missions || []).join('\n')}</textarea></div>
       <div class="full"><label>Logo / photo (optionnel)</label><div class="media-picker-wrap"></div></div>
+      <div class="full"><label>Réalisations (une par ligne — affichées dans le chevron)</label><textarea class="f-achievements" rows="2">${(j.achievements || []).join('\n')}</textarea></div>
+      <div class="full">
+        <label>Photos &amp; vidéos des réalisations</label>
+        <div class="media-list"></div>
+        <button type="button" class="admin__btn admin__btn--ghost f-add-media">+ Ajouter un média</button>
+      </div>
     </div>`;
   item._picker = createMediaPicker(item.querySelector('.media-picker-wrap'), j.image);
+  (j.gallery || []).forEach(g => addJobMedia(item, g));
+  item.querySelector('.f-add-media').addEventListener('click', () => addJobMedia(item, {}));
   item.querySelector('.list-item__remove').addEventListener('click', () => item.remove());
   return item;
+}
+
+function addJobMedia(item, media) {
+  const m = media || {};
+  const row = document.createElement('div');
+  row.className = 'media-row';
+  row.innerHTML = `
+    <div class="media-row__picker"></div>
+    <input type="text" class="f-media-caption" placeholder="Légende (facultatif)" value="${esc(m.caption || '')}" />
+    <button type="button" class="list-item__remove" aria-label="Retirer ce média">✕</button>`;
+  row._picker = createMediaPicker(row.querySelector('.media-row__picker'), m.src, 'image/*,video/*');
+  row.querySelector('.list-item__remove').addEventListener('click', () => row.remove());
+  item.querySelector('.media-list').appendChild(row);
 }
 
 function fillJobsList(jobs) {
@@ -633,7 +652,12 @@ function collectConfig() {
     role: item.querySelector('.f-role').value.trim(),
     company: item.querySelector('.f-company').value.trim(),
     missions: splitLines(item.querySelector('.f-missions').value),
-    image: item._picker.getValue()
+    image: item._picker.getValue(),
+    achievements: splitLines(item.querySelector('.f-achievements').value),
+    gallery: Array.from(item.querySelectorAll('.media-row')).map(r => ({
+      src: r._picker.getValue(),
+      caption: r.querySelector('.f-media-caption').value.trim()
+    })).filter(g => g.src)
   }));
 
   c.work = Array.from($('workList').querySelectorAll('.list-item')).map(item => ({
