@@ -278,7 +278,8 @@ document.addEventListener('content-ready', function init() {
 
   if (videoModal && videoModalPlayer && videoModalClose) {
     document.querySelectorAll('.video-thumb').forEach(thumb => {
-      thumb.addEventListener('click', () => {
+      thumb.addEventListener('click', (e) => {
+        if (e.target.closest('.video-thumb__link')) return;
         const src = thumb.dataset.video;
         if (!src) return;
         videoModalPlayer.src = src;

@@ -348,6 +348,7 @@ function fillVideos() {
         <div class="full"><label>Titre</label><input type="text" class="f-title" value="${v.title || ''}" /></div>
         <div class="full"><label>Image de couverture</label><div class="media-picker-wrap"></div></div>
         <div class="full"><label>Fichier vidéo (mp4) — facultatif</label><div class="media-picker-video-wrap"></div></div>
+        <div class="full"><label>Lien externe (facultatif) — réseau social</label><input type="url" class="f-link" value="${esc(v.link || '')}" placeholder="https://www.tiktok.com/@..." /></div>
       </div>`;
     item._picker = createMediaPicker(item.querySelector('.media-picker-wrap'), v.thumb);
     item._pickerVideo = createMediaPicker(item.querySelector('.media-picker-video-wrap'), v.video, 'video/*');
@@ -676,7 +677,8 @@ function collectConfig() {
   c.videos = Array.from($('videosList').querySelectorAll('.list-item')).map(item => ({
     title: item.querySelector('.f-title').value.trim(),
     thumb: item._picker.getValue(),
-    video: item._pickerVideo.getValue()
+    video: item._pickerVideo.getValue(),
+    link: item.querySelector('.f-link').value.trim()
   }));
 
   c.stats.titleLines = collectLines($('statsTitleLines'));
@@ -809,7 +811,7 @@ const FIELD_LABELS = {
   imageAlt: 'texte alternatif', stats: 'stats', title: 'titre', description: 'description',
   eyebrow: 'sur-titre', body: 'paragraphes', imageLabel: 'étiquette', paragraphs: 'paragraphes',
   listTitle: 'titre de liste', list: 'liste', cat: 'catégorie', desc: 'description',
-  alt: 'texte alternatif', thumb: 'vignette', video: 'vidéo', platform: 'plateforme',
+  alt: 'texte alternatif', thumb: 'vignette', video: 'vidéo', link: 'lien externe', platform: 'plateforme',
   views: 'vues', likes: 'likes', comments: 'commentaires', quote: 'citation',
   author: 'auteur', brand: 'marque', red: 'fond rouge', rows: 'tarifs',
   label: 'libellé', num: 'nombre', email: 'e-mail', instagram: 'Instagram',
@@ -1108,6 +1110,7 @@ function bindAddButtons() {
         <div class="full"><label>Titre</label><input type="text" class="f-title" /></div>
         <div class="full"><label>Image de couverture</label><div class="media-picker-wrap"></div></div>
         <div class="full"><label>Fichier vidéo (mp4) — facultatif</label><div class="media-picker-video-wrap"></div></div>
+        <div class="full"><label>Lien externe (facultatif) — réseau social</label><input type="url" class="f-link" value="" placeholder="https://www.tiktok.com/@..." /></div>
       </div>`;
     item._picker = createMediaPicker(item.querySelector('.media-picker-wrap'));
     item._pickerVideo = createMediaPicker(item.querySelector('.media-picker-video-wrap'), '', 'video/*');

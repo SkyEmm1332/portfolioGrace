@@ -153,6 +153,21 @@ function isVideoMedia(src) {
   return /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(String(src || ''));
 }
 
+function externalLink(raw) {
+  let url = String(raw == null ? '' : raw).trim();
+  if (!url) return null;
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+  let host = '';
+  try { host = new URL(url).hostname.toLowerCase().replace(/^www\./, ''); } catch (e) { return null; }
+  let label = 'Voir la vidéo';
+  if (/(^|\.)tiktok\.com$/.test(host)) label = 'Voir sur TikTok';
+  else if (/(^|\.)instagram\.com$/.test(host)) label = 'Voir sur Instagram';
+  else if (/(^|\.)(youtube\.com|youtu\.be)$/.test(host)) label = 'Voir sur YouTube';
+  else if (/(^|\.)(facebook\.com|fb\.watch)$/.test(host)) label = 'Voir sur Facebook';
+  else if (/(^|\.)(x\.com|twitter\.com)$/.test(host)) label = 'Voir sur X';
+  return { url, label };
+}
+
 // ===========================
 // RENDU PAR SECTION (réutilisé par index.html ET preview.html)
 // ===========================
@@ -292,13 +307,15 @@ window.Renderers = {
   videos(d) {
     const grid = document.getElementById('videoGrid');
     if (!grid) return;
-    grid.innerHTML = (d.videos || []).map(v =>
-      `<div class="video-thumb" data-video="${esc(v.video || '')}">
+    grid.innerHTML = (d.videos || []).map(v => {
+      const link = externalLink(v.link);
+      return `<div class="video-thumb" data-video="${esc(v.video || '')}">
         <img src="${esc(v.thumb)}" alt="${esc(v.title)}" loading="lazy" />
         <div class="video-thumb__play">▶</div>
+        ${link ? `<a class="video-thumb__link" href="${esc(link.url)}" target="_blank" rel="noopener">${esc(link.label)} ↗</a>` : ''}
         <p>${esc(v.title)}</p>
-      </div>`
-    ).join('');
+      </div>`;
+    }).join('');
   },
 
   stats(d) {

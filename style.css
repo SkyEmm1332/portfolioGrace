@@ -1208,6 +1208,28 @@ body.no-scroll { overflow: hidden; }
   text-shadow: 0 1px 6px rgba(0,0,0,.5);
 }
 
+.video-thumb__link {
+  position: absolute;
+  top: .7rem;
+  right: .7rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .32rem .65rem;
+  background: rgba(10,10,10,.72);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  text-decoration: none;
+  backdrop-filter: blur(4px);
+  transition: background .25s, transform .25s;
+}
+.video-thumb__link:hover { background: var(--red); transform: translateY(-1px); }
+
 /* ===========================
    STATS
    =========================== */
