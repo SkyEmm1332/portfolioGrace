@@ -119,26 +119,30 @@
       <h2 class="section__title">PORTFOLIO <span class="script red">mes travaux</span></h2>
       <div class="divider"></div>
     </div>
-    <div class="work__grid" id="workGrid"></div>
+    <div class="work__grid-wrap">
+      <div class="work__grid" id="workGrid"></div>
+    </div>
 
     <div class="work-expanded" id="workExpanded">
-      <div class="work-expanded__top">
-        <div class="work-expanded__image">
-          <img src="" alt="" id="detailImg" />
-          <div class="work-expanded__nav">
-            <button class="work-expanded__nav-btn" id="prevBtn">‹</button>
-            <button class="work-expanded__nav-btn" id="nextBtn">›</button>
+      <div class="work-expanded__inner">
+        <div class="work-expanded__top">
+          <div class="work-expanded__image">
+            <img src="" alt="" id="detailImg" />
+            <div class="work-expanded__nav">
+              <button class="work-expanded__nav-btn" id="prevBtn">‹</button>
+              <button class="work-expanded__nav-btn" id="nextBtn">›</button>
+            </div>
           </div>
+          <div class="work-expanded__info">
+            <span class="work-expanded__cat" id="detailCat"></span>
+            <h3 class="work-expanded__title" id="detailTitle"></h3>
+            <p class="work-expanded__desc" id="detailDesc"></p>
+            <div class="work-expanded__tags" id="detailTags"></div>
+          </div>
+          <button class="work-expanded__close" id="workClose">✕</button>
         </div>
-        <div class="work-expanded__info">
-          <span class="work-expanded__cat" id="detailCat"></span>
-          <h3 class="work-expanded__title" id="detailTitle"></h3>
-          <p class="work-expanded__desc" id="detailDesc"></p>
-          <div class="work-expanded__tags" id="detailTags"></div>
-        </div>
-        <button class="work-expanded__close" id="workClose">✕</button>
+        <div class="work-expanded__remaining" id="workRemaining"></div>
       </div>
-      <div class="work-expanded__remaining" id="workRemaining"></div>
     </div>
   </section>
 

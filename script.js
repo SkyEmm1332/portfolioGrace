@@ -119,12 +119,12 @@ document.addEventListener('content-ready', function init() {
   }
 
   // ===========================
-  // WORK EXPANDED — FLIP animation
+  // WORK EXPANDED — dépliage fluide
   // ===========================
   const workSection = document.querySelector('.work');
-  const workGrid = document.querySelector('.work__grid');
-  const workItems = document.querySelectorAll('.work-item');
   const workExpanded = document.getElementById('workExpanded');
+  const workExpandedInner = workExpanded.querySelector('.work-expanded__inner');
+  const workItems = document.querySelectorAll('.work-item');
   const workRemaining = document.getElementById('workRemaining');
   const workClose = document.getElementById('workClose');
   const prevBtn = document.getElementById('prevBtn');
@@ -136,34 +136,23 @@ document.addEventListener('content-ready', function init() {
   const detailTags = document.getElementById('detailTags');
 
   let currentIndex = -1;
-  let savedItemRect = null;
   let isAnimating = false;
+  const WORK_ANIM_MS = 560;
   const items = Array.from(workItems);
 
-  function createClone(imgSrc, rect) {
-    const clone = document.createElement('div');
-    clone.className = 'work-clone';
-    clone.style.cssText = `
-      position: fixed;
-      z-index: 1000;
-      overflow: hidden;
-      pointer-events: none;
-      background: #e8e6e2;
-      transition: all .5s cubic-bezier(.4,0,.2,1);
-    `;
-    const img = document.createElement('img');
-    img.src = imgSrc;
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-    clone.appendChild(img);
-    clone.style.left = rect.left + 'px';
-    clone.style.top = rect.top + 'px';
-    clone.style.width = rect.width + 'px';
-    clone.style.height = rect.height + 'px';
-    document.body.appendChild(clone);
-    return clone;
+  workExpanded.inert = true;
+
+  function fadeSwap() {
+    workExpandedInner.animate(
+      [
+        { opacity: .1, transform: 'translateY(10px)' },
+        { opacity: 1, transform: 'none' }
+      ],
+      { duration: 380, easing: 'cubic-bezier(.22,1,.36,1)' }
+    );
   }
 
-  function updateDetail(index) {
+  function updateDetail(index, animate) {
     const item = items[index];
     detailImg.src = item.querySelector('img').src;
     detailImg.alt = item.querySelector('img').alt;
@@ -190,87 +179,53 @@ document.addEventListener('content-ready', function init() {
           <span class="rem-item__cat">${el.dataset.cat}</span>
           <p class="rem-item__title">${el.dataset.title}</p>
         </div>`;
-      div.addEventListener('click', () => {
-        if (isAnimating) return;
-        currentIndex = i;
-        const remRect = div.getBoundingClientRect();
-        openWithAnimation(currentIndex, remRect);
-      });
+      div.addEventListener('click', () => openDetail(i));
       workRemaining.appendChild(div);
     });
+
+    if (animate) fadeSwap();
   }
 
-  function openWithAnimation(index, sourceRect) {
+  function openDetail(index) {
     if (isAnimating) return;
-    isAnimating = true;
-    currentIndex = index;
-    savedItemRect = sourceRect;
-
-    updateDetail(index);
-
-    workSection.classList.add('is-expanded');
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const targetImg = detailImg.getBoundingClientRect();
-        const clone = createClone(items[index].querySelector('img').src, sourceRect);
-
-        requestAnimationFrame(() => {
-          clone.style.left = targetImg.left + 'px';
-          clone.style.top = targetImg.top + 'px';
-          clone.style.width = targetImg.width + 'px';
-          clone.style.height = targetImg.height + 'px';
-        });
-
-        setTimeout(() => {
-          clone.remove();
-          isAnimating = false;
-        }, 520);
-      });
-    });
+    if (!workSection.classList.contains('is-expanded')) {
+      isAnimating = true;
+      currentIndex = index;
+      updateDetail(index, false);
+      workExpanded.inert = false;
+      workSection.classList.add('is-expanded');
+      setTimeout(() => { isAnimating = false; }, WORK_ANIM_MS);
+    } else if (index !== currentIndex) {
+      currentIndex = index;
+      updateDetail(index, true);
+    }
   }
 
   function collapseDetail() {
     if (isAnimating || currentIndex === -1) return;
     isAnimating = true;
-
-    const targetRect = savedItemRect;
-    const currentImgRect = detailImg.getBoundingClientRect();
-
-    const clone = createClone(detailImg.src, currentImgRect);
+    workExpanded.inert = true;
     workSection.classList.remove('is-expanded');
-
-    requestAnimationFrame(() => {
-      clone.style.left = targetRect.left + 'px';
-      clone.style.top = targetRect.top + 'px';
-      clone.style.width = targetRect.width + 'px';
-      clone.style.height = targetRect.height + 'px';
-    });
-
     setTimeout(() => {
-      clone.remove();
       isAnimating = false;
       currentIndex = -1;
-    }, 520);
+    }, WORK_ANIM_MS);
   }
 
   workItems.forEach((item, i) => {
-    item.addEventListener('click', () => {
-      const rect = item.getBoundingClientRect();
-      openWithAnimation(i, rect);
-    });
+    item.addEventListener('click', () => openDetail(i));
   });
 
   prevBtn.addEventListener('click', () => {
     if (isAnimating) return;
     currentIndex = (currentIndex - 1 + items.length) % items.length;
-    updateDetail(currentIndex);
+    updateDetail(currentIndex, true);
   });
 
   nextBtn.addEventListener('click', () => {
     if (isAnimating) return;
     currentIndex = (currentIndex + 1) % items.length;
-    updateDetail(currentIndex);
+    updateDetail(currentIndex, true);
   });
 
   workClose.addEventListener('click', collapseDetail);

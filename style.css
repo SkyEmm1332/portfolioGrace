@@ -852,7 +852,11 @@ body.no-scroll { overflow: hidden; }
   .jobs .job__extra-content,
   .job__toggle svg,
   .job__media img,
-  .job__media video { transition: none; }
+  .job__media video,
+  .work__grid-wrap,
+  .work-expanded,
+  .work-expanded__top,
+  .work-expanded__remaining { transition: none; }
 }
 
 /* ===========================
@@ -868,13 +872,25 @@ body.no-scroll { overflow: hidden; }
   position: relative;
 }
 .work__header { max-width: 1400px; margin: 0 auto 3rem; }
-.work__grid {
+.work__grid-wrap {
   max-width: 1400px;
   margin: 0 auto;
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows .55s cubic-bezier(.22,1,.36,1), opacity .35s ease;
+}
+.work.is-expanded .work__grid-wrap {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows .55s cubic-bezier(.22,1,.36,1), opacity .3s ease .05s;
+}
+.work__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto auto;
   gap: 12px;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .work-item {
@@ -930,26 +946,32 @@ body.no-scroll { overflow: hidden; }
 .work-expanded {
   max-width: 1400px;
   margin: 0 auto;
-  display: none;
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows .55s cubic-bezier(.22,1,.36,1), opacity .3s ease;
 }
 
 .work.is-expanded .work-expanded {
-  display: block;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition: grid-template-rows .55s cubic-bezier(.22,1,.36,1), opacity .5s ease .04s;
 }
 
-.work.is-expanded .work__grid {
-  display: none;
-}
+.work-expanded__inner { overflow: hidden; min-height: 0; }
 
 .work-expanded__top {
   display: grid;
-  grid-template-columns: 2fr 3fr;
-  gap: clamp(3.5rem, 7vw, 7rem);
+  grid-template-columns: minmax(260px, 420px) 1fr;
+  gap: clamp(2.5rem, 5vw, 5rem);
   align-items: center;
   margin: 0 auto 2rem;
   position: relative;
-  max-width: 900px;
+  transform: translateY(-10px);
+  transition: transform .55s cubic-bezier(.22,1,.36,1);
 }
+
+.work.is-expanded .work-expanded__top { transform: none; }
 
 .work-expanded__image {
   position: relative;
@@ -1064,9 +1086,12 @@ body.no-scroll { overflow: hidden; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
-  max-width: 900px;
   margin: 0 auto;
+  transform: translateY(-10px);
+  transition: transform .55s cubic-bezier(.22,1,.36,1);
 }
+
+.work.is-expanded .work-expanded__remaining { transform: none; }
 
 .work-expanded__remaining .rem-item {
   position: relative;
