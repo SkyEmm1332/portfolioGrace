@@ -565,21 +565,6 @@ select {
 }
 .media-picker__status.error { color: var(--red); }
 
-.media-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: .55rem;
-  align-items: center;
-  padding: .7rem .8rem;
-  border: 1px dashed #eccfd3;
-  background: #fbf5f5;
-  margin-bottom: .6rem;
-}
-.media-row__picker { grid-column: 1 / -1; min-width: 0; }
-.media-row .media-picker__preview { width: 120px; height: 90px; }
-.media-row .f-media-caption { grid-column: 1; }
-.media-row .list-item__remove { grid-column: 2; grid-row: 2; margin-top: .2rem; }
-
 .media-picker__file-link {
   font-family: var(--font-body);
   font-size: .72rem;
@@ -677,6 +662,18 @@ select {
   transition: opacity .2s;
 }
 .list-item__remove:hover { text-decoration: underline; opacity: .7; }
+
+.job-gallery__item {
+  position: relative;
+  margin-top: .6rem;
+  padding-right: 2rem;
+}
+.job-gallery__item .list-item__remove {
+  position: absolute;
+  top: .2rem;
+  right: 0;
+}
+.job-gallery__add { margin-top: .7rem; }
 
 /* ===========================
    APERÇU EN DIRECT (colonne droite)

@@ -149,26 +149,13 @@ function esc(s) {
     .replace(/"/g, '&quot;');
 }
 
+function isVideoMedia(src) {
+  return /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(String(src || ''));
+}
+
 // ===========================
 // RENDU PAR SECTION (réutilisé par index.html ET preview.html)
 // ===========================
-let jobTogglesBound = false;
-function bindJobToggles(container) {
-  if (!container || jobTogglesBound) return;
-  jobTogglesBound = true;
-  container.addEventListener('click', (ev) => {
-    const btn = ev.target.closest('.job__toggle');
-    if (!btn) return;
-    const job = btn.closest('.job');
-    const extra = job ? job.querySelector('.job__extra') : null;
-    if (!job || !extra) return;
-    const open = job.classList.toggle('is-open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    if (open) extra.removeAttribute('inert');
-    else extra.setAttribute('inert', '');
-  });
-}
-
 window.Renderers = {
 
   meta(d) {
@@ -252,41 +239,39 @@ window.Renderers = {
     if (jobsTitle) jobsTitle.textContent = e.jobsTitle || '';
     const jobs = document.getElementById('expJobs');
     if (jobs) jobs.innerHTML = (e.jobs || []).map((j, i) => {
-      const gallery = (j.gallery || []).filter(g => g && g.src);
-      const achievements = j.achievements || [];
-      const hasExtra = achievements.length > 0 || gallery.length > 0;
-      const media = gallery.map(g => {
-        const isVideo = /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(g.src);
-        return `<figure class="job__media${isVideo ? ' job__media--video' : ''}">
-          ${isVideo
-            ? `<video src="${esc(g.src)}" controls playsinline preload="metadata"></video>`
-            : `<img src="${esc(g.src)}" alt="${esc(g.caption || j.role)}" loading="lazy" />`}
-          ${g.caption ? `<figcaption>${esc(g.caption)}</figcaption>` : ''}
-        </figure>`;
+      const gallery = (j.gallery || []).map(g => (g && typeof g === 'object') ? (g.src || '') : g).filter(Boolean);
+      const highlights = (j.highlights || j.achievements || []).filter(Boolean);
+      const hasExtra = highlights.length > 0 || gallery.length > 0;
+      const extraId = 'job-extra-' + i;
+      const media = gallery.map(src => {
+        const video = isVideoMedia(src);
+        return `<button type="button" class="job__media${video ? ' job__media--video' : ''}" data-src="${esc(src)}" data-kind="${video ? 'video' : 'image'}" aria-label="${video ? 'Lire la vidéo' : 'Agrandir la photo'}">
+          ${video
+            ? `<video src="${esc(src)}#t=0.1" preload="metadata" muted playsinline aria-hidden="true"></video><span class="job__media-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>`
+            : `<img src="${esc(src)}" alt="${esc((j.company || j.role) + ' — réalisation')}" loading="lazy" />`}
+        </button>`;
       }).join('');
-      return `<article class="job${j.image ? ' job--img' : ''}">
+      return `<article class="job${j.image ? ' job--img' : ''}${hasExtra ? ' job--expandable' : ''}">
         ${j.image ? `<div class="job__thumb"><img src="${esc(j.image)}" alt="${esc(j.role + (j.company ? ' — ' + j.company : ''))}" loading="lazy" /></div>` : ''}
         <div class="job__body">
-          <p class="job__period">${esc(j.period)}</p>
+          <div class="job__head">
+            <p class="job__period">${esc(j.period)}</p>
+            ${hasExtra ? `<button type="button" class="job__toggle" aria-expanded="false" aria-controls="${extraId}" aria-label="Afficher les réalisations${j.company ? ' chez ' + esc(j.company) : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>` : ''}
+          </div>
           <h3 class="job__role">${esc(j.role)}</h3>
           ${j.company ? `<p class="job__company">${esc(j.company)}</p>` : ''}
           ${(j.missions && j.missions.length) ? `<ul class="job__missions">${j.missions.map(m => `<li>${esc(m)}</li>`).join('')}</ul>` : ''}
         </div>
-        ${hasExtra ? `
-          <button type="button" class="job__toggle" aria-expanded="false" aria-controls="jobExtra${i}" aria-label="Afficher les réalisations — ${esc(j.company || j.role)}">
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
-          </button>
-          <div class="job__extra-wrap" id="jobExtra${i}">
-            <div class="job__extra" inert>
-              <div class="job__extra-inner">
-                ${achievements.length ? `<p class="job__extra-label">Réalisations</p><ul class="job__achievements">${achievements.map(a => `<li>${esc(a)}</li>`).join('')}</ul>` : ''}
-                ${gallery.length ? `<p class="job__extra-label">Photos &amp; vidéos</p><div class="job__media-grid">${media}</div>` : ''}
-              </div>
+        ${hasExtra ? `<div class="job__extra" id="${extraId}" inert>
+          <div class="job__extra-inner">
+            <div class="job__extra-content">
+              ${highlights.length ? `<p class="job__extra-title">Réalisations</p><ul class="job__highlights">${highlights.map(h => `<li>${esc(h)}</li>`).join('')}</ul>` : ''}
+              ${gallery.length ? `<div class="job__gallery">${media}</div>` : ''}
             </div>
-          </div>` : ''}
+          </div>
+        </div>` : ''}
       </article>`;
     }).join('');
-    bindJobToggles(jobs);
   },
 
   work(d) {
@@ -442,6 +427,64 @@ window.Renderers = {
     }
   }
 };
+
+// ===========================
+// PARCOURS — accordéons animés + visionneuse photos / vidéos
+// (délégation d'événements : fonctionne aussi dans l'aperçu admin)
+// ===========================
+document.addEventListener('click', function (event) {
+  const toggle = event.target.closest('.job__toggle');
+  if (toggle) {
+    const job = toggle.closest('.job');
+    if (!job) return;
+    const open = job.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    const extra = job.querySelector('.job__extra');
+    if (extra) extra.inert = !open;
+    return;
+  }
+  const media = event.target.closest('.job__media');
+  if (media) {
+    event.preventDefault();
+    openJobLightbox(media.dataset.src, media.dataset.kind);
+  }
+});
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') closeJobLightbox();
+});
+
+function openJobLightbox(src, kind) {
+  if (!src) return;
+  let box = document.getElementById('jobLightbox');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'jobLightbox';
+    box.className = 'job-lightbox';
+    box.innerHTML = '<button type="button" class="job-lightbox__close" aria-label="Fermer">✕</button><div class="job-lightbox__content"></div>';
+    document.body.appendChild(box);
+    box.addEventListener('click', function (event) {
+      if (event.target === box || event.target.closest('.job-lightbox__close')) closeJobLightbox();
+    });
+  }
+  const content = box.querySelector('.job-lightbox__content');
+  content.innerHTML = kind === 'video'
+    ? `<video src="${esc(src)}" controls autoplay playsinline></video>`
+    : `<img src="${esc(src)}" alt="" />`;
+  document.body.classList.add('no-scroll');
+  requestAnimationFrame(function () { box.classList.add('open'); });
+}
+
+function closeJobLightbox() {
+  const box = document.getElementById('jobLightbox');
+  if (!box || !box.classList.contains('open')) return;
+  box.classList.remove('open');
+  document.body.classList.remove('no-scroll');
+  const content = box.querySelector('.job-lightbox__content');
+  setTimeout(function () {
+    if (!box.classList.contains('open')) content.innerHTML = '';
+  }, 400);
+}
 
 // ===========================
 // RENDU COMPLET (page du portfolio)
