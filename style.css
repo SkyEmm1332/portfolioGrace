@@ -518,10 +518,12 @@ ul { list-style: none; }
 
 .experience__image {
   overflow: hidden;
+  align-self: start;
 }
 
 .experience__image img {
-  height: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
 }
 
 .experience__content .section__title { color: var(--red); }
@@ -597,6 +599,20 @@ ul { list-style: none; }
   color: var(--red);
   font-size: .6rem;
   top: .55rem;
+}
+
+.job--img {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 1.1rem;
+  align-items: start;
+}
+.job__thumb { overflow: hidden; }
+.job__thumb img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
 }
 
 /* ===========================

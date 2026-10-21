@@ -235,11 +235,14 @@ window.Renderers = {
     if (jobsTitle) jobsTitle.textContent = e.jobsTitle || '';
     const jobs = document.getElementById('expJobs');
     if (jobs) jobs.innerHTML = (e.jobs || []).map(j =>
-      `<article class="job">
-        <p class="job__period">${esc(j.period)}</p>
-        <h3 class="job__role">${esc(j.role)}</h3>
-        ${j.company ? `<p class="job__company">${esc(j.company)}</p>` : ''}
-        ${(j.missions && j.missions.length) ? `<ul class="job__missions">${j.missions.map(m => `<li>${esc(m)}</li>`).join('')}</ul>` : ''}
+      `<article class="job${j.image ? ' job--img' : ''}">
+        ${j.image ? `<div class="job__thumb"><img src="${esc(j.image)}" alt="${esc(j.role + (j.company ? ' — ' + j.company : ''))}" loading="lazy" /></div>` : ''}
+        <div class="job__body">
+          <p class="job__period">${esc(j.period)}</p>
+          <h3 class="job__role">${esc(j.role)}</h3>
+          ${j.company ? `<p class="job__company">${esc(j.company)}</p>` : ''}
+          ${(j.missions && j.missions.length) ? `<ul class="job__missions">${j.missions.map(m => `<li>${esc(m)}</li>`).join('')}</ul>` : ''}
+        </div>
       </article>`
     ).join('');
   },

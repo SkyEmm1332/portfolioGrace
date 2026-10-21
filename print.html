@@ -31,6 +31,8 @@
     .pv-content .about__img-label { position: static; max-width: none; margin-top: 1rem; }
     .pv-content .services__grid { grid-template-columns: repeat(3, 1fr); }
     .pv-content .experience__inner { grid-template-columns: 1fr 1fr; }
+    .pv-content .experience__image { align-self: stretch; }
+    .pv-content .experience__image img { height: 100%; aspect-ratio: auto; }
     .pv-content .video-section__grid { grid-template-columns: repeat(4, 1fr); }
     .pv-content .video-thumb__play { display: none; }
     .pv-content .video-section .section__title {
@@ -100,6 +102,8 @@
       border-bottom: 1px solid rgba(10,10,10,.12);
       break-inside: avoid;
     }
+    .pv-content .jobs-slide .job--img { display: block; }
+    .pv-content .jobs-slide .job__thumb { display: none; }
     .pv-content .jobs-slide .job__period {
       color: var(--red);
       font-size: .7rem;

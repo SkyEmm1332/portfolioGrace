@@ -67,25 +67,6 @@ function splitCommas(text) {
   return text.split(',').map(s => s.trim()).filter(Boolean);
 }
 
-function parseJobsBlocks(text) {
-  return text.split(/\r?\n\s*\r?\n/).map(b => b.trim()).filter(Boolean).map(block => {
-    const lines = block.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-    return {
-      period: lines[0] || '',
-      role: lines[1] || '',
-      company: lines[2] || '',
-      missions: lines.slice(3).map(m => m.replace(/^[•\-*]\s*/, '').trim()).filter(Boolean)
-    };
-  });
-}
-
-function jobsBlocks(jobs) {
-  return (jobs || []).map(j =>
-    [j.period || '', j.role || '', j.company || ''].filter(Boolean).join('\n') +
-    (j.missions && j.missions.length ? '\n' + j.missions.map(m => '• ' + m).join('\n') : '')
-  ).join('\n\n');
-}
-
 // ---------- Média picker ----------
 function createMediaPicker(container, value, accept = 'image/*') {
   container.innerHTML = `
@@ -280,7 +261,31 @@ function fillExperience() {
   $('expListTitle').value = config.experience.listTitle || '';
   $('expList').value = (config.experience.list || []).join('\n');
   $('expJobsTitle').value = config.experience.jobsTitle || '';
-  $('expJobs').value = jobsBlocks(config.experience.jobs);
+  fillJobsList(config.experience.jobs);
+}
+
+function createJobItem(job) {
+  const j = job || {};
+  const item = document.createElement('div');
+  item.className = 'list-item';
+  item.innerHTML = `
+    <div class="list-item__head"><strong>Expérience</strong><button type="button" class="list-item__remove">✕</button></div>
+    <div class="list-item__grid">
+      <div><label>Période (ex : Juil. 2026 — En cours)</label><input type="text" class="f-period" value="${j.period || ''}" /></div>
+      <div><label>Poste</label><input type="text" class="f-role" value="${j.role || ''}" /></div>
+      <div class="full"><label>Entreprise, lieu</label><input type="text" class="f-company" value="${j.company || ''}" /></div>
+      <div class="full"><label>Missions (une par ligne)</label><textarea class="f-missions" rows="3">${(j.missions || []).join('\n')}</textarea></div>
+      <div class="full"><label>Photo (optionnelle)</label><div class="media-picker-wrap"></div></div>
+    </div>`;
+  item._picker = createMediaPicker(item.querySelector('.media-picker-wrap'), j.image);
+  item.querySelector('.list-item__remove').addEventListener('click', () => item.remove());
+  return item;
+}
+
+function fillJobsList(jobs) {
+  const list = $('jobsList');
+  list.innerHTML = '';
+  (jobs || []).forEach(j => list.appendChild(createJobItem(j)));
 }
 
 function fillWork() {
@@ -623,7 +628,13 @@ function collectConfig() {
   c.experience.listTitle = $('expListTitle').value.trim();
   c.experience.list = splitLines($('expList').value);
   c.experience.jobsTitle = $('expJobsTitle').value.trim();
-  c.experience.jobs = parseJobsBlocks($('expJobs').value);
+  c.experience.jobs = Array.from($('jobsList').querySelectorAll('.list-item')).map(item => ({
+    period: item.querySelector('.f-period').value.trim(),
+    role: item.querySelector('.f-role').value.trim(),
+    company: item.querySelector('.f-company').value.trim(),
+    missions: splitLines(item.querySelector('.f-missions').value),
+    image: item._picker.getValue()
+  }));
 
   c.work = Array.from($('workList').querySelectorAll('.list-item')).map(item => ({
     title: item.querySelector('.f-title').value.trim(),
@@ -1134,6 +1145,12 @@ function bindAddButtons() {
       </div>`;
     item.querySelector('.list-item__remove').addEventListener('click', () => item.remove());
     $('testiList').appendChild(item);
+  });
+
+  $('addJob').addEventListener('click', () => {
+    const item = createJobItem({});
+    $('jobsList').appendChild(item);
+    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
   $('addFile').addEventListener('click', addFileItem);
