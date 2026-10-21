@@ -658,16 +658,23 @@ ul { list-style: none; }
   gap: 1.1rem;
   align-items: start;
 }
-.job__thumb { overflow: hidden; }
+.job__thumb {
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .9rem;
+  background: var(--off-white);
+}
 .job__thumb img {
   width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
 }
 .jobs .job--img {
-  grid-template-columns: 96px 1fr;
-  gap: 1.3rem;
+  grid-template-columns: 148px 1fr;
+  gap: 1.4rem;
 }
 .jobs .job--img .job__role { padding-right: 2.4rem; }
 
@@ -1496,6 +1503,8 @@ ul { list-style: none; }
   .experience__image { max-width: 400px; }
   .jobs__list { grid-template-columns: 1fr; }
   .jobs .job { padding: 1.2rem 0 1.35rem; }
+  .jobs .job--img { grid-template-columns: 112px 1fr; gap: 1.1rem; }
+  .job__thumb { padding: .65rem; }
 
   .work__grid { grid-template-columns: 1fr 1fr; }
   .work-item--tall { grid-row: span 1; aspect-ratio: 1; }

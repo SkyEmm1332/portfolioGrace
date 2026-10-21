@@ -275,7 +275,7 @@ function createJobItem(job) {
       <div><label>Poste</label><input type="text" class="f-role" value="${j.role || ''}" /></div>
       <div class="full"><label>Entreprise, lieu</label><input type="text" class="f-company" value="${j.company || ''}" /></div>
       <div class="full"><label>Missions (une par ligne)</label><textarea class="f-missions" rows="3">${(j.missions || []).join('\n')}</textarea></div>
-      <div class="full"><label>Photo (optionnelle)</label><div class="media-picker-wrap"></div></div>
+      <div class="full"><label>Logo / photo (optionnel)</label><div class="media-picker-wrap"></div></div>
     </div>`;
   item._picker = createMediaPicker(item.querySelector('.media-picker-wrap'), j.image);
   item.querySelector('.list-item__remove').addEventListener('click', () => item.remove());
