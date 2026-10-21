@@ -985,6 +985,13 @@ body.no-scroll { overflow: hidden; }
   object-fit: cover;
 }
 
+.work-expanded__fade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
 .work-expanded__nav {
   position: absolute;
   bottom: 1rem;
@@ -992,6 +999,7 @@ body.no-scroll { overflow: hidden; }
   transform: translateX(-50%);
   display: flex;
   gap: .5rem;
+  z-index: 2;
 }
 
 .work-expanded__nav-btn {

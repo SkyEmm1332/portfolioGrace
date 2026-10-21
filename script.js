@@ -123,7 +123,7 @@ document.addEventListener('content-ready', function init() {
   // ===========================
   const workSection = document.querySelector('.work');
   const workExpanded = document.getElementById('workExpanded');
-  const workExpandedInner = workExpanded.querySelector('.work-expanded__inner');
+  const workExpandedInfo = workExpanded.querySelector('.work-expanded__info');
   const workItems = document.querySelectorAll('.work-item');
   const workRemaining = document.getElementById('workRemaining');
   const workClose = document.getElementById('workClose');
@@ -142,20 +142,54 @@ document.addEventListener('content-ready', function init() {
 
   workExpanded.inert = true;
 
-  function fadeSwap() {
-    workExpandedInner.animate(
-      [
-        { opacity: .1, transform: 'translateY(10px)' },
-        { opacity: 1, transform: 'none' }
-      ],
-      { duration: 380, easing: 'cubic-bezier(.22,1,.36,1)' }
-    );
+  const softRise = [
+    { opacity: .35, transform: 'translateY(12px)' },
+    { opacity: 1, transform: 'none' }
+  ];
+  const softOpts = { duration: 380, easing: 'cubic-bezier(.22,1,.36,1)' };
+
+  let fadeToken = 0;
+  function crossfadeImage(src, alt) {
+    const token = ++fadeToken;
+    const parent = detailImg.parentElement;
+    const old = parent.querySelector('.work-expanded__fade');
+    if (old) old.remove();
+
+    const overlay = document.createElement('img');
+    overlay.className = 'work-expanded__fade';
+    overlay.alt = '';
+    overlay.src = src;
+    parent.appendChild(overlay);
+
+    const reveal = () => {
+      if (token !== fadeToken) return;
+      overlay.animate(
+        [{ opacity: 0 }, { opacity: 1 }],
+        { duration: 300, easing: 'cubic-bezier(.22,1,.36,1)' }
+      ).onfinish = () => {
+        if (token !== fadeToken) return;
+        detailImg.src = src;
+        detailImg.alt = alt;
+        overlay.animate(
+          [{ opacity: 1 }, { opacity: 0 }],
+          { duration: 160, easing: 'ease-out' }
+        ).onfinish = () => overlay.remove();
+      };
+    };
+
+    if (overlay.complete) requestAnimationFrame(reveal);
+    else overlay.onload = reveal;
   }
 
   function updateDetail(index, animate) {
     const item = items[index];
-    detailImg.src = item.querySelector('img').src;
-    detailImg.alt = item.querySelector('img').alt;
+    const img = item.querySelector('img');
+    if (animate) {
+      crossfadeImage(img.src, img.alt);
+    } else {
+      detailImg.src = img.src;
+      detailImg.alt = img.alt;
+    }
     detailCat.textContent = item.dataset.cat;
     detailTitle.textContent = item.dataset.title;
     detailDesc.textContent = item.dataset.desc;
@@ -169,6 +203,7 @@ document.addEventListener('content-ready', function init() {
     });
 
     workRemaining.innerHTML = '';
+    let remIndex = 0;
     items.forEach((el, i) => {
       if (i === index) return;
       const div = document.createElement('div');
@@ -180,10 +215,14 @@ document.addEventListener('content-ready', function init() {
           <p class="rem-item__title">${el.dataset.title}</p>
         </div>`;
       div.addEventListener('click', () => openDetail(i));
+      if (animate) {
+        div.animate(softRise, { ...softOpts, delay: 30 + remIndex * 35 });
+      }
+      remIndex++;
       workRemaining.appendChild(div);
     });
 
-    if (animate) fadeSwap();
+    if (animate) workExpandedInfo.animate(softRise, softOpts);
   }
 
   function openDetail(index) {
