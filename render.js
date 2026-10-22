@@ -290,6 +290,12 @@ window.Renderers = {
         </article>`);
       });
       jobs.innerHTML = `<div class="jobs__col">${cols[0].join('')}</div><div class="jobs__col">${cols[1].join('')}</div>`;
+      equalizeJobColumns();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () {
+          if (!document.querySelector('#expJobs .job.is-open')) equalizeJobColumns();
+        });
+      }
     }
   },
 
@@ -462,6 +468,7 @@ document.addEventListener('click', function (event) {
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     const extra = job.querySelector('.job__extra');
     if (extra) extra.inert = !open;
+    if (!open) setTimeout(equalizeJobColumns, 600);
     return;
   }
   const media = event.target.closest('.job__media');
@@ -473,6 +480,39 @@ document.addEventListener('click', function (event) {
 
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') closeJobLightbox();
+});
+
+// Aligne les lignes des deux colonnes au repos (chaque paire de fiches
+// partage la même hauteur) sans recoupler les colonnes pendant un dépliage.
+function equalizeJobColumns() {
+  const list = document.getElementById('expJobs');
+  if (!list) return;
+  const cols = list.querySelectorAll('.jobs__col');
+  if (cols.length !== 2) return;
+  const articles = list.querySelectorAll('.job');
+  if (getComputedStyle(cols[0]).display === 'contents') {
+    articles.forEach(function (a) { a.style.minHeight = ''; });
+    return;
+  }
+  if (list.querySelector('.job.is-open')) return;
+  articles.forEach(function (a) { a.style.minHeight = '0px'; });
+  const left = cols[0].querySelectorAll('.job');
+  const right = cols[1].querySelectorAll('.job');
+  const count = Math.max(left.length, right.length);
+  for (let i = 0; i < count; i++) {
+    const a = left[i];
+    const b = right[i];
+    if (!a || !b) continue;
+    const h = Math.ceil(Math.max(a.getBoundingClientRect().height, b.getBoundingClientRect().height));
+    a.style.minHeight = h + 'px';
+    b.style.minHeight = h + 'px';
+  }
+}
+
+let jobEqualizeTimer;
+window.addEventListener('resize', function () {
+  clearTimeout(jobEqualizeTimer);
+  jobEqualizeTimer = setTimeout(equalizeJobColumns, 150);
 });
 
 function openJobLightbox(src, kind) {
