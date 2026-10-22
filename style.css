@@ -582,7 +582,11 @@ ul { list-style: none; }
   grid-template-columns: 1fr 1fr;
   column-gap: clamp(2rem, 5vw, 5rem);
   align-items: start;
-  counter-reset: job;
+}
+.jobs__col {
+  display: grid;
+  grid-auto-rows: max-content;
+  align-content: start;
 }
 .job {
   padding: 1rem 0 1.1rem;
@@ -590,7 +594,6 @@ ul { list-style: none; }
 }
 .jobs .job {
   position: relative;
-  counter-increment: job;
   padding: 1.4rem 0 1.55rem;
   border-top: 1px solid rgba(255,255,255,.13);
   border-bottom: none;
@@ -598,7 +601,7 @@ ul { list-style: none; }
 }
 .jobs .job:hover { border-top-color: var(--red); }
 .jobs .job::after {
-  content: counter(job, decimal-leading-zero);
+  content: attr(data-num);
   position: absolute;
   top: auto;
   bottom: 1.05rem;
@@ -1735,6 +1738,7 @@ body.no-scroll { overflow: hidden; }
   .experience__inner { grid-template-columns: 1fr; }
   .experience__image { max-width: 400px; }
   .jobs__list { grid-template-columns: 1fr; }
+  .jobs__col { display: contents; }
   .jobs .job { padding: 1.2rem 0 1.35rem; }
   .jobs .job--img { grid-template-columns: 112px 1fr; gap: 1.1rem; }
   .job__thumb { padding: .65rem; }

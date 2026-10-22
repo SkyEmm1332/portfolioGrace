@@ -253,40 +253,44 @@ window.Renderers = {
     const jobsTitle = document.getElementById('expJobsTitle');
     if (jobsTitle) jobsTitle.textContent = e.jobsTitle || '';
     const jobs = document.getElementById('expJobs');
-    if (jobs) jobs.innerHTML = (e.jobs || []).map((j, i) => {
-      const gallery = (j.gallery || []).map(g => (g && typeof g === 'object') ? (g.src || '') : g).filter(Boolean);
-      const highlights = (j.highlights || j.achievements || []).filter(Boolean);
-      const hasExtra = highlights.length > 0 || gallery.length > 0;
-      const extraId = 'job-extra-' + i;
-      const media = gallery.map(src => {
-        const video = isVideoMedia(src);
-        return `<button type="button" class="job__media${video ? ' job__media--video' : ''}" data-src="${esc(src)}" data-kind="${video ? 'video' : 'image'}" aria-label="${video ? 'Lire la vidéo' : 'Agrandir la photo'}">
-          ${video
-            ? `<video src="${esc(src)}#t=0.1" preload="metadata" muted playsinline aria-hidden="true"></video><span class="job__media-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>`
-            : `<img src="${esc(src)}" alt="${esc((j.company || j.role) + ' — réalisation')}" loading="lazy" />`}
-        </button>`;
-      }).join('');
-      return `<article class="job${j.image ? ' job--img' : ''}${hasExtra ? ' job--expandable' : ''}">
-        ${j.image ? `<div class="job__thumb"><img src="${esc(j.image)}" alt="${esc(j.role + (j.company ? ' — ' + j.company : ''))}" loading="lazy" /></div>` : ''}
-        <div class="job__body">
-          <div class="job__head">
-            <p class="job__period">${esc(j.period)}</p>
-            ${hasExtra ? `<button type="button" class="job__toggle" aria-expanded="false" aria-controls="${extraId}" aria-label="Afficher les réalisations${j.company ? ' chez ' + esc(j.company) : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>` : ''}
-          </div>
-          <h3 class="job__role">${esc(j.role)}</h3>
-          ${j.company ? `<p class="job__company">${esc(j.company)}</p>` : ''}
-          ${(j.missions && j.missions.length) ? `<ul class="job__missions">${j.missions.map(m => `<li>${esc(m)}</li>`).join('')}</ul>` : ''}
-        </div>
-        ${hasExtra ? `<div class="job__extra" id="${extraId}" inert>
-          <div class="job__extra-inner">
-            <div class="job__extra-content">
-              ${highlights.length ? `<p class="job__extra-title">Réalisations</p><ul class="job__highlights">${highlights.map(h => `<li>${esc(h)}</li>`).join('')}</ul>` : ''}
-              ${gallery.length ? `<div class="job__gallery">${media}</div>` : ''}
+    if (jobs) {
+      const cols = [[], []];
+      (e.jobs || []).forEach((j, i) => {
+        const gallery = (j.gallery || []).map(g => (g && typeof g === 'object') ? (g.src || '') : g).filter(Boolean);
+        const highlights = (j.highlights || j.achievements || []).filter(Boolean);
+        const hasExtra = highlights.length > 0 || gallery.length > 0;
+        const extraId = 'job-extra-' + i;
+        const media = gallery.map(src => {
+          const video = isVideoMedia(src);
+          return `<button type="button" class="job__media${video ? ' job__media--video' : ''}" data-src="${esc(src)}" data-kind="${video ? 'video' : 'image'}" aria-label="${video ? 'Lire la vidéo' : 'Agrandir la photo'}">
+            ${video
+              ? `<video src="${esc(src)}#t=0.1" preload="metadata" muted playsinline aria-hidden="true"></video><span class="job__media-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>`
+              : `<img src="${esc(src)}" alt="${esc((j.company || j.role) + ' — réalisation')}" loading="lazy" />`}
+          </button>`;
+        }).join('');
+        cols[i % 2].push(`<article class="job${j.image ? ' job--img' : ''}${hasExtra ? ' job--expandable' : ''}" data-num="${String(i + 1).padStart(2, '0')}" style="order: ${i}">
+          ${j.image ? `<div class="job__thumb"><img src="${esc(j.image)}" alt="${esc(j.role + (j.company ? ' — ' + j.company : ''))}" loading="lazy" /></div>` : ''}
+          <div class="job__body">
+            <div class="job__head">
+              <p class="job__period">${esc(j.period)}</p>
+              ${hasExtra ? `<button type="button" class="job__toggle" aria-expanded="false" aria-controls="${extraId}" aria-label="Afficher les réalisations${j.company ? ' chez ' + esc(j.company) : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>` : ''}
             </div>
+            <h3 class="job__role">${esc(j.role)}</h3>
+            ${j.company ? `<p class="job__company">${esc(j.company)}</p>` : ''}
+            ${(j.missions && j.missions.length) ? `<ul class="job__missions">${j.missions.map(m => `<li>${esc(m)}</li>`).join('')}</ul>` : ''}
           </div>
-        </div>` : ''}
-      </article>`;
-    }).join('');
+          ${hasExtra ? `<div class="job__extra" id="${extraId}" inert>
+            <div class="job__extra-inner">
+              <div class="job__extra-content">
+                ${highlights.length ? `<p class="job__extra-title">Réalisations</p><ul class="job__highlights">${highlights.map(h => `<li>${esc(h)}</li>`).join('')}</ul>` : ''}
+                ${gallery.length ? `<div class="job__gallery">${media}</div>` : ''}
+              </div>
+            </div>
+          </div>` : ''}
+        </article>`);
+      });
+      jobs.innerHTML = `<div class="jobs__col">${cols[0].join('')}</div><div class="jobs__col">${cols[1].join('')}</div>`;
+    }
   },
 
   work(d) {
