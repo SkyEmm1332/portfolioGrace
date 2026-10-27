@@ -1731,7 +1731,7 @@ body.no-scroll { overflow: hidden; }
   .hero__buttons { justify-content: center; }
   .hero__bg-text { display: none; }
 
-  .about { grid-template-columns: 1fr; }
+  .about__inner { grid-template-columns: 1fr; gap: 2rem; }
   .about__left { max-width: 400px; margin: 0 auto; }
   .about__right { max-width: 100%; }
 
