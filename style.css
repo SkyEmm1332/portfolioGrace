@@ -376,21 +376,6 @@ ul { list-style: none; }
   color: var(--gray);
 }
 
-.hero__scroll {
-  position: absolute;
-  bottom: 2rem; left: 50%;
-  transform: translateX(-50%);
-  font-size: .8rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gray);
-  animation: bounce 2s infinite;
-}
-@keyframes bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(6px); }
-}
-
 /* ===========================
    ABOUT
    =========================== */
