@@ -402,7 +402,9 @@ ul { list-style: none; }
 }
 .about__img-wrap img {
   filter: grayscale(100%);
+  transition: filter .5s;
 }
+.about__img-wrap:hover img { filter: grayscale(0%); }
 
 .about__img-label {
   position: absolute;
