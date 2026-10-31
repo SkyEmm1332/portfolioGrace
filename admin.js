@@ -147,7 +147,12 @@ function createMediaPicker(container, value, accept = 'image/*') {
         pathInput.dispatchEvent(new Event('input', { bubbles: true }));
         status.textContent = '✓ Média envoyé — cliquez sur 💾 Sauvegarder pour l\'appliquer';
       } catch (e) {
-        status.textContent = 'Échec de l\'envoi : ' + e.message;
+        const msg = String((e && e.message) || e);
+        if (/413|maximum size exceeded/i.test(msg)) {
+          status.textContent = 'Fichier trop volumineux pour Supabase (limite du projet). Compressez la vidéo (max 50 Mo) ou augmentez la limite dans Supabase → Storage → Settings.';
+        } else {
+          status.textContent = 'Échec de l\'envoi : ' + msg;
+        }
         status.classList.add('error');
       }
     };
