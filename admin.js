@@ -75,6 +75,7 @@ function isVideoPath(p) {
 function createMediaPicker(container, value, accept = 'image/*') {
   container.innerHTML = `
     <img class="media-picker__preview" src="" alt="Aperçu" />
+    <video class="media-picker__preview-video" muted playsinline preload="metadata"></video>
     <div class="media-picker__row">
       <label class="media-picker__upload">Choisir un fichier<input type="file" accept="${accept}" /></label>
       <button type="button" class="media-picker__url-toggle">ou coller une URL</button>
@@ -83,6 +84,7 @@ function createMediaPicker(container, value, accept = 'image/*') {
     <span class="media-picker__status"></span>
   `;
   const preview = container.querySelector('.media-picker__preview');
+  const previewVideo = container.querySelector('.media-picker__preview-video');
   const pathInput = container.querySelector('.media-picker__path');
   const fileInput = container.querySelector('input[type="file"]');
   const status = container.querySelector('.media-picker__status');
@@ -93,6 +95,13 @@ function createMediaPicker(container, value, accept = 'image/*') {
     preview.style.display = vid ? 'none' : '';
     preview.src = vid ? '' : (p || '');
     preview.style.opacity = p && !vid ? '1' : '.25';
+    previewVideo.style.display = vid ? '' : 'none';
+    if (vid) {
+      previewVideo.src = p + '#t=0.1';
+    } else {
+      previewVideo.removeAttribute('src');
+      previewVideo.load();
+    }
   }
 
   function setPath(p) {

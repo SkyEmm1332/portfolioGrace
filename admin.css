@@ -536,7 +536,8 @@ select {
   border: 1px dashed #eccfd3;
   padding: .9rem;
 }
-.media-picker__preview {
+.media-picker__preview,
+.media-picker__preview-video {
   width: 180px;
   height: 130px;
   object-fit: cover;
@@ -544,6 +545,10 @@ select {
   padding: 3px;
   background: var(--off-white);
   display: block;
+}
+.media-picker__preview-video {
+  background: #0a0a0a;
+  pointer-events: none;
 }
 .media-picker__row { display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap; }
 .media-picker__row input[type="text"] { flex: 1; min-width: 200px; }
