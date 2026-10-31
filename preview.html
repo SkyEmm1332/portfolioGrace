@@ -316,6 +316,17 @@
         });
         const renderer = window.Renderers[m.section];
         if (renderer && m.config) renderer.call(window.Renderers, m.config);
+        // Aperçu admin : les réalisations restent visibles sous chaque expérience
+        // (le re-rendu à chaque frappe remplaçait le DOM et refermait les chevrons).
+        if (m.section === 'experience') {
+          document.querySelectorAll('#expJobs .job--expandable').forEach(job => {
+            job.classList.add('is-open');
+            const toggle = job.querySelector('.job__toggle');
+            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+            const extra = job.querySelector('.job__extra');
+            if (extra) extra.inert = false;
+          });
+        }
         setTimeout(reportHeight, 60);
       }
     });
