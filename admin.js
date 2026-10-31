@@ -135,6 +135,7 @@ function createMediaPicker(container, value, accept = 'image/*') {
         }
         if (!ok) throw new Error('fichier introuvable après l\'envoi (trop volumineux ?)');
         setPath(path);
+        pathInput.dispatchEvent(new Event('input', { bubbles: true }));
         status.textContent = '✓ Média envoyé — cliquez sur 💾 Sauvegarder pour l\'appliquer';
       } catch (e) {
         status.textContent = 'Échec de l\'envoi : ' + e.message;
@@ -1004,6 +1005,10 @@ $('adminForm').addEventListener('input', () => {
   pvTimer = setTimeout(updatePreview, 400);
 });
 $('adminForm').addEventListener('change', () => {
+  clearTimeout(pvTimer);
+  pvTimer = setTimeout(updatePreview, 400);
+});
+$('adminForm').addEventListener('click', () => {
   clearTimeout(pvTimer);
   pvTimer = setTimeout(updatePreview, 400);
 });
